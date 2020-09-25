@@ -24,7 +24,7 @@ namespace checks
         stringDraw _currentDrawing = new stringDraw { Text = "", Position = new Point(0, 0) };
         stringDraw _overDrawing = new stringDraw { Text = "", Position = new Point(0, 0) };
         private Point _previousCursorPosition = new Point(0, 0);
-        private readonly int _amountInWordsWidth = 280;
+        private readonly int _amountInWordsWidth = 290;
         private Image _image;
 
 
@@ -56,7 +56,11 @@ namespace checks
         }
         private float cmToPixel(float value)
         {
-            return (value * 0.393701f) * 100.44f;
+            return (value * 0.393700787f) * 100.44117647058823529411764705882f;
+        }
+        private float pixelToInche(float value)
+        {
+            return value * 100 / 100.44117647058823529411764705882f;
         }
 
         private void Draw(Graphics formGraphics, float inputWidth, float inputHeight)
@@ -84,19 +88,13 @@ namespace checks
                     {
                         while (reader.Read())
                         {
-                            // reader.GetDouble(0);
+                             var value = reader.GetString(0);
                         }
                     } while (reader.NextResult());
 
                     // 2. Use the AsDataSet extension method
                     var result = reader.AsDataSet();
                     sheets = result.Tables.OfType<DataTable>().ToList();
-                    for (int i = 0; i < result.Tables.Count; i++)
-                    {
-                        var table = result.Tables[i];
-                        sheets.Add(table);
-                    }
-
                     // The result of each spreadsheet is in result.Tables
                 }
             }
@@ -137,6 +135,7 @@ namespace checks
 
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
+            //e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toInche(7.2));
             e.Graphics.DrawImage(_image, 0, 0, toInche(7.2), _pageHeight);
             e.Graphics.RotateTransform(-90);
             e.Graphics.TranslateTransform(-(_pageHeight ), 0);
@@ -144,15 +143,17 @@ namespace checks
             StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             var font = new Font("Times New Roman", 12);
-            var fontHeight = font.GetHeight();
             foreach (var item in _toDrawStrings)
             {
-                var sizeText = e.Graphics.MeasureString(item.Text, font, item.MaxWidth);
-                var bound = new RectangleF((item.Position.X), item.Position.Y, sizeText.Width , sizeText.Height);
+                var test = (int)Math.Ceiling((double)pixelToInche(item.MaxWidth));
+                var sizeText = e.Graphics.MeasureString(item.Text, font, (int)Math.Ceiling((double)pixelToInche(item.MaxWidth)));
+                var bound = new RectangleF(pixelToInche(item.Position.X), pixelToInche(item.Position.Y), sizeText.Width , sizeText.Height);
+                //var bound1 = new Rectangle((int)pixelToInche(item.Position.X), (int)pixelToInche(item.Position.Y),(int) sizeText.Width ,(int) sizeText.Height);
+                //e.Graphics.DrawRectangle(Pens.Black, bound1);
                 e.Graphics.DrawString(item.Text, font, new SolidBrush(Color.Black), bound);
 
             }
-            if (count < 50)
+            if (count < 2)
                 e.HasMorePages = true;
             count++;
         }
@@ -186,7 +187,7 @@ namespace checks
                 formGraphics.FillRectangle(Brushes.Bisque, new Rectangle(pointlabel, sizeLabel.ToSize()));
                 formGraphics.DrawString(el.Label, lfont, new SolidBrush(Color.Black), pointlabel);
             }
-            //formGraphics.DrawRectangle(Pens.Black, el.Bound);
+            formGraphics.DrawRectangle(Pens.Black, el.Bound);
             var bound = new RectangleF(el.Position, sizeText);
             formGraphics.DrawString(el.Text, font, new SolidBrush(Color.Black), bound);
             //formGraphics.DrawString($"x : {x} , y: {y}", new Font("Times New Roman", 10), new SolidBrush(Color.Black), x + 100, y + 100);
@@ -292,6 +293,16 @@ namespace checks
             {
                 _measureState = MeasureState.None;
             }
+        }
+
+        private void Print(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            readFile();
         }
     }
 }
