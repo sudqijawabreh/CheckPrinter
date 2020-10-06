@@ -9,6 +9,8 @@ namespace checks
         private int _maxWidth = Int32.MaxValue;
         public string Label { get; set; }
         public string Text { get; set; }
+        public string field { get; set; }
+        public int fontSize { get; set; }
         public int MaxWidth {
             get
             {
