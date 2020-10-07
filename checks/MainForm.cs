@@ -98,7 +98,7 @@ namespace checks
             _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(528, 192), Text = "09/09/2020" , field = "Date", fontSize = 10});
             //_image =Bitmap.FromFile("empty check.png");
             _image =Bitmap.FromFile("full check.png");
-            _image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            //_image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             /*            _pageHeight = toInche(7.2);
             _pageWidth = toInche(16);*/
             var bindingList = new BindingList<CheckRecord>();
@@ -326,10 +326,13 @@ namespace checks
                 var record = _records[_currentRecord - 1];
                 //e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toInche(7.2));
                 //e.Graphics.DrawImage(_image, 0, 0, toInche(7.2), _pageHeight);
-                e.Graphics.TranslateTransform(0 - e.PageSettings.HardMarginX, 0 - e.PageSettings.HardMarginX);
-                //e.Graphics.DrawImage(_image,0, 0, toInche(7.2), _pageHeight);
+                var all = new Rectangle(0, 0, toInche(7.2), _pageHeight);
+                e.Graphics.DrawRectangle(Pens.Black, all);
                 e.Graphics.RotateTransform(-90);
                 e.Graphics.TranslateTransform(-(_pageHeight), 0);
+                e.Graphics.TranslateTransform(0 + e.PageSettings.HardMarginY, 0 - e.PageSettings.HardMarginX);
+                //e.Graphics.TranslateTransform(-(_pageHeight) - e.PageSettings.PrintableArea.X, 0);
+                //e.Graphics.DrawImage(_image,0, 0, _pageHeight, toInche(7.2));
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
