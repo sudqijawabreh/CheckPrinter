@@ -17,8 +17,8 @@ namespace checks
 {
     public partial class MainForm : Form
     {
-        private int _DpiX = 96;
-        private int _DpiY = 96;
+        private float _DpiX = 96;
+        private float _DpiY = 96;
         private  int count = 0;
         private readonly int _pageWidth;
         private readonly int _pageHeight;
@@ -37,11 +37,12 @@ namespace checks
         private int _firstRecord = 1;
         private int _lastRecord = 1;
         private BindingSource _bindingSource;
+        private PrintAction _printAction;
 
 
         private Point _firstMeasure;
         private Point _secondMeasure;
-        private int toInche(double value)
+        private int toIncheHundredth(double value)
         {
             return (int)(value * 0.393701 * 100);
         }
@@ -49,12 +50,12 @@ namespace checks
         {
             InitializeComponent();
 
-            _pageHeight = toInche(21);
-            _pageWidth = toInche(7.2);
+            _pageHeight = toIncheHundredth(21);
+            _pageWidth = toIncheHundredth(7.2);
             _toDrawStrings.Add(new stringDraw {
                 Label = "Name",
                 //Position = new Point(104, 109),
-                Position = new Point(286, 110),
+                Position = new Point(274, 105),
                 //Text = "Yusra A\\kAreem Saleh Abu Roos",
                 Text = "Yusra",
                 MaxWidth = _amountInWordsWidth,
@@ -64,7 +65,7 @@ namespace checks
 
             _toDrawStrings.Add(new stringDraw {
                 Label = "small date",
-                Position = new Point(46, 41),
+                Position = new Point(44, 39),
                 Text = "09/09/2020",
                 MaxWidth = 129,
                 field = "Date",
@@ -73,7 +74,7 @@ namespace checks
 
             _toDrawStrings.Add(new stringDraw {
                 Label = "small amount",
-                Position = new Point(65, 124),
+                Position = new Point(61, 119),
                 Text = "1,339.240",
                 MaxWidth = 129,
                 field = "Amount",
@@ -81,7 +82,7 @@ namespace checks
             });
             _toDrawStrings.Add(new stringDraw {
                 Label = "small name",
-                Position = new Point(39, 78),
+                Position = new Point(36, 74),
                 Text = "Yusra A\\kAreem Saleh Abu Roos",
                 MaxWidth = 129,
                 field = "Name",
@@ -90,17 +91,18 @@ namespace checks
             _toDrawStrings.Add(new stringDraw
             {
                 Label = "Amount in Words",
-                Position = new Point(286, 142),
+                Position = new Point(274, 136),
                 Text = "JD One Thousand Three Hundred Thirty Nine And  Two Hundred Forty ils Only",
                 MaxWidth = _amountInWordsWidth,
                 field = "Name",
                 fontSize = 10,
             }); 
-            _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(725, 139), Text = "1,339.240" , field = "Amount", fontSize = 10});
-            _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(573, 190), Text = "09/09/2020" , field = "Date", fontSize = 10});
+            _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(671, 130), Text = "1,339.240" , field = "Amount", fontSize = 10});
+            _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(546, 181), Text = "09/09/2020" , field = "Date", fontSize = 10});
             //_image =Bitmap.FromFile("empty check.png");
-            _image =Bitmap.FromFile("full check.png");
-            //_image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            _image =Bitmap.FromFile("full_check.png");
+            //_image = RotateImage(_image, -0.5f);
+
             /*            _pageHeight = toInche(7.2);
             _pageWidth = toInche(16);*/
             var bindingList = new BindingList<CheckRecord>();
@@ -112,21 +114,57 @@ namespace checks
             recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.RowHeadersVisible = false;
         }
-        private float cmToPixel(float value)
+        private Bitmap RotateImage(Image bmp, float angle)
+        {
+            Bitmap rotatedImage = new Bitmap(bmp.Width, bmp.Height);
+            rotatedImage.SetResolution(bmp.HorizontalResolution, bmp.VerticalResolution);
+
+            using (Graphics g = Graphics.FromImage(rotatedImage))
+            {
+                // Set the rotation point to the center in the matrix
+                //g.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
+                // Rotate
+                g.RotateTransform(angle);
+                // Restore rotation point in the matrix
+                //g.TranslateTransform(-bmp.Width / 2, -bmp.Height / 2);
+                // Draw the image on the bitmap
+                g.DrawImage(bmp, new Point(0, 0));
+            }
+
+            return rotatedImage;
+        }
+        private float cmToInche(float value)
+        {
+            return (value * 0.393700787f);
+        }
+        private float cmToPixelX(float value)
+        {
+            return cmToInche(value) * _DpiX;
+        }
+        private float cmToPixelY(float value)
+        {
+            return cmToInche(value) * _DpiY;
+        }
+
+/*        private float cmToPixel(float value)
         {
             return (value * 0.393700787f) * 100.44117647058823529411764705882f;
-        }
-        private float pixelToInche(float value)
+        }*/
+        private float pixelToHundredthIncheX(float value)
         {
-            return value * 96 / 100.44117647058823529411764705882f;
+            return (value / _DpiY) * 100 ;
+        }
+        private float pixelToHundredthIncheY(float value)
+        {
+            return (value / _DpiY) * 100 ;
         }
 
         private void Draw(Graphics formGraphics, float inputWidth, float inputHeight)
         {
-            var backImg = File.OpenRead("full check.png");
+            var backImg = File.OpenRead("full_check.png");
             //var backImg = File.OpenRead("empty check.png");
             var bitmap = Bitmap.FromStream(backImg);
-            formGraphics.DrawImage(bitmap, 0, 0, (int)cmToPixel(inputWidth), (int)cmToPixel(inputHeight));
+            formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
 
         }
         private void readFile(Stream file)
@@ -273,7 +311,9 @@ namespace checks
 
 
             var printDocument = new PrintDocument();
-            printDocument.PrintPage += new PrintPageEventHandler(printDocument_PrintPage);
+            printDocument.PrintPage += printDocument_PrintPage;
+            printDocument.BeginPrint += BeginPrint;
+            //printDocument.PrintPage += new PrintPageEventHandler(printDocument_PrintPage);
             printDialog.Document = printDocument;
             printDialog.AllowSelection = true;
             printDialog.AllowSomePages = true;
@@ -320,6 +360,10 @@ namespace checks
         }
 
 
+        private void BeginPrint(object sender, PrintEventArgs e)
+        {
+            _printAction = e.PrintAction;
+        }
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
 
@@ -330,9 +374,12 @@ namespace checks
                 //e.Graphics.DrawImage(_image, 0, 0, toInche(7.2), _pageHeight);
                 e.Graphics.RotateTransform(-90);
                 e.Graphics.TranslateTransform(-(_pageHeight), 0);
-                e.Graphics.TranslateTransform(0 + e.PageSettings.HardMarginY, 0 - e.PageSettings.HardMarginX);
-                //e.Graphics.TranslateTransform(-(_pageHeight) - e.PageSettings.PrintableArea.X, 0);
-                //e.Graphics.DrawImage(_image,0, 0, _pageHeight, toInche(7.2));
+                e.Graphics.TranslateTransform(0 + e.PageSettings.HardMarginY + 4, 0 - e.PageSettings.HardMarginX + 4);
+
+                if (_printAction == PrintAction.PrintToPreview)
+                {
+                    e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toIncheHundredth(7.2));
+                }
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -340,9 +387,9 @@ namespace checks
                 {
                     var font = new Font("Times New Roman", item.fontSize);
                     var text = record.GetType().GetProperty(item.field).GetValue(record).ToString();
-                    var sizeText = e.Graphics.MeasureString(text, font, (item.MaxWidth));
-                    var bound = new RectangleF((item.Position.X),(item.Position.Y), sizeText.Width, sizeText.Height);
-                    //var bound1 = new Rectangle((int)pixelToInche(item.Position.X), (int)pixelToInche(item.Position.Y),(int) sizeText.Width ,(int) sizeText.Height);
+                    var sizeText = e.Graphics.MeasureString(text, font, (int)pixelToHundredthIncheX(item.MaxWidth));
+                    var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X),pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
+                    var bound1 = new Rectangle((int)pixelToHundredthIncheX(item.Position.X), (int)pixelToHundredthIncheY(item.Position.Y),(int) sizeText.Width ,(int) sizeText.Height);
                     //e.Graphics.DrawRectangle(Pens.Black, bound1);
                     e.Graphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
 
@@ -383,7 +430,7 @@ namespace checks
             var font = new Font("Times New Roman", el.fontSize);
             //var sizeText = formGraphics.MeasureString(el.Text, font, el.MaxWidth);
             var text = record.GetType().GetProperty(el.field).GetValue(record).ToString();
-            var sizeText = formGraphics.MeasureString(text, font, (int)Math.Ceiling((double)pixelToInche(el.MaxWidth)));
+            var sizeText = formGraphics.MeasureString(text, font, (el.MaxWidth));
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
             var pointlabel = new Point(el.Position.X + (int)(sizeText.Width / 2) - (int)(sizeLabel.Width / 2), el.Position.Y - (int)(sizeLabel.Height));
@@ -395,14 +442,16 @@ namespace checks
             //formGraphics.DrawRectangle(Pens.Black, el.Bound);
             var bound = new RectangleF(el.Position, sizeText);
             formGraphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
-            formGraphics.DrawString($"x : {el.Position.X} , y: {el.Position.Y}", new Font("Times New Roman", 10), new SolidBrush(Color.Black), el.Position.X + 100, el.Position.Y + 100);
+            //formGraphics.DrawString($"x : {el.Position.X} , y: {el.Position.Y}", new Font("Times New Roman", 10), new SolidBrush(Color.Black), el.Position.X + 100, el.Position.Y + 100);
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
 
+            _DpiX = e.Graphics.DpiX;
+            _DpiY = e.Graphics.DpiY;
             float.TryParse(textBoxWidth.Text, out float width);
             float.TryParse(textBoxHeight.Text, out float height);
-            Draw(e.Graphics, width, height);
+            Draw(e.Graphics, cmToPixelX(width), cmToPixelY(height));
             foreach (var item in _toDrawStrings)
             {
                 DrawText(e.Graphics, item,_records[_currentPreview - 1]);
