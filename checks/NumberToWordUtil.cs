@@ -16,12 +16,16 @@ namespace checks
     {
         public static string NumberToWord(string value)
         {
-            double.TryParse(value, out var number);
+           var isNumber = double.TryParse(value, out var number);
+            if (!isNumber)
+                return value;
+            
             var periodIndex = value.IndexOf(".");
             if (periodIndex >= 0)
             {
                 var first = value.Substring(0, periodIndex);
                 var second = (periodIndex < value.Length - 1) ? value.Substring(periodIndex + 1) : string.Empty;
+                second = string.Join("", second.Take(3));
                 first = PadLeft(first);
                 second = PadRight(second);
                 var words = GetWords(first);
@@ -55,12 +59,16 @@ namespace checks
         }
         public static string CurrencyToWords(string value, string prefix , string decimalSuffix, string suffix)
         {            
-            double.TryParse(value, out var number);
+           var isNumber = double.TryParse(value, out var number);
+            if (!isNumber)
+                return value;
+
             var periodIndex = value.IndexOf(".");
             if (periodIndex >= 0)
             {
                 var first = value.Substring(0, periodIndex);
                 var second = (periodIndex < value.Length - 1) ? value.Substring(periodIndex + 1) : string.Empty;
+                second = string.Join("",second.Take(3));
                 first = PadLeft(first);
                 second = PadRight(second);
                 var words = GetWords(first);

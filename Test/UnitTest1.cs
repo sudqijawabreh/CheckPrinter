@@ -204,5 +204,19 @@ namespace Test
             result = NumberToWordUtil.NumberToWord("9011.0");
             Assert.AreEqual("Nine Thousand Eleven", result);
         }
+
+        [TestMethod]
+        public void TestCurrencyJD()
+        {
+            var result = NumberToWordUtil.AmountInJDToWords("1000.0");
+            Assert.AreEqual("JD One Thousand And No Fils Only", result);
+
+            result = NumberToWordUtil.AmountInJDToWords("9675.0");
+            Assert.AreEqual("JD Nine Thousand Six Hundred Seventy Five And No Fils Only", result);
+
+            result = NumberToWordUtil.AmountInJDToWords("0.967");
+            Assert.AreEqual("JD Nine Hundred Sixty Seven Fils Only", result);
+
+        }
     }
 }
