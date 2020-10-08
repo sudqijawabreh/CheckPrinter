@@ -14,7 +14,7 @@ namespace checks
     }
     public class NumberToWordUtil
     {
-        public string NumberToWord(string value)
+        public static string NumberToWord(string value)
         {
             double.TryParse(value, out var number);
             var periodIndex = value.IndexOf(".");
@@ -49,11 +49,11 @@ namespace checks
 
             return string.Empty;
         }
-        public string AmountInJDToWords(string value)
+        public static string AmountInJDToWords(string value)
         {
             return CurrencyToWords(value, "JD", "Fils", "Only");
         }
-        public string CurrencyToWords(string value, string prefix , string decimalSuffix, string suffix)
+        public static string CurrencyToWords(string value, string prefix , string decimalSuffix, string suffix)
         {            
             double.TryParse(value, out var number);
             var periodIndex = value.IndexOf(".");
@@ -90,7 +90,7 @@ namespace checks
 
 
         }
-        private string GetWords(string first)
+        private static string GetWords(string first)
         {
             var groupOfThrees = first.ToArray()
                 .Select((e, i) => new { e, i })
@@ -107,7 +107,7 @@ namespace checks
             }).SelectMany(g => g).Where(g => !string.IsNullOrEmpty(g)));
         }
 
-        private string GetOrder(int i)
+        private static string GetOrder(int i)
         {
             switch (i)
             {
@@ -122,7 +122,7 @@ namespace checks
             }
         }
 
-        private List<string> GetHundreds(List<char> e)
+        private static List<string> GetHundreds(List<char> e)
         {
             var hundred = e[0];
             var ten = e[1];
@@ -139,7 +139,7 @@ namespace checks
             return result;
         }
 
-        private List<string> Rest(List<char> e)
+        private static List<string> Rest(List<char> e)
         {
             var ten = e[1];
             var digit = e[2];
@@ -158,7 +158,7 @@ namespace checks
 
         }
 
-        private string GetTeens(string v)
+        private static string GetTeens(string v)
         {
             switch (v)
             {
@@ -187,7 +187,7 @@ namespace checks
             return string.Empty;
         }
 
-        private string GetTen(char ten)
+        private static string GetTen(char ten)
         {
             switch (ten)
             {
@@ -212,7 +212,7 @@ namespace checks
             return string.Empty;
         }
 
-        private string GetDigtit(char hundred)
+        private static string GetDigtit(char hundred)
         {
             switch (hundred)
             {
@@ -239,13 +239,13 @@ namespace checks
             return string.Empty;
         }
 
-        private string PadLeft(string value)
+        private static string PadLeft(string value)
         {
             var numberOfPadding = (9 - value.Length);
             return string.Join("", Enumerable.Range(0, numberOfPadding).Select(i => "0")) + value;
         }
 
-        private string PadRight(string value)
+        private static string PadRight(string value)
         {
             var numberOfPadding = (3 - value.Length);
             return value + string.Join("", Enumerable.Range(0, numberOfPadding).Select(i => "0"));
