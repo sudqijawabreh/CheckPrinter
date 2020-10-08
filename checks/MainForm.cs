@@ -38,6 +38,7 @@ namespace checks
         private int _lastRecord = 1;
         private BindingSource _bindingSource;
         private PrintAction _printAction;
+        private readonly CheckRecord _checkRecord = new CheckRecord();
 
 
         private Point _firstMeasure;
@@ -59,7 +60,7 @@ namespace checks
                 //Text = "Yusra A\\kAreem Saleh Abu Roos",
                 Text = "Yusra",
                 MaxWidth = _amountInWordsWidth,
-                field = "Name",
+                field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 10,
             });
 
@@ -68,7 +69,7 @@ namespace checks
                 Position = new Point(44, 39),
                 Text = "09/09/2020",
                 MaxWidth = 129,
-                field = "Date",
+                field = $"{nameof(_checkRecord.Date)}",
                 fontSize = 10,
             });
 
@@ -77,7 +78,7 @@ namespace checks
                 Position = new Point(61, 119),
                 Text = "1,339.240",
                 MaxWidth = 129,
-                field = "Amount",
+                field = $"{nameof(_checkRecord.Amount)}",
                 fontSize = 10,
             });
             _toDrawStrings.Add(new stringDraw {
@@ -85,7 +86,7 @@ namespace checks
                 Position = new Point(36, 74),
                 Text = "Yusra A\\kAreem Saleh Abu Roos",
                 MaxWidth = 129,
-                field = "Name",
+                field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 7,
             });
             _toDrawStrings.Add(new stringDraw
@@ -94,7 +95,7 @@ namespace checks
                 Position = new Point(274, 136),
                 Text = "JD One Thousand Three Hundred Thirty Nine And  Two Hundred Forty ils Only",
                 MaxWidth = _amountInWordsWidth,
-                field = "Name",
+                field = $"{nameof(_checkRecord.AmountInWords)}",
                 fontSize = 10,
             });
             _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(671, 130), Text = "1,339.240", field = "Amount", fontSize = 10 });
@@ -112,6 +113,8 @@ namespace checks
             recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            recordsGrid.Columns[4].HeaderText = "Amount In Words";
             recordsGrid.RowHeadersVisible = false;
         }
         private Bitmap RotateImage(Image bmp, float angle)
@@ -267,6 +270,8 @@ namespace checks
                         return;
                     }
 
+                    var dateWarning = false;
+                    var amountWarning = false;
                     _records = currentSheet.Rows.Cast<DataRow>().Select(r => new
                     {
                         Name = r.Field<object>(ColumnNames.Name),
@@ -276,6 +281,9 @@ namespace checks
                         .Select((r, i) =>
                         {
                             var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
+                            var isNumber = double.TryParse(r.Amount.ToString(), out var number);
+                            dateWarning |= !isSuccess;
+                            amountWarning |= !isNumber;
 
                             return new CheckRecord
                             {
@@ -283,9 +291,24 @@ namespace checks
                                 Name = r.Name.ToString(),
                                 Amount = r.Amount.ToString(),
                                 Date = isSuccess ? dateResult.ToString("dd/MM/yyyy") : r.Date.ToString(),
+                                AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount.ToString()),
                             };
                         }
                         ).ToList();
+
+                    var message = string.Empty;
+                    if (dateWarning)
+                        message += $"Some records have invalide Date format.{Environment.NewLine}";
+                    if (amountWarning)
+                        message += $"Some records have invalide Amount values.{Environment.NewLine}";
+                    if (dateWarning || amountWarning)
+                    {
+                        MessageBox.Show(this,
+                            message,
+                            "Warning",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
 
                     MessageBox.Show(this,
                         $"Successfuly imported {_records.Count} records.",
@@ -295,6 +318,7 @@ namespace checks
 
                     var bindingList = new BindingList<CheckRecord>(_records);
                     _bindingSource = new BindingSource(bindingList, null);
+                    recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     recordsGrid.DataSource = _bindingSource;
 
                 }
@@ -370,8 +394,6 @@ namespace checks
             if (_currentRecord >= _firstRecord && _currentRecord <= _lastRecord)
             {
                 var record = _records[_currentRecord - 1];
-                //e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toInche(7.2));
-                //e.Graphics.DrawImage(_image, 0, 0, toInche(7.2), _pageHeight);
                 e.Graphics.RotateTransform(-90);
                 e.Graphics.TranslateTransform(-(_pageHeight), 0);
                 e.Graphics.TranslateTransform(0 + e.PageSettings.HardMarginY + 4, 0 - e.PageSettings.HardMarginX + 4);
@@ -429,7 +451,7 @@ namespace checks
             var lfont = new Font("Times New Roman", 8);
             var font = new Font("Times New Roman", el.fontSize);
             //var sizeText = formGraphics.MeasureString(el.Text, font, el.MaxWidth);
-            var text = record.GetType().GetProperty(el.field).GetValue(record).ToString();
+            var text = record.GetType().GetProperty(el.field).GetValue(record)?.ToString() ?? string.Empty;
             var sizeText = formGraphics.MeasureString(text, font, (el.MaxWidth));
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
@@ -581,7 +603,7 @@ namespace checks
                 catch (Exception e)
                 {
                     MessageBox.Show(this,
-                        $"Erorr in importing file",
+                        $"Erorr in importing file.{Environment.NewLine}{e.Message}",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -630,6 +652,8 @@ namespace checks
         public string Name { get; set; }
         public string Amount { get; set; }
         public string Date { get; set; }
+
+        public string AmountInWords { get; set; }
     }
     static class ColumnNames
     {
