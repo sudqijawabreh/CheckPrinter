@@ -37,6 +37,8 @@
             this.previousRecordButton = new System.Windows.Forms.Button();
             this.recordNumberTextBox = new System.Windows.Forms.TextBox();
             this.recordsGrid = new System.Windows.Forms.DataGridView();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.ResetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,7 +72,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(205, 374);
+            this.button2.Location = new System.Drawing.Point(167, 374);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -130,11 +132,33 @@
             this.recordsGrid.Size = new System.Drawing.Size(814, 136);
             this.recordsGrid.TabIndex = 10;
             // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(261, 374);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(107, 23);
+            this.SaveButton.TabIndex = 11;
+            this.SaveButton.Text = "Save Positions";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // ResetButton
+            // 
+            this.ResetButton.Location = new System.Drawing.Point(522, 385);
+            this.ResetButton.Name = "ResetButton";
+            this.ResetButton.Size = new System.Drawing.Size(104, 23);
+            this.ResetButton.TabIndex = 12;
+            this.ResetButton.Text = "Reset Positions";
+            this.ResetButton.UseVisualStyleBackColor = true;
+            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(838, 578);
+            this.Controls.Add(this.ResetButton);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.recordsGrid);
             this.Controls.Add(this.recordNumberTextBox);
             this.Controls.Add(this.previousRecordButton);
@@ -169,6 +193,8 @@
         private System.Windows.Forms.Button previousRecordButton;
         private System.Windows.Forms.TextBox recordNumberTextBox;
         private System.Windows.Forms.DataGridView recordsGrid;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button ResetButton;
     }
 }
 

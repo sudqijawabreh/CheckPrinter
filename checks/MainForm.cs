@@ -7,11 +7,9 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace checks
 {
@@ -28,9 +26,9 @@ namespace checks
         stringDraw _currentDrawing = new stringDraw { Text = "", Position = new Point(0, 0) };
         stringDraw _overDrawing = new stringDraw { Text = "", Position = new Point(0, 0) };
         private Point _previousCursorPosition = new Point(0, 0);
-        private readonly int _amountInWordsWidth = 290;
+        private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "123532.12", Date = "09/09/2019", Name = "Yusra" } };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -39,6 +37,8 @@ namespace checks
         private BindingSource _bindingSource;
         private PrintAction _printAction;
         private readonly CheckRecord _checkRecord = new CheckRecord();
+        private readonly string _fileName = "Positions.txt";
+        private readonly List<stringDraw> _defaultValues;
 
 
         private Point _firstMeasure;
@@ -53,53 +53,56 @@ namespace checks
 
             _pageHeight = toIncheHundredth(21);
             _pageWidth = toIncheHundredth(7.2);
-            _toDrawStrings.Add(new stringDraw {
+            _defaultValues = new List<stringDraw> {
+            (new stringDraw {
                 Label = "Name",
                 //Position = new Point(104, 109),
-                Position = new Point(274, 105),
+                Position = new Point(282, 105),
                 //Text = "Yusra A\\kAreem Saleh Abu Roos",
                 Text = "Yusra",
                 MaxWidth = _amountInWordsWidth,
                 field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 10,
-            });
+            }),
 
-            _toDrawStrings.Add(new stringDraw {
+            (new stringDraw {
                 Label = "small date",
-                Position = new Point(44, 39),
+                Position = new Point(66, 40),
                 Text = "09/09/2020",
-                MaxWidth = 129,
+                MaxWidth = 115,
                 field = $"{nameof(_checkRecord.Date)}",
                 fontSize = 10,
-            });
+            }),
 
-            _toDrawStrings.Add(new stringDraw {
+            (new stringDraw {
                 Label = "small amount",
-                Position = new Point(61, 119),
+                Position = new Point(78, 118),
                 Text = "1,339.240",
-                MaxWidth = 129,
+                MaxWidth = 100,
                 field = $"{nameof(_checkRecord.Amount)}",
-                fontSize = 10,
-            });
-            _toDrawStrings.Add(new stringDraw {
+                fontSize = 9,
+            }),
+            (new stringDraw {
                 Label = "small name",
-                Position = new Point(36, 74),
+                Position = new Point(48, 77),
                 Text = "Yusra A\\kAreem Saleh Abu Roos",
-                MaxWidth = 129,
+                MaxWidth = 105,
                 field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 7,
-            });
-            _toDrawStrings.Add(new stringDraw
+            }),
+            (new stringDraw
             {
                 Label = "Amount in Words",
-                Position = new Point(274, 136),
+                Position = new Point(281, 135),
                 Text = "JD One Thousand Three Hundred Thirty Nine And  Two Hundred Forty ils Only",
                 MaxWidth = _amountInWordsWidth,
                 field = $"{nameof(_checkRecord.AmountInWords)}",
                 fontSize = 10,
-            });
-            _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(671, 130), Text = "1,339.240", field = "Amount", fontSize = 10 });
-            _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(546, 181), Text = "09/09/2020", field = "Date", fontSize = 10 });
+            }),
+            (new stringDraw { Label = "Amount", Position = new Point(684, 128), Text = "1,339.240", field = "Amount", fontSize = 10 }),
+            (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = "Date", fontSize = 10 }),
+            };
+            _toDrawStrings = _defaultValues;
             //_image =Bitmap.FromFile("empty check.png");
             _image = Bitmap.FromFile("full_check.png");
             //_image = RotateImage(_image, -0.5f);
@@ -116,6 +119,8 @@ namespace checks
             recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[4].HeaderText = "Amount In Words";
             recordsGrid.RowHeadersVisible = false;
+
+            ReadPositions();
         }
         private Bitmap RotateImage(Image bmp, float angle)
         {
@@ -645,6 +650,34 @@ namespace checks
             }
         }
 
+        private void ReadPositions()
+        {
+            try
+            {
+                var json = File.ReadAllText(_fileName);
+                var list = JsonConvert.DeserializeObject<List<stringDraw>>(json);
+                _toDrawStrings = list;
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            using (var stream = File.OpenWrite(_fileName))
+            {
+                var json = JsonConvert.SerializeObject(_toDrawStrings);
+                var bytes = Encoding.ASCII.GetBytes(json);
+                stream.Write(bytes, 0 ,bytes.Length);
+            }
+        }
+
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            _toDrawStrings = _defaultValues;
+            //File.Delete(_fileName);
+        }
     }
     class CheckRecord
     {
