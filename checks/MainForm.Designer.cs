@@ -116,6 +116,7 @@
             this.recordNumberTextBox.TabIndex = 9;
             this.recordNumberTextBox.Text = "1";
             this.recordNumberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.recordNumberTextBox.TextChanged += new System.EventHandler(this.recordNumberTextBox_TextChanged);
             // 
             // recordsGrid
             // 

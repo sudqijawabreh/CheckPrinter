@@ -19,7 +19,7 @@ namespace checks
     {
         private float _DpiX = 96;
         private float _DpiY = 96;
-        private  int count = 0;
+        private int count = 0;
         private readonly int _pageWidth;
         private readonly int _pageHeight;
         private bool _isInDrag = false;
@@ -96,17 +96,17 @@ namespace checks
                 MaxWidth = _amountInWordsWidth,
                 field = "Name",
                 fontSize = 10,
-            }); 
-            _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(671, 130), Text = "1,339.240" , field = "Amount", fontSize = 10});
-            _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(546, 181), Text = "09/09/2020" , field = "Date", fontSize = 10});
+            });
+            _toDrawStrings.Add(new stringDraw { Label = "Amount", Position = new Point(671, 130), Text = "1,339.240", field = "Amount", fontSize = 10 });
+            _toDrawStrings.Add(new stringDraw { Label = "Date", Position = new Point(546, 181), Text = "09/09/2020", field = "Date", fontSize = 10 });
             //_image =Bitmap.FromFile("empty check.png");
-            _image =Bitmap.FromFile("full_check.png");
+            _image = Bitmap.FromFile("full_check.png");
             //_image = RotateImage(_image, -0.5f);
 
             /*            _pageHeight = toInche(7.2);
             _pageWidth = toInche(16);*/
             var bindingList = new BindingList<CheckRecord>();
-            _bindingSource= new BindingSource(bindingList, null);
+            _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
             recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -146,17 +146,17 @@ namespace checks
             return cmToInche(value) * _DpiY;
         }
 
-/*        private float cmToPixel(float value)
-        {
-            return (value * 0.393700787f) * 100.44117647058823529411764705882f;
-        }*/
+        /*        private float cmToPixel(float value)
+                {
+                    return (value * 0.393700787f) * 100.44117647058823529411764705882f;
+                }*/
         private float pixelToHundredthIncheX(float value)
         {
-            return (value / _DpiY) * 100 ;
+            return (value / _DpiY) * 100;
         }
         private float pixelToHundredthIncheY(float value)
         {
-            return (value / _DpiY) * 100 ;
+            return (value / _DpiY) * 100;
         }
 
         private void Draw(Graphics formGraphics, float inputWidth, float inputHeight)
@@ -273,7 +273,7 @@ namespace checks
                         Amount = r.Field<object>(ColumnNames.Amount),
                         Date = r.Field<object>(ColumnNames.Date),
                     }).Where(r => r.Name != null && r.Date != null)
-                        .Select((r,i) =>
+                        .Select((r, i) =>
                         {
                             var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
 
@@ -321,6 +321,10 @@ namespace checks
             printDialog.PrinterSettings.FromPage = 1;
             printDialog.PrinterSettings.ToPage = _records.Count;
             DialogResult = printDialog.ShowDialog();
+            if (DialogResult == DialogResult.Cancel)
+            {
+                return;
+            }
             PrinterSettings ps = new PrinterSettings();
             var paperSizes = ps.PaperSizes.Cast<PaperSize>().ToList();
             PaperSize sizeA4 = paperSizes.First<PaperSize>(size => size.PaperName == "check"); // setting paper size to A4 size
@@ -347,16 +351,12 @@ namespace checks
             printPreview.PrintPreviewControl.AutoZoom = true;
             printPreview.Document = printDocument;
             var viewResult = printPreview.ShowDialog();
-            if (viewResult == DialogResult.Cancel)
-            {
-                //  printDocument.Print();
-            }
             count = 0;
 
-/*            if (DialogResult == DialogResult.OK)
-            {
-                //printDocument.Print();
-            }*/
+            /*            if (DialogResult == DialogResult.OK)
+                        {
+                            //printDocument.Print();
+                        }*/
         }
 
 
@@ -388,8 +388,8 @@ namespace checks
                     var font = new Font("Times New Roman", item.fontSize);
                     var text = record.GetType().GetProperty(item.field).GetValue(record).ToString();
                     var sizeText = e.Graphics.MeasureString(text, font, (int)pixelToHundredthIncheX(item.MaxWidth));
-                    var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X),pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
-                    var bound1 = new Rectangle((int)pixelToHundredthIncheX(item.Position.X), (int)pixelToHundredthIncheY(item.Position.Y),(int) sizeText.Width ,(int) sizeText.Height);
+                    var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X), pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
+                    var bound1 = new Rectangle((int)pixelToHundredthIncheX(item.Position.X), (int)pixelToHundredthIncheY(item.Position.Y), (int)sizeText.Width, (int)sizeText.Height);
                     //e.Graphics.DrawRectangle(Pens.Black, bound1);
                     e.Graphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
 
@@ -423,7 +423,7 @@ namespace checks
             Update();
         }
 
-        private void DrawText(Graphics formGraphics, stringDraw el,CheckRecord record)
+        private void DrawText(Graphics formGraphics, stringDraw el, CheckRecord record)
         {
 
             var lfont = new Font("Times New Roman", 8);
@@ -454,7 +454,7 @@ namespace checks
             Draw(e.Graphics, cmToPixelX(width), cmToPixelY(height));
             foreach (var item in _toDrawStrings)
             {
-                DrawText(e.Graphics, item,_records[_currentPreview - 1]);
+                DrawText(e.Graphics, item, _records[_currentPreview - 1]);
             }
             DrawMeasureXLineDistance(e.Graphics);
 
@@ -466,8 +466,8 @@ namespace checks
             {
 
                 _secondMeasure = new Point(_secondMeasure.X, _firstMeasure.Y);
-                var stringPoint = new Point(_firstMeasure.X + (_secondMeasure.X - _firstMeasure.X)/2, _firstMeasure.Y + (_secondMeasure.Y - _firstMeasure.Y)/2);
-                graphics.DrawString( $"{Math.Abs(_firstMeasure.X - _secondMeasure.X)}", new Font("Arial", 10), Brushes.Black, stringPoint);
+                var stringPoint = new Point(_firstMeasure.X + (_secondMeasure.X - _firstMeasure.X) / 2, _firstMeasure.Y + (_secondMeasure.Y - _firstMeasure.Y) / 2);
+                graphics.DrawString($"{Math.Abs(_firstMeasure.X - _secondMeasure.X)}", new Font("Arial", 10), Brushes.Black, stringPoint);
                 graphics.DrawLine(Pens.Black, _firstMeasure, _secondMeasure);
             }
         }
@@ -479,7 +479,7 @@ namespace checks
                 _firstMeasure = new Point(e.X, e.Y);
                 _measureState = MeasureState.SecondPoint;
             }
-            else if(_measureState == MeasureState.SecondPoint)
+            else if (_measureState == MeasureState.SecondPoint)
             {
                 _secondMeasure = new Point(e.X, e.Y);
                 _measureState = MeasureState.End;
@@ -513,7 +513,7 @@ namespace checks
             }
             else
             {
-                if(_measureState == MeasureState.SecondPoint)
+                if (_measureState == MeasureState.SecondPoint)
                 {
                     _secondMeasure = new Point(e.X, e.Y);
                 }
@@ -559,7 +559,7 @@ namespace checks
 
             var fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Excel Files|*.xlsx";
-            var result =fileDialog.ShowDialog();
+            var result = fileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
                 try
@@ -569,11 +569,11 @@ namespace checks
                         readFile(file);
                     }
                 }
-                catch(IOException eio)
+                catch (IOException eio)
                 {
 
                     MessageBox.Show(this,
-                        $"{eio.Message}. Make sure the file is not opened by Excel.",
+                        $"{eio.Message}{Environment.NewLine}Make sure the file is not opened by Excel.",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -591,7 +591,7 @@ namespace checks
 
         private void nextRecordButton_Click(object sender, EventArgs e)
         {
-            
+
             if (_currentPreview < _records.Count)
             {
                 int.TryParse(this.recordNumberTextBox.Text, out var number);
@@ -612,6 +612,17 @@ namespace checks
                 Invalidate();
             }
         }
+
+        private void recordNumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(this.recordNumberTextBox.Text, out var number);
+            if (number >= 1 && number <= _records.Count)
+            {
+                _currentPreview = number;
+                Invalidate();
+            }
+        }
+
     }
     class CheckRecord
     {
