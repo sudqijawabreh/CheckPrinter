@@ -12,16 +12,16 @@ namespace checks
 {
     public partial class ChooseSheet : Form
     {
-        public static SheetChoiceEventArgs ShowPrompt(List<string> items)
+        public static PromptEventArgs ShowPrompt(List<string> items)
         {
             var p = new ChooseSheet(items);
             p.StartPosition = FormStartPosition.CenterParent;
             p.AcceptButton = p.SheetOK;
             var dialogResult = p.ShowDialog();
-            return new SheetChoiceEventArgs
+            return new PromptEventArgs
             {
-                ChoiceType = dialogResult == DialogResult.OK ? SheetChoiceType.OK : SheetChoiceType.Cancel,
-                ChoosenItem = p.SheetCombo.SelectedItem.ToString() ?? string.Empty,
+                ChoiceType = dialogResult == DialogResult.OK ? PromptChoice.OK : PromptChoice.Cancel,
+                Item = p.SheetCombo.SelectedItem.ToString() ?? string.Empty,
             };
         }
         public ChooseSheet(List<string> sheets)
@@ -33,7 +33,6 @@ namespace checks
             SheetOK.DialogResult = DialogResult.OK;
             SheetCancel.DialogResult = DialogResult.Cancel;
         }
-        public event EventHandler OnChoice;
 
         private void SheetOK_Click(object sender, EventArgs e)
         {

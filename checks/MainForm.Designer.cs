@@ -180,6 +180,7 @@
             this.SNButton.TabIndex = 14;
             this.SNButton.Text = "Set Starting SN";
             this.SNButton.UseVisualStyleBackColor = true;
+            this.SNButton.Click += new System.EventHandler(this.SNButton_Click);
             // 
             // MainForm
             // 

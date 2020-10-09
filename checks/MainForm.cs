@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Text;
+using System.Drawing.Imaging;
 
 namespace checks
 {
@@ -28,7 +29,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Yusra" } };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Yusra" , Number = 1} };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -39,6 +40,7 @@ namespace checks
         private readonly CheckRecord _checkRecord = new CheckRecord();
         private readonly string _fileName = "Positions.txt";
         private readonly List<stringDraw> _defaultValues;
+        private string _startingSN = string.Empty;
 
 
         private Point _firstMeasure;
@@ -108,9 +110,7 @@ namespace checks
 
             /*            _pageHeight = toInche(7.2);
             _pageWidth = toInche(16);*/
-            var bindingList = new BindingList<CheckRecord>();
-            _bindingSource = new BindingSource(bindingList, null);
-            recordsGrid.DataSource = _bindingSource;
+            UpdateGridView(_records);
             recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -253,15 +253,11 @@ namespace checks
                 });
                 //result.Tables.Cast<DataTable>().Select(t => new { })
                 var tables = result.Tables.Cast<DataTable>().ToList();
-                //var chooseSheetFrom = new ChooseSheet(tables.Select(t => t.TableName).ToList());
-                //chooseSheetFrom.OnChoice += onChoiceOfSheet;
-                //chooseSheetFrom.Show();
-                //var value = Prompt.ShowDialog("hello", "there");
                 sheets = result.Tables.OfType<DataTable>().ToList();
                 var value = ChooseSheet.ShowPrompt(tables.Select(t => t.TableName).ToList());
-                if (value.ChoiceType == SheetChoiceType.OK)
+                if (value.ChoiceType == PromptChoice.OK)
                 {
-                    var currentSheet = sheets.Where(s => s.TableName == value.ChoosenItem).First();
+                    var currentSheet = sheets.Where(s => s.TableName == value.Item).First();
                     var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
                     var missingColumns = ColumnNames.List.Where(n => !sheetColumnNames.Contains(n.ToLower())).ToList();
 
@@ -290,6 +286,11 @@ namespace checks
                             dateWarning |= !isSuccess;
                             amountWarning |= !isNumber;
 
+                            if(!long.TryParse(_startingSN, out var SN))
+                            {
+                                SN = 1;
+                            }
+
                             return new CheckRecord
                             {
                                 Number = i + 1,
@@ -297,6 +298,7 @@ namespace checks
                                 Amount = r.Amount.ToString(),
                                 Date = isSuccess ? dateResult.ToString("dd/MM/yyyy") : r.Date.ToString(),
                                 AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount.ToString()),
+                                SN = (SN + i).ToString(),
                             };
                         }
                         ).ToList();
@@ -321,10 +323,7 @@ namespace checks
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    var bindingList = new BindingList<CheckRecord>(_records);
-                    _bindingSource = new BindingSource(bindingList, null);
-                    //recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    recordsGrid.DataSource = _bindingSource;
+                    UpdateGridView(_records);
                     pictureBox.Invalidate();
 
                 }
@@ -675,7 +674,11 @@ namespace checks
             }
             catch(Exception ex)
             {
-
+                MessageBox.Show(this,
+                    $"Couldn't Read Old Saved Positions.{Environment.NewLine}{ex.Message}",
+                    "Eror",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
         private void SaveButton_Click(object sender, EventArgs e)
@@ -691,7 +694,60 @@ namespace checks
         private void ResetButton_Click(object sender, EventArgs e)
         {
             _toDrawStrings = _defaultValues;
-            //File.Delete(_fileName);
+            SaveButton_Click(sender, e);
+        }
+
+        private void SNButton_Click(object sender, EventArgs e)
+        {
+            var choice = InputSN.ShowPrompt();
+            if (choice.ChoiceType == PromptChoice.OK)
+            {
+                var isNumber = (long.TryParse(choice.Item, out var numer));
+                if (isNumber)
+                {
+                    _startingSN = numer.ToString();
+
+                }
+                else
+                {
+                    _startingSN = string.Empty;
+                    MessageBox.Show(this,
+                           "SN you entered is not a number numbering will start from 1",
+                           "Warning",
+                           MessageBoxButtons.OK,
+                           MessageBoxIcon.Warning);
+                }
+                var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
+                UpdateGridView(updated);
+            }
+        }
+
+        private void UpdateGridView(List<CheckRecord> records)
+        {
+            _records = records;
+            var bindingList = new BindingList<CheckRecord>(records);
+            _bindingSource = new BindingSource(bindingList, null);
+            recordsGrid.DataSource = _bindingSource;
+            var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
+        }
+
+        private CheckRecord UpdateSNNumber(CheckRecord record)
+        {
+            if (!long.TryParse(_startingSN, out var SN))
+            {
+                SN = 1;
+            }
+
+            return new CheckRecord
+            {
+                Number = record.Number,
+                Name = record.Name,
+                Amount = record.Amount,
+                Date = record.Date,
+                AmountInWords = record.AmountInWords,
+                SN = (SN + record.Number - 1).ToString(),
+            };
+
         }
     }
     class CheckRecord
