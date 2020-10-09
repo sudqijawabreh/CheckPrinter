@@ -112,10 +112,10 @@ namespace checks
             _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
             recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             recordsGrid.Columns[4].HeaderText = "Amount In Words";
             recordsGrid.RowHeadersVisible = false;
 
@@ -322,7 +322,7 @@ namespace checks
 
                     var bindingList = new BindingList<CheckRecord>(_records);
                     _bindingSource = new BindingSource(bindingList, null);
-                    recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    //recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     recordsGrid.DataSource = _bindingSource;
 
                 }
@@ -444,14 +444,14 @@ namespace checks
         {
             float.TryParse(textBoxWidth.Text, out float width);
             float.TryParse(textBoxHeight.Text, out float height);
-            Invalidate();
+            pictureBox.Invalidate();
         }
 
         private void textBoxHeight_TextChanged(object sender, EventArgs e)
         {
             float.TryParse(textBoxWidth.Text, out float width);
             float.TryParse(textBoxHeight.Text, out float height);
-            Invalidate();
+            pictureBox.Invalidate();
             Update();
         }
 
@@ -483,13 +483,14 @@ namespace checks
             formGraphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
             //formGraphics.DrawString($"x : {el.Position.X} , y: {el.Position.Y}", new Font("Times New Roman", 10), new SolidBrush(Color.Black), el.Position.X + 100, el.Position.Y + 100);
         }
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void PictureBox_Paint(object sender, PaintEventArgs e)
         {
 
             _DpiX = e.Graphics.DpiX;
             _DpiY = e.Graphics.DpiY;
             float.TryParse(textBoxWidth.Text, out float width);
             float.TryParse(textBoxHeight.Text, out float height);
+            //e.Graphics.TranslateTransform(250, 0);
             Draw(e.Graphics, cmToPixelX(width), cmToPixelY(height));
             foreach (var item in _toDrawStrings)
             {
@@ -511,7 +512,7 @@ namespace checks
             }
         }
 
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (_measureState == MeasureState.FirstPoint)
             {
@@ -525,7 +526,7 @@ namespace checks
             }
         }
 
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             var underCursror = getStringUnderCursor(new Point(e.X, e.Y));
             if (underCursror != null)
@@ -541,14 +542,14 @@ namespace checks
             return _toDrawStrings.Where(s => s.Bound.Contains(point)).FirstOrDefault();
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (_isInDrag)
             {
                 var deltPoint = new Point(e.X - _previousCursorPosition.X, e.Y - _previousCursorPosition.Y);
                 _currentDrawing.Position = new Point((_currentDrawing.Position.X + deltPoint.X), (_currentDrawing.Position.Y + deltPoint.Y));
                 _previousCursorPosition = new Point(e.X, e.Y);
-                Invalidate();
+                pictureBox.Invalidate();
             }
             else
             {
@@ -566,14 +567,14 @@ namespace checks
                     _overDrawing = new stringDraw { Label = "", Text = "", Position = new Point(0, 0) };
 
                 }
-                Invalidate();
+                pictureBox.Invalidate();
             }
         }
 
-        private void Form1_MouseUp(object sender, MouseEventArgs e)
+        private void PictureBox_MouseUp(object sender, MouseEventArgs e)
         {
             _isInDrag = false;
-            Invalidate();
+            pictureBox.Invalidate();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -636,7 +637,7 @@ namespace checks
                 int.TryParse(this.recordNumberTextBox.Text, out var number);
                 this.recordNumberTextBox.Text = (number + 1).ToString();
                 _currentPreview = number + 1;
-                Invalidate();
+                pictureBox.Invalidate();
             }
         }
 
@@ -648,7 +649,7 @@ namespace checks
                 int.TryParse(this.recordNumberTextBox.Text, out var number);
                 this.recordNumberTextBox.Text = (number - 1).ToString();
                 _currentPreview = number - 1;
-                Invalidate();
+                pictureBox.Invalidate();
             }
         }
 
@@ -658,7 +659,7 @@ namespace checks
             if (number >= 1 && number <= _records.Count)
             {
                 _currentPreview = number;
-                Invalidate();
+                pictureBox.Invalidate();
             }
         }
 

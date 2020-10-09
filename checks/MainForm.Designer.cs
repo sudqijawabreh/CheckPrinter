@@ -39,12 +39,14 @@
             this.recordsGrid = new System.Windows.Forms.DataGridView();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(44, 374);
+            this.button1.Location = new System.Drawing.Point(382, 347);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -54,35 +56,38 @@
             // 
             // textBoxWidth
             // 
-            this.textBoxWidth.Location = new System.Drawing.Point(497, 319);
+            this.textBoxWidth.Location = new System.Drawing.Point(882, 313);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(100, 20);
             this.textBoxWidth.TabIndex = 3;
             this.textBoxWidth.Text = "21";
+            this.textBoxWidth.Visible = false;
             this.textBoxWidth.TextChanged += new System.EventHandler(this.textBoxWidth_TextChanged);
             // 
             // textBoxHeight
             // 
-            this.textBoxHeight.Location = new System.Drawing.Point(497, 359);
+            this.textBoxHeight.Location = new System.Drawing.Point(963, 342);
             this.textBoxHeight.Name = "textBoxHeight";
             this.textBoxHeight.Size = new System.Drawing.Size(100, 20);
             this.textBoxHeight.TabIndex = 4;
             this.textBoxHeight.Text = "7.2";
+            this.textBoxHeight.Visible = false;
             this.textBoxHeight.TextChanged += new System.EventHandler(this.textBoxHeight_TextChanged);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(167, 374);
+            this.button2.Location = new System.Drawing.Point(988, 313);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
             this.button2.Text = "Measure";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(386, 374);
+            this.button3.Location = new System.Drawing.Point(784, 347);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -92,7 +97,7 @@
             // 
             // nextRecordButton
             // 
-            this.nextRecordButton.Location = new System.Drawing.Point(317, 316);
+            this.nextRecordButton.Location = new System.Drawing.Point(750, 287);
             this.nextRecordButton.Name = "nextRecordButton";
             this.nextRecordButton.Size = new System.Drawing.Size(75, 23);
             this.nextRecordButton.TabIndex = 7;
@@ -102,7 +107,7 @@
             // 
             // previousRecordButton
             // 
-            this.previousRecordButton.Location = new System.Drawing.Point(85, 316);
+            this.previousRecordButton.Location = new System.Drawing.Point(427, 287);
             this.previousRecordButton.Name = "previousRecordButton";
             this.previousRecordButton.Size = new System.Drawing.Size(75, 23);
             this.previousRecordButton.TabIndex = 8;
@@ -112,7 +117,7 @@
             // 
             // recordNumberTextBox
             // 
-            this.recordNumberTextBox.Location = new System.Drawing.Point(211, 316);
+            this.recordNumberTextBox.Location = new System.Drawing.Point(600, 292);
             this.recordNumberTextBox.Name = "recordNumberTextBox";
             this.recordNumberTextBox.Size = new System.Drawing.Size(63, 20);
             this.recordNumberTextBox.TabIndex = 9;
@@ -125,16 +130,16 @@
             this.recordsGrid.AllowUserToAddRows = false;
             this.recordsGrid.AllowUserToDeleteRows = false;
             this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.recordsGrid.Location = new System.Drawing.Point(12, 433);
+            this.recordsGrid.Location = new System.Drawing.Point(12, 394);
             this.recordsGrid.Name = "recordsGrid";
             this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
-            this.recordsGrid.Size = new System.Drawing.Size(814, 136);
+            this.recordsGrid.Size = new System.Drawing.Size(1231, 281);
             this.recordsGrid.TabIndex = 10;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(261, 374);
+            this.SaveButton.Location = new System.Drawing.Point(502, 347);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 23);
             this.SaveButton.TabIndex = 11;
@@ -144,7 +149,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(522, 385);
+            this.ResetButton.Location = new System.Drawing.Point(654, 347);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -152,11 +157,25 @@
             this.ResetButton.UseVisualStyleBackColor = true;
             this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
             // 
+            // pictureBox
+            // 
+            this.pictureBox.Location = new System.Drawing.Point(208, 21);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(963, 231);
+            this.pictureBox.TabIndex = 13;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox_Paint);
+            this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseClick);
+            this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
+            this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
+            this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 578);
+            this.ClientSize = new System.Drawing.Size(1244, 681);
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.ResetButton);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.recordsGrid);
@@ -171,12 +190,8 @@
             this.DoubleBuffered = true;
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -195,6 +210,7 @@
         private System.Windows.Forms.DataGridView recordsGrid;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button ResetButton;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }
 
