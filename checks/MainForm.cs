@@ -28,7 +28,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "123532.12", Date = "09/09/2019", Name = "Yusra" } };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Yusra" } };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -76,15 +76,14 @@ namespace checks
 
             (new stringDraw {
                 Label = "small amount",
-                Position = new Point(78, 118),
+                Position = new Point(68, 120),
                 Text = "1,339.240",
-                MaxWidth = 100,
                 field = $"{nameof(_checkRecord.Amount)}",
                 fontSize = 9,
             }),
             (new stringDraw {
                 Label = "small name",
-                Position = new Point(48, 77),
+                Position = new Point(48, 75),
                 Text = "Yusra A\\kAreem Saleh Abu Roos",
                 MaxWidth = 105,
                 field = $"{nameof(_checkRecord.Name)}",
@@ -99,7 +98,7 @@ namespace checks
                 field = $"{nameof(_checkRecord.AmountInWords)}",
                 fontSize = 10,
             }),
-            (new stringDraw { Label = "Amount", Position = new Point(684, 128), Text = "1,339.240", field = "Amount", fontSize = 10 }),
+            (new stringDraw { Label = "Amount", Position = new Point(675, 130), Text = "1,339.240", field = "Amount", fontSize = 10 }),
             (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = "Date", fontSize = 10 }),
             };
             _toDrawStrings = _defaultValues;
@@ -414,6 +413,12 @@ namespace checks
                 {
                     var font = new Font("Times New Roman", item.fontSize);
                     var text = record.GetType().GetProperty(item.field).GetValue(record).ToString();
+                    if(item.field == nameof(_checkRecord.Amount))
+                    {
+                        text = $"**{text}**";
+                        if (text.Length > 8)
+                            font = new Font("Times New Roman",8);
+                    }
                     var sizeText = e.Graphics.MeasureString(text, font, (int)pixelToHundredthIncheX(item.MaxWidth));
                     var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X), pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
                     var bound1 = new Rectangle((int)pixelToHundredthIncheX(item.Position.X), (int)pixelToHundredthIncheY(item.Position.Y), (int)sizeText.Width, (int)sizeText.Height);
@@ -457,6 +462,13 @@ namespace checks
             var font = new Font("Times New Roman", el.fontSize);
             //var sizeText = formGraphics.MeasureString(el.Text, font, el.MaxWidth);
             var text = record.GetType().GetProperty(el.field).GetValue(record)?.ToString() ?? string.Empty;
+            if (el.field == nameof(_checkRecord.Amount))
+            {
+                text = $"**{text}**";
+                if (text.Length > 8)
+                    font = new Font("Times New Roman",8);
+            }
+
             var sizeText = formGraphics.MeasureString(text, font, (el.MaxWidth));
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
@@ -685,7 +697,6 @@ namespace checks
         public string Name { get; set; }
         public string Amount { get; set; }
         public string Date { get; set; }
-
         public string AmountInWords { get; set; }
     }
     static class ColumnNames
