@@ -53,6 +53,7 @@ namespace checks
         {
             InitializeComponent();
 
+
             _pageHeight = toIncheHundredth(21);
             _pageWidth = toIncheHundredth(7.2);
             _defaultValues = new List<stringDraw> {
@@ -277,13 +278,13 @@ namespace checks
                     {
                         Name = r.Field<object>(ColumnNames.Name),
                         Amount = r.Field<object>(ColumnNames.Amount),
-                        Date = r.Field<object>(ColumnNames.Date),
-                    }).Where(r => r.Name != null && r.Date != null)
+                        //Date = DateTime.Now.ToString("dd/MM/yyyy"),
+                    }).Where(r => r.Name != null && r.Amount != null)
                         .Select((r, i) =>
                         {
-                            var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
+                            ///var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
                             var isNumber = double.TryParse(r.Amount.ToString(), out var number);
-                            dateWarning |= !isSuccess;
+                            //dateWarning |= !isSuccess;
                             amountWarning |= !isNumber;
 
                             if(!long.TryParse(_startingSN, out var SN))
@@ -296,7 +297,7 @@ namespace checks
                                 Number = i + 1,
                                 Name = r.Name.ToString(),
                                 Amount = r.Amount.ToString(),
-                                Date = isSuccess ? dateResult.ToString("dd/MM/yyyy") : r.Date.ToString(),
+                                Date = dateTimePicker.Value.ToString("dd/MM/yyyy"),
                                 AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount.ToString()),
                                 SN = (SN + i).ToString(),
                             };
@@ -728,6 +729,7 @@ namespace checks
             _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
             var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
+            pictureBox.Invalidate();
         }
 
         private CheckRecord UpdateSNNumber(CheckRecord record)
@@ -748,6 +750,12 @@ namespace checks
             };
 
         }
+
+        private void dateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            _records.ForEach(r => r.Date = dateTimePicker.Value.ToString("dd/MM/yyyy"));
+            UpdateGridView(_records);
+        }
     }
     class CheckRecord
     {
@@ -765,6 +773,6 @@ namespace checks
         public static string Date => "Date";
         public static string SN => "SN";
 
-        public static IReadOnlyCollection<string> List = new List<string> { Name, Amount, Date }.AsReadOnly();
+        public static IReadOnlyCollection<string> List = new List<string> { Name, Amount }.AsReadOnly();
     }
 }

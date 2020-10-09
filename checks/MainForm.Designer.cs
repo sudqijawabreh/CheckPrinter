@@ -41,13 +41,15 @@
             this.ResetButton = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.SNButton = new System.Windows.Forms.Button();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(241, 340);
+            this.button1.Location = new System.Drawing.Point(183, 340);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -88,7 +90,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(564, 340);
+            this.button3.Location = new System.Drawing.Point(595, 340);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -98,7 +100,7 @@
             // 
             // nextRecordButton
             // 
-            this.nextRecordButton.Location = new System.Drawing.Point(551, 293);
+            this.nextRecordButton.Location = new System.Drawing.Point(485, 278);
             this.nextRecordButton.Name = "nextRecordButton";
             this.nextRecordButton.Size = new System.Drawing.Size(75, 23);
             this.nextRecordButton.TabIndex = 7;
@@ -108,7 +110,7 @@
             // 
             // previousRecordButton
             // 
-            this.previousRecordButton.Location = new System.Drawing.Point(264, 293);
+            this.previousRecordButton.Location = new System.Drawing.Point(286, 278);
             this.previousRecordButton.Name = "previousRecordButton";
             this.previousRecordButton.Size = new System.Drawing.Size(75, 23);
             this.previousRecordButton.TabIndex = 8;
@@ -118,7 +120,7 @@
             // 
             // recordNumberTextBox
             // 
-            this.recordNumberTextBox.Location = new System.Drawing.Point(416, 281);
+            this.recordNumberTextBox.Location = new System.Drawing.Point(392, 278);
             this.recordNumberTextBox.Name = "recordNumberTextBox";
             this.recordNumberTextBox.Size = new System.Drawing.Size(63, 20);
             this.recordNumberTextBox.TabIndex = 9;
@@ -140,7 +142,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(331, 340);
+            this.SaveButton.Location = new System.Drawing.Point(273, 340);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 23);
             this.SaveButton.TabIndex = 11;
@@ -150,7 +152,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(454, 340);
+            this.ResetButton.Location = new System.Drawing.Point(485, 340);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -174,7 +176,7 @@
             // 
             // SNButton
             // 
-            this.SNButton.Location = new System.Drawing.Point(402, 311);
+            this.SNButton.Location = new System.Drawing.Point(485, 309);
             this.SNButton.Name = "SNButton";
             this.SNButton.Size = new System.Drawing.Size(94, 23);
             this.SNButton.TabIndex = 14;
@@ -182,11 +184,31 @@
             this.SNButton.UseVisualStyleBackColor = true;
             this.SNButton.Click += new System.EventHandler(this.SNButton_Click);
             // 
+            // dateTimePicker
+            // 
+            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker.Location = new System.Drawing.Point(279, 314);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.Size = new System.Drawing.Size(101, 20);
+            this.dateTimePicker.TabIndex = 16;
+            this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(209, 316);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Check Date";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(908, 623);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.SNButton);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.ResetButton);
@@ -226,6 +248,8 @@
         private System.Windows.Forms.Button ResetButton;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button SNButton;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
+        private System.Windows.Forms.Label label1;
     }
 }
 
