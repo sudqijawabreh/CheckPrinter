@@ -668,27 +668,26 @@ namespace checks
         {
             try
             {
-                var json = File.ReadAllText(_fileName);
-                var list = JsonConvert.DeserializeObject<List<stringDraw>>(json);
-                _toDrawStrings = list;
+                if (File.Exists(_fileName))
+                {
+                    var json = File.ReadAllText(_fileName);
+                    var list = JsonConvert.DeserializeObject<List<stringDraw>>(json);
+                    _toDrawStrings = list;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(this,
                     $"Couldn't Read Old Saved Positions.{Environment.NewLine}{ex.Message}",
                     "Eror",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Warning);
             }
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            using (var stream = File.OpenWrite(_fileName))
-            {
-                var json = JsonConvert.SerializeObject(_toDrawStrings);
-                var bytes = Encoding.ASCII.GetBytes(json);
-                stream.Write(bytes, 0 ,bytes.Length);
-            }
+            var json = JsonConvert.SerializeObject(_toDrawStrings);
+            File.WriteAllText(_fileName, json);
         }
 
         private void ResetButton_Click(object sender, EventArgs e)
