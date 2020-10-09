@@ -47,7 +47,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(199, 333);
+            this.button1.Location = new System.Drawing.Point(241, 340);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -88,7 +88,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(601, 333);
+            this.button3.Location = new System.Drawing.Point(564, 340);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -98,7 +98,7 @@
             // 
             // nextRecordButton
             // 
-            this.nextRecordButton.Location = new System.Drawing.Point(566, 282);
+            this.nextRecordButton.Location = new System.Drawing.Point(551, 293);
             this.nextRecordButton.Name = "nextRecordButton";
             this.nextRecordButton.Size = new System.Drawing.Size(75, 23);
             this.nextRecordButton.TabIndex = 7;
@@ -108,7 +108,7 @@
             // 
             // previousRecordButton
             // 
-            this.previousRecordButton.Location = new System.Drawing.Point(243, 282);
+            this.previousRecordButton.Location = new System.Drawing.Point(264, 293);
             this.previousRecordButton.Name = "previousRecordButton";
             this.previousRecordButton.Size = new System.Drawing.Size(75, 23);
             this.previousRecordButton.TabIndex = 8;
@@ -118,7 +118,7 @@
             // 
             // recordNumberTextBox
             // 
-            this.recordNumberTextBox.Location = new System.Drawing.Point(416, 287);
+            this.recordNumberTextBox.Location = new System.Drawing.Point(416, 281);
             this.recordNumberTextBox.Name = "recordNumberTextBox";
             this.recordNumberTextBox.Size = new System.Drawing.Size(63, 20);
             this.recordNumberTextBox.TabIndex = 9;
@@ -131,16 +131,16 @@
             this.recordsGrid.AllowUserToAddRows = false;
             this.recordsGrid.AllowUserToDeleteRows = false;
             this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.recordsGrid.Location = new System.Drawing.Point(12, 363);
+            this.recordsGrid.Location = new System.Drawing.Point(12, 379);
             this.recordsGrid.Name = "recordsGrid";
             this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
-            this.recordsGrid.Size = new System.Drawing.Size(886, 242);
+            this.recordsGrid.Size = new System.Drawing.Size(886, 226);
             this.recordsGrid.TabIndex = 10;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(319, 333);
+            this.SaveButton.Location = new System.Drawing.Point(331, 340);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 23);
             this.SaveButton.TabIndex = 11;
@@ -150,7 +150,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(471, 333);
+            this.ResetButton.Location = new System.Drawing.Point(454, 340);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -174,9 +174,9 @@
             // 
             // SNButton
             // 
-            this.SNButton.Location = new System.Drawing.Point(90, 308);
+            this.SNButton.Location = new System.Drawing.Point(402, 311);
             this.SNButton.Name = "SNButton";
-            this.SNButton.Size = new System.Drawing.Size(75, 23);
+            this.SNButton.Size = new System.Drawing.Size(94, 23);
             this.SNButton.TabIndex = 14;
             this.SNButton.Text = "Set Starting SN";
             this.SNButton.UseVisualStyleBackColor = true;
@@ -203,7 +203,7 @@
             this.DoubleBuffered = true;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Check Printer";
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
