@@ -40,13 +40,14 @@
             this.SaveButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.SNButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(382, 347);
+            this.button1.Location = new System.Drawing.Point(199, 333);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -56,7 +57,7 @@
             // 
             // textBoxWidth
             // 
-            this.textBoxWidth.Location = new System.Drawing.Point(882, 313);
+            this.textBoxWidth.Location = new System.Drawing.Point(700, 311);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(100, 20);
             this.textBoxWidth.TabIndex = 3;
@@ -66,7 +67,7 @@
             // 
             // textBoxHeight
             // 
-            this.textBoxHeight.Location = new System.Drawing.Point(963, 342);
+            this.textBoxHeight.Location = new System.Drawing.Point(700, 337);
             this.textBoxHeight.Name = "textBoxHeight";
             this.textBoxHeight.Size = new System.Drawing.Size(100, 20);
             this.textBoxHeight.TabIndex = 4;
@@ -76,7 +77,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(988, 313);
+            this.button2.Location = new System.Drawing.Point(806, 311);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -87,7 +88,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(784, 347);
+            this.button3.Location = new System.Drawing.Point(601, 333);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -97,7 +98,7 @@
             // 
             // nextRecordButton
             // 
-            this.nextRecordButton.Location = new System.Drawing.Point(750, 287);
+            this.nextRecordButton.Location = new System.Drawing.Point(566, 282);
             this.nextRecordButton.Name = "nextRecordButton";
             this.nextRecordButton.Size = new System.Drawing.Size(75, 23);
             this.nextRecordButton.TabIndex = 7;
@@ -107,7 +108,7 @@
             // 
             // previousRecordButton
             // 
-            this.previousRecordButton.Location = new System.Drawing.Point(427, 287);
+            this.previousRecordButton.Location = new System.Drawing.Point(243, 282);
             this.previousRecordButton.Name = "previousRecordButton";
             this.previousRecordButton.Size = new System.Drawing.Size(75, 23);
             this.previousRecordButton.TabIndex = 8;
@@ -117,7 +118,7 @@
             // 
             // recordNumberTextBox
             // 
-            this.recordNumberTextBox.Location = new System.Drawing.Point(600, 292);
+            this.recordNumberTextBox.Location = new System.Drawing.Point(416, 287);
             this.recordNumberTextBox.Name = "recordNumberTextBox";
             this.recordNumberTextBox.Size = new System.Drawing.Size(63, 20);
             this.recordNumberTextBox.TabIndex = 9;
@@ -130,16 +131,16 @@
             this.recordsGrid.AllowUserToAddRows = false;
             this.recordsGrid.AllowUserToDeleteRows = false;
             this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.recordsGrid.Location = new System.Drawing.Point(12, 394);
+            this.recordsGrid.Location = new System.Drawing.Point(12, 363);
             this.recordsGrid.Name = "recordsGrid";
             this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
-            this.recordsGrid.Size = new System.Drawing.Size(1231, 281);
+            this.recordsGrid.Size = new System.Drawing.Size(886, 242);
             this.recordsGrid.TabIndex = 10;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(502, 347);
+            this.SaveButton.Location = new System.Drawing.Point(319, 333);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 23);
             this.SaveButton.TabIndex = 11;
@@ -149,7 +150,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(654, 347);
+            this.ResetButton.Location = new System.Drawing.Point(471, 333);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -159,9 +160,10 @@
             // 
             // pictureBox
             // 
-            this.pictureBox.Location = new System.Drawing.Point(208, 21);
+            this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox.Location = new System.Drawing.Point(60, 12);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(963, 231);
+            this.pictureBox.Size = new System.Drawing.Size(794, 260);
             this.pictureBox.TabIndex = 13;
             this.pictureBox.TabStop = false;
             this.pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox_Paint);
@@ -170,11 +172,21 @@
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
+            // SNButton
+            // 
+            this.SNButton.Location = new System.Drawing.Point(90, 308);
+            this.SNButton.Name = "SNButton";
+            this.SNButton.Size = new System.Drawing.Size(75, 23);
+            this.SNButton.TabIndex = 14;
+            this.SNButton.Text = "Set Starting SN";
+            this.SNButton.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1244, 681);
+            this.ClientSize = new System.Drawing.Size(908, 623);
+            this.Controls.Add(this.SNButton);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.ResetButton);
             this.Controls.Add(this.SaveButton);
@@ -189,6 +201,7 @@
             this.Controls.Add(this.button1);
             this.DoubleBuffered = true;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
@@ -211,6 +224,7 @@
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button ResetButton;
         private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.Button SNButton;
     }
 }
 

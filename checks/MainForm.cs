@@ -115,8 +115,9 @@ namespace checks
             recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            recordsGrid.Columns[4].HeaderText = "Amount In Words";
+            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            recordsGrid.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            recordsGrid.Columns[5].HeaderText = "Amount In Words";
             recordsGrid.RowHeadersVisible = false;
 
             ReadPositions();
@@ -324,6 +325,7 @@ namespace checks
                     _bindingSource = new BindingSource(bindingList, null);
                     //recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     recordsGrid.DataSource = _bindingSource;
+                    pictureBox.Invalidate();
 
                 }
                 // The result of each spreadsheet is in result.Tables
@@ -695,6 +697,7 @@ namespace checks
     class CheckRecord
     {
         public int Number { get; set; }
+        public string SN { get; set; }
         public string Name { get; set; }
         public string Amount { get; set; }
         public string Date { get; set; }
