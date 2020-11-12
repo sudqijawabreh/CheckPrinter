@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\checks\checks.csproj">
+    <ProjectReference Include="..\checks\Check Printer.csproj">
       <Project>{AABBDC56-EBB6-46D8-BA14-F77F12CF11E0}</Project>
-      <Name>checks</Name>
+      <Name>Check Printer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
