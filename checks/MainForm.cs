@@ -178,7 +178,7 @@ namespace checks
         }
         private void readFile(Stream file)
         {
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             var sheets = new List<DataTable>();
             //using (var stream = File.Open("file.xlsx", FileMode.Open, FileAccess.Read))
             //{
@@ -355,11 +355,20 @@ namespace checks
             {
                 return;
             }
-            PrinterSettings ps = new PrinterSettings();
+            var ps = printDocument.PrinterSettings;
             var paperSizes = ps.PaperSizes.Cast<PaperSize>().ToList();
-            PaperSize sizeA4 = paperSizes.First<PaperSize>(size => size.PaperName == "check"); // setting paper size to A4 size
+            PaperSize sizeA4 = paperSizes.FirstOrDefault<PaperSize>(size => size.PaperName == "check"); // setting paper size to A4 size
+            var newSize = new PaperSize("check", _pageWidth, _pageHeight);
+            if(sizeA4 == null)
+            {
+                //printDialog.PrinterSettings.DefaultPageSettings.PaperSize = newSize;
+            }
+            else
+            {
+                printDocument.DefaultPageSettings.PaperSize = sizeA4;
+
+            }
             //PaperSize sizeA4 = paperSizes.First<PaperSize>(size => size.PaperName == "A4"); // setting paper size to A4 size
-            printDocument.DefaultPageSettings.PaperSize = sizeA4;
 
             if (printDialog.PrinterSettings.PrintRange == PrintRange.AllPages)
             {
@@ -414,7 +423,7 @@ namespace checks
                 foreach (var item in _toDrawStrings)
                 {
                     var font = new Font("Times New Roman", item.fontSize);
-                    var text = record.GetType().GetProperty(item.field).GetValue(record).ToString();
+                    var text = record.GetType().GetProperty(item.field)?.GetValue(record)?.ToString() ?? string.Empty;
                     if(item.field == nameof(_checkRecord.Amount))
                     {
                         text = $"**{text}**";
