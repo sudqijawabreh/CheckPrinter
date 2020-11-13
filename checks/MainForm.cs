@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Text;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace checks
 {
@@ -103,6 +104,7 @@ namespace checks
             }),
             (new stringDraw { Label = "Amount", Position = new Point(675, 130), Text = "1,339.240", field = "Amount", fontSize = 10 }),
             (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = "Date", fontSize = 10 }),
+            (new stringDraw { Label = "Not Negotiable", Position = new Point(270, 71), Text = "NOT NEGOTIABLE", field = "not", fontSize = 15 ,Angle = -20}),
             };
             _toDrawStrings = _defaultValues;
             //_image =Bitmap.FromFile("empty check.png");
@@ -361,7 +363,7 @@ namespace checks
             var newSize = new PaperSize("check", _pageWidth, _pageHeight);
             if(sizeA4 == null)
             {
-                //printDialog.PrinterSettings.DefaultPageSettings.PaperSize = newSize;
+                printDialog.PrinterSettings.DefaultPageSettings.PaperSize = newSize;
             }
             else
             {
@@ -423,18 +425,28 @@ namespace checks
                 foreach (var item in _toDrawStrings)
                 {
                     var font = new Font("Times New Roman", item.fontSize);
-                    var text = record.GetType().GetProperty(item.field)?.GetValue(record)?.ToString() ?? string.Empty;
-                    if(item.field == nameof(_checkRecord.Amount))
+                    var text = record.GetType().GetProperty(item.field)?.GetValue(record)?.ToString() ?? item.Text;
+                    if (item.field == nameof(_checkRecord.Amount))
                     {
                         text = $"**{text}**";
                         if (text.Length > 8)
-                            font = new Font("Times New Roman",8);
+                            font = new Font("Times New Roman", 8);
                     }
                     var sizeText = e.Graphics.MeasureString(text, font, (int)pixelToHundredthIncheX(item.MaxWidth));
                     var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X), pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
                     var bound1 = new Rectangle((int)pixelToHundredthIncheX(item.Position.X), (int)pixelToHundredthIncheY(item.Position.Y), (int)sizeText.Width, (int)sizeText.Height);
                     //e.Graphics.DrawRectangle(Pens.Black, bound1);
-                    e.Graphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
+                    if (item.Angle == 0)
+                    {
+                        e.Graphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
+                    }
+                    else
+                    {
+                        e.Graphics.TranslateTransform(bound.X, bound.Y);
+                        e.Graphics.RotateTransform(item.Angle);
+                        var rbound = new RectangleF(new PointF(0, 0), sizeText);
+                        e.Graphics.DrawString(text, font, new SolidBrush(Color.Black), rbound);
+                    }
 
                 }
                 _currentRecord++;
@@ -471,27 +483,46 @@ namespace checks
 
             var lfont = new Font("Times New Roman", 8);
             var font = new Font("Times New Roman", el.fontSize);
-            //var sizeText = formGraphics.MeasureString(el.Text, font, el.MaxWidth);
-            var text = record.GetType().GetProperty(el.field).GetValue(record)?.ToString() ?? string.Empty;
-            if (el.field == nameof(_checkRecord.Amount))
+            var fieldExist = record.GetType().GetProperties().Select(p => p.Name == el.field).FirstOrDefault();
+            var text = string.Empty;
+            if (!fieldExist)
             {
-                text = $"**{text}**";
-                if (text.Length > 8)
-                    font = new Font("Times New Roman",8);
+                text = el.Text;
             }
+            else
+            {
+                text = record.GetType().GetProperty(el.field).GetValue(record)?.ToString() ?? string.Empty;
+                if (el.field == nameof(_checkRecord.Amount))
+                {
+                    text = $"**{text}**";
+                    if (text.Length > 8)
+                        font = new Font("Times New Roman", 8);
+                }
 
+            }
             var sizeText = formGraphics.MeasureString(text, font, (el.MaxWidth));
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
             var pointlabel = new Point(el.Position.X + (int)(sizeText.Width / 2) - (int)(sizeLabel.Width / 2), el.Position.Y - (int)(sizeLabel.Height));
             if ((_isInDrag && _currentDrawing == el) || (!_isInDrag && _overDrawing == el))
             {
-                formGraphics.FillRectangle(Brushes.Bisque, new Rectangle(pointlabel, sizeLabel.ToSize()));
-                formGraphics.DrawString(el.Label, lfont, new SolidBrush(Color.Black), pointlabel);
+                var newPointLable = new Point();
+                newPointLable.X = pointlabel.X - el.Position.X;
+                newPointLable.Y = pointlabel.Y - el.Position.Y;
+                formGraphics.TranslateTransform(el.Position.X, el.Position.Y);
+                formGraphics.RotateTransform(el.Angle);
+                formGraphics.FillRectangle(Brushes.Bisque, new Rectangle(newPointLable, sizeLabel.ToSize()));
+                formGraphics.DrawString(el.Label, lfont, new SolidBrush(Color.Black), newPointLable);
+                formGraphics.ResetTransform();
             }
             //formGraphics.DrawRectangle(Pens.Black, el.Bound);
             var bound = new RectangleF(el.Position, sizeText);
-            formGraphics.DrawString(text, font, new SolidBrush(Color.Black), bound);
+            formGraphics.TranslateTransform(bound.X, bound.Y);
+            formGraphics.RotateTransform(el.Angle);
+            var rbound = new RectangleF(new PointF(0, 0), sizeText);
+            formGraphics.DrawString(text, font, new SolidBrush(Color.Black), rbound);
+            formGraphics.ResetTransform();
+
             //formGraphics.DrawString($"x : {el.Position.X} , y: {el.Position.Y}", new Font("Times New Roman", 10), new SolidBrush(Color.Black), el.Position.X + 100, el.Position.Y + 100);
         }
         private void PictureBox_Paint(object sender, PaintEventArgs e)
@@ -508,9 +539,7 @@ namespace checks
                 DrawText(e.Graphics, item, _records[_currentPreview - 1]);
             }
             DrawMeasureXLineDistance(e.Graphics);
-
         }
-
         private void DrawMeasureXLineDistance(Graphics graphics)
         {
             if (_measureState == MeasureState.End || _measureState == MeasureState.SecondPoint)
@@ -550,7 +579,16 @@ namespace checks
 
         private stringDraw getStringUnderCursor(Point point)
         {
-            return _toDrawStrings.Where(s => s.Bound.Contains(point)).FirstOrDefault();
+            return _toDrawStrings.Where(s =>
+            {
+                var region = new Region(s.Bound);
+                var matrix = new Matrix();
+                matrix.RotateAt(s.Angle, new Point(s.Bound.X, s.Bound.Y));
+                region.Transform(matrix);
+                return region.IsVisible(point);
+                // return s.Bound.Contains(point);
+
+            }).FirstOrDefault();
         }
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)

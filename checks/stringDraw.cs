@@ -7,10 +7,24 @@ namespace checks
     {
         private Point _position;
         private int _maxWidth = Int32.MaxValue;
+        private int _angle = 0;
         public string Label { get; set; }
         public string Text { get; set; }
         public string field { get; set; }
         public int fontSize { get; set; }
+        public int Angle {
+            get 
+            {
+                return _angle;
+            }
+            set 
+            {
+                if (value < -360 || value > 360)
+                    throw new ArgumentException();
+                else
+                    _angle = value;
+            }
+        }
         public int MaxWidth {
             get
             {
