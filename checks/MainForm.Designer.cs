@@ -44,6 +44,7 @@
             this.SNButton = new System.Windows.Forms.Button();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
+            this.notNegoCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -203,11 +204,25 @@
             this.label1.TabIndex = 17;
             this.label1.Text = "Check Date";
             // 
+            // notNegoCheckBox
+            // 
+            this.notNegoCheckBox.AutoSize = true;
+            this.notNegoCheckBox.Checked = true;
+            this.notNegoCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.notNegoCheckBox.Location = new System.Drawing.Point(60, 340);
+            this.notNegoCheckBox.Name = "notNegoCheckBox";
+            this.notNegoCheckBox.Size = new System.Drawing.Size(97, 17);
+            this.notNegoCheckBox.TabIndex = 18;
+            this.notNegoCheckBox.Text = "Not Negotiable";
+            this.notNegoCheckBox.UseVisualStyleBackColor = true;
+            this.notNegoCheckBox.CheckedChanged += new System.EventHandler(this.notNegoCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(908, 623);
+            this.Controls.Add(this.notNegoCheckBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.SNButton);
@@ -252,6 +267,7 @@
         private System.Windows.Forms.Button SNButton;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox notNegoCheckBox;
     }
 }
 
