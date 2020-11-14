@@ -16,7 +16,7 @@
         "Entry"
         {
         "MsmKey" = "8:_06538915E704B59EEE6F2ED3EF4EC941"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -27,8 +27,14 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_07024385BA0E49F483000E2B5D002599"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_28232237FB61460FA4BA305848ACC52C"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -45,26 +51,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_54719FB9EBD6BCA132ECB073E92B8BB8"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A599769F21ABD2A489BC8089EE3E4EE1"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A6B25188CCB36FFE1E31EB93176E90F1"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -76,7 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_D4725B786B6BE2BF8B31F1977E7264BE"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -94,7 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_FC24063B52D94CF4673FD79A97F4DC21"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,7 +106,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+        "OwnerKey" = "8:_07024385BA0E49F483000E2B5D002599"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -163,6 +163,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -558,7 +566,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Check Printer"
         "ProductCode" = "8:{D83043D6-EE78-4AAD-8900-B72C120AB493}"
-        "PackageCode" = "8:{30B76EE8-A5D0-468A-8507-0EA961505188}"
+        "PackageCode" = "8:{1E60926C-8CCD-4329-A794-6CAC6FB0132F}"
         "UpgradeCode" = "8:{6CB94659-0F49-4E44-BB33-599F3AD8E106}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -678,7 +686,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2D922F5F27B34E0B90E327EAA6300690"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_18A94344549C4CC2A1C783D724F8F469"
             {
             "Name" = "8:Check Printer"
             "Arguments" = "8:"
@@ -686,13 +694,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+            "Target" = "8:_07024385BA0E49F483000E2B5D002599"
             "Folder" = "8:_F62C8730860B427B870AF335C835F415"
             "WorkingFolder" = "8:_406E0364F79B4D0D8AC0A2A8110835B1"
             "Icon" = "8:_FA51CCD1FF114A23ADD490AA0E21FF13"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D1B4A8AE657F475AAE8690370E0FDD72"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F28D6A60A6D24247BEC3183FF4FD5364"
             {
             "Name" = "8:Check Printer"
             "Arguments" = "8:"
@@ -700,7 +708,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_3D9A97E9E600411C8F7BED63AF8944AA"
+            "Target" = "8:_07024385BA0E49F483000E2B5D002599"
             "Folder" = "8:_24325B4FBAEF49D48A098D029A706734"
             "WorkingFolder" = "8:_406E0364F79B4D0D8AC0A2A8110835B1"
             "Icon" = "8:_FA51CCD1FF114A23ADD490AA0E21FF13"
@@ -1105,7 +1113,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D9A97E9E600411C8F7BED63AF8944AA"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_07024385BA0E49F483000E2B5D002599"
             {
             "SourcePath" = "8:..\\checks\\obj\\Debug\\Check Printer.exe"
             "TargetName" = "8:"
@@ -1125,7 +1133,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
+            "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{AABBDC56-EBB6-46D8-BA14-F77F12CF11E0}"
             "ShowKeyOutput" = "11:TRUE"

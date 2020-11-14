@@ -30,7 +30,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Yusra" , Number = 1} };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Ahmad" , Number = 1} };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -63,7 +63,7 @@ namespace checks
                 //Position = new Point(104, 109),
                 Position = new Point(282, 105),
                 //Text = "Yusra A\\kAreem Saleh Abu Roos",
-                Text = "Yusra",
+                Text = "Ahmad",
                 MaxWidth = _amountInWordsWidth,
                 field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 10,
@@ -88,7 +88,7 @@ namespace checks
             (new stringDraw {
                 Label = "small name",
                 Position = new Point(48, 75),
-                Text = "Yusra A\\kAreem Saleh Abu Roos",
+                Text = "Ahmad Mohammad Ali",
                 MaxWidth = 105,
                 field = $"{nameof(_checkRecord.Name)}",
                 fontSize = 7,
@@ -261,7 +261,7 @@ namespace checks
                 if (value.ChoiceType == PromptChoice.OK)
                 {
                     var currentSheet = sheets.Where(s => s.TableName == value.Item).First();
-                    var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower());
+                    var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower().Trim());
                     var missingColumns = ColumnNames.List.Where(n => !sheetColumnNames.Contains(n.ToLower())).ToList();
 
                     if (missingColumns.Any())
@@ -424,6 +424,9 @@ namespace checks
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 foreach (var item in _toDrawStrings)
                 {
+                    if (!notNegoCheckBox.Checked && item.Label.ToLower() == "not negotiable")
+                        continue;
+
                     var font = new Font("Times New Roman", item.fontSize);
                     var text = record.GetType().GetProperty(item.field)?.GetValue(record)?.ToString() ?? item.Text;
                     if (item.field == nameof(_checkRecord.Amount))
@@ -481,25 +484,22 @@ namespace checks
         private void DrawText(Graphics formGraphics, stringDraw el, CheckRecord record)
         {
 
+            if (!notNegoCheckBox.Checked && el.Label.ToLower() == "not negotiable")
+                return;
+
             var lfont = new Font("Times New Roman", 8);
             var font = new Font("Times New Roman", el.fontSize);
             var fieldExist = record.GetType().GetProperties().Select(p => p.Name == el.field).FirstOrDefault();
             var text = string.Empty;
-            if (!fieldExist)
+            text = record.GetType()?.GetProperty(el.field)?.GetValue(record)?.ToString() ?? el.Text;
+            if (el.field == nameof(_checkRecord.Amount))
             {
-                text = el.Text;
+                text = $"**{text}**";
+                if (text.Length > 8)
+                    font = new Font("Times New Roman", 8);
             }
-            else
-            {
-                text = record.GetType().GetProperty(el.field).GetValue(record)?.ToString() ?? string.Empty;
-                if (el.field == nameof(_checkRecord.Amount))
-                {
-                    text = $"**{text}**";
-                    if (text.Length > 8)
-                        font = new Font("Times New Roman", 8);
-                }
 
-            }
+
             var sizeText = formGraphics.MeasureString(text, font, (el.MaxWidth));
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
@@ -802,6 +802,11 @@ namespace checks
         {
             _records.ForEach(r => r.Date = dateTimePicker.Value.ToString("dd/MM/yyyy"));
             UpdateGridView(_records);
+        }
+
+        private void notNegoCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureBox.Invalidate();
         }
     }
     class CheckRecord
