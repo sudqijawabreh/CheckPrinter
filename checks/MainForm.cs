@@ -175,7 +175,11 @@ namespace checks
             var backImg = File.OpenRead("full_check.png");
             //var backImg = File.OpenRead("empty check.png");
             var bitmap = Bitmap.FromStream(backImg);
+            var sig = File.OpenRead("signatureAshqar.png");
+            //var backImg = File.OpenRead("empty check.png");
+            var sigmap = Bitmap.FromStream(sig);
             formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
+            formGraphics.DrawImage(sigmap, 250, 175,60,(int)(60* 0.73936));
 
         }
         private void readFile(Stream file)
@@ -419,6 +423,10 @@ namespace checks
                 {
                     e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toIncheHundredth(7.2));
                 }
+                var sig = File.OpenRead("signatureAshqar.png");
+                //var backImg = File.OpenRead("empty check.png");
+                var sigmap = Bitmap.FromStream(sig);
+                e.Graphics.DrawImage(sigmap, pixelToHundredthIncheX(250), pixelToHundredthIncheY(175), pixelToHundredthIncheX(60), pixelToHundredthIncheY(60 * 0.73936f));
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
