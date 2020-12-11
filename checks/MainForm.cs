@@ -106,6 +106,7 @@ namespace checks
             (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = "Date", fontSize = 10 }),
             (new stringDraw { Label = "Not Negotiable", Position = new Point(270, 71), Text = "NOT NEGOTIABLE", field = "not", fontSize = 15 ,Angle = -20}),
             };
+            _defaultValues = new List<stringDraw>();
             _toDrawStrings = _defaultValues;
             //_image =Bitmap.FromFile("empty check.png");
             _image = Bitmap.FromFile("full_check.png");
@@ -178,8 +179,9 @@ namespace checks
             var sig = File.OpenRead("signatureAshqar.png");
             //var backImg = File.OpenRead("empty check.png");
             var sigmap = Bitmap.FromStream(sig);
+            var size = sigmap.Size;
             formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
-            formGraphics.DrawImage(sigmap, 250, 175,60,(int)(60* 0.73936));
+            formGraphics.DrawImage(sigmap, 250, 175, size.Width / 5, size.Height / 5);
 
         }
         private void readFile(Stream file)
@@ -426,7 +428,8 @@ namespace checks
                 var sig = File.OpenRead("signatureAshqar.png");
                 //var backImg = File.OpenRead("empty check.png");
                 var sigmap = Bitmap.FromStream(sig);
-                e.Graphics.DrawImage(sigmap, pixelToHundredthIncheX(250), pixelToHundredthIncheY(175), pixelToHundredthIncheX(60), pixelToHundredthIncheY(60 * 0.73936f));
+                var size = sigmap.Size;
+                e.Graphics.DrawImage(sigmap, pixelToHundredthIncheX(250), pixelToHundredthIncheY(170), pixelToHundredthIncheX(size.Width/5), pixelToHundredthIncheY(size.Height/5));
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -728,7 +731,7 @@ namespace checks
                 {
                     var json = File.ReadAllText(_fileName);
                     var list = JsonConvert.DeserializeObject<List<stringDraw>>(json);
-                    _toDrawStrings = list;
+                    //_toDrawStrings = list;
                 }
             }
             catch (Exception ex)
