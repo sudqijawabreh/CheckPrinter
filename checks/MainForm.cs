@@ -30,7 +30,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", Date = "09/09/2019", Name = "Ahmad" , Number = 1} };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", CheckDate = "09/09/2019", Name = "Ahmad" , Number = 1} };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -74,7 +74,7 @@ namespace checks
                 Position = new Point(66, 40),
                 Text = "09/09/2020",
                 MaxWidth = 115,
-                field = $"{nameof(_checkRecord.Date)}",
+                field = $"{nameof(_checkRecord.CheckDate)}",
                 fontSize = 10,
             }),
 
@@ -124,6 +124,7 @@ namespace checks
             recordsGrid.RowHeadersVisible = false;
 
             ReadPositions();
+
         }
         private Bitmap RotateImage(Image bmp, float angle)
         {
@@ -227,7 +228,7 @@ namespace checks
 
                         // Gets or sets a value indicating whether to use a row from the 
                         // data as column names.
-                        UseHeaderRow = true,
+                        UseHeaderRow = false,
 
                         // Gets or sets a callback to determine which row is the header row. 
                         // Only called when UseHeaderRow = true.
@@ -261,27 +262,39 @@ namespace checks
                 if (value.ChoiceType == PromptChoice.OK)
                 {
                     var currentSheet = sheets.Where(s => s.TableName == value.Item).First();
-                    var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower().Trim());
-                    var missingColumns = ColumnNames.List.Where(n => !sheetColumnNames.Contains(n.ToLower())).ToList();
+                    var (headerColumns,rowsToSkip) = FindHeaderColumns(currentSheet);
+                    var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName);
+                    var missingColumns = ColumnNames.RequiredColumns.Where(n => !headerColumns.ContainsKey(n));
+                    var optionColumnMissing = ColumnNames.OptionalColumns.Where(n => !headerColumns.ContainsKey(n));
 
                     if (missingColumns.Any())
                     {
                         MessageBox.Show(this,
                             $"One or more columns are missing : {string.Join(", ", missingColumns)}",
-                            "Missing Column",
+                            "Missing Columns",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
                         return;
                     }
+                    if (optionColumnMissing.Any())
+                    {
+                        MessageBox.Show(this,
+                            $"This may affect the values in the backup.{Environment.NewLine}Some Optional columns are missing : {string.Join(", ", optionColumnMissing)}",
+                            "Missing Columns",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
 
                     var dateWarning = false;
                     var amountWarning = false;
-                    _records = currentSheet.Rows.Cast<DataRow>().Select(r => new
+                    _records = currentSheet.Rows.Cast<DataRow>().Skip(rowsToSkip).Select(r => new
                     {
-                        Name = r.Field<object>(ColumnNames.Name),
-                        Amount = r.Field<object>(ColumnNames.Amount),
-                        //Date = DateTime.Now.ToString("dd/MM/yyyy"),
-                    }).Where(r => r.Name != null && r.Amount != null)
+                        Name = r.Field<object>(headerColumns[ColumnNames.Name]),
+                        Amount = r.Field<object>(headerColumns[ColumnNames.Amount]),
+                        ID = !optionColumnMissing.Contains(ColumnNames.ID) ? r.Field<object>(headerColumns[ColumnNames.ID]) : string.Empty,
+                        Currency = !optionColumnMissing.Contains(ColumnNames.Currency) ? r.Field<object>(headerColumns[ColumnNames.Currency]) : string.Empty,
+                        Area = !optionColumnMissing.Contains(ColumnNames.Area) ? r.Field<object>(headerColumns[ColumnNames.Area]) : string.Empty,
+                    }).Where(r => r.Name != null && r.Amount != null && !r.Name.ToString().Trim().ToLower().Contains("total"))
                         .Select((r, i) =>
                         {
                             ///var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
@@ -299,7 +312,7 @@ namespace checks
                                 Number = i + 1,
                                 Name = r.Name.ToString(),
                                 Amount = r.Amount.ToString(),
-                                Date = dateTimePicker.Value.ToString("dd/MM/yyyy"),
+                                CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"),
                                 AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount.ToString()),
                                 SN = (SN + i).ToString(),
                             };
@@ -327,6 +340,8 @@ namespace checks
                         MessageBoxIcon.Information);
 
                     UpdateGridView(_records);
+                    var backup = new Backup("backup.csv");
+                    backup.Write(_records);
                     pictureBox.Invalidate();
 
                 }
@@ -335,6 +350,29 @@ namespace checks
             //}
 
         }
+
+        private (Dictionary<string,int>,int) FindHeaderColumns(DataTable currentSheet)
+        {
+            for (int i = 0; i < currentSheet.Rows.Count; i++)
+            {
+                var row = currentSheet.Rows[i];
+                var isConatinNameCloumn = (row.ItemArray.Any(e => e.ToString().Trim().ToLower().Contains(ColumnNames.Name)));
+                var isConatinAmountCloumn = (row.ItemArray.Any(e => e.ToString().Trim().ToLower().Contains(ColumnNames.Amount)));
+                if (isConatinAmountCloumn || isConatinNameCloumn)
+                {
+                    var columnIndexList = row.ItemArray.Select((c, index) =>
+                    {
+                        var columnName = ColumnNames.All.FirstOrDefault(cn => c.ToString().Trim().ToLower().Contains(cn));
+                        return new { columnName, index };
+                    });
+                    return (columnIndexList.Where(ci => ci.columnName != null).ToDictionary(ci => ci.columnName, ci => ci.index), i + 1);
+                }
+
+
+            }
+            return (new Dictionary<string, int>(),0);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -662,7 +700,7 @@ namespace checks
                 {
 
                     MessageBox.Show(this,
-                        $"{eio.Message}{Environment.NewLine}Make sure the file is not opened by Excel.",
+                        $"Make sure the file is not opened by Excel.",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -791,7 +829,7 @@ namespace checks
                 Number = record.Number,
                 Name = record.Name,
                 Amount = record.Amount,
-                Date = record.Date,
+                CheckDate = record.CheckDate,
                 AmountInWords = record.AmountInWords,
                 SN = (SN + record.Number - 1).ToString(),
             };
@@ -800,7 +838,7 @@ namespace checks
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            _records.ForEach(r => r.Date = dateTimePicker.Value.ToString("dd/MM/yyyy"));
+            _records.ForEach(r => r.CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"));
             UpdateGridView(_records);
         }
 
@@ -809,22 +847,16 @@ namespace checks
             pictureBox.Invalidate();
         }
     }
-    class CheckRecord
-    {
-        public int Number { get; set; }
-        public string SN { get; set; }
-        public string Name { get; set; }
-        public string Amount { get; set; }
-        public string Date { get; set; }
-        public string AmountInWords { get; set; }
-    }
     static class ColumnNames
     {
-        public static string Name => "Name";
-        public static string Amount => "Amount";
-        public static string Date => "Date";
-        public static string SN => "SN";
+        public static string Name => "Name".ToLower();
+        public static string Amount => "Amount".ToLower();
+        public static string Currency => "Currency".ToLower();
+        public static string ID => "ID Number".ToLower();
+        public static string Area => "Area".ToLower();
 
-        public static IReadOnlyCollection<string> List = new List<string> { Name, Amount }.AsReadOnly();
+        public static IReadOnlyCollection<string> RequiredColumns = new List<string> { Name, Amount }.AsReadOnly();
+        public static IReadOnlyCollection<string> OptionalColumns = new List<string> { ID, Currency, Area }.AsReadOnly();
+        public static IReadOnlyCollection<string> All = new List<string>(RequiredColumns).Concat(OptionalColumns).ToList().AsReadOnly();
     }
 }
