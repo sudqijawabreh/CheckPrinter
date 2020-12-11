@@ -103,7 +103,7 @@
   <ItemGroup>
     <Compile Include="Backup.cs" />
     <Compile Include="BackupRecord.cs" />
-    <Compile Include="CheckRecord.cs" />
+    <Compile Include="Models\CheckRecord.cs" />
     <Compile Include="ChooseSheet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +111,8 @@
       <DependentUpon>ChooseSheet.cs</DependentUpon>
     </Compile>
     <Compile Include="DataGridPrinter.cs" />
+    <Compile Include="Models\CheckRecordExensions.cs" />
+    <Compile Include="Models\GridViewRecord.cs" />
     <Compile Include="InputSN.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,5 +175,6 @@
   <ItemGroup>
     <Content Include="icon64x64.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

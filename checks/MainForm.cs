@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using checks.Models;
 
 namespace checks
 {
@@ -121,6 +122,7 @@ namespace checks
             recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             recordsGrid.Columns[5].HeaderText = "Amount In Words";
+            recordsGrid.Columns[4].HeaderText = "Check Date";
             recordsGrid.RowHeadersVisible = false;
 
             ReadPositions();
@@ -810,7 +812,7 @@ namespace checks
         private void UpdateGridView(List<CheckRecord> records)
         {
             _records = records;
-            var bindingList = new BindingList<CheckRecord>(records);
+            var bindingList = new BindingList<GridViewRecord>(records.Select(r => r.ToGridViewRecord()).ToList());
             _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
             var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
