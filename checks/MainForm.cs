@@ -41,8 +41,10 @@ namespace checks
         private PrintAction _printAction;
         private readonly CheckRecord _checkRecord = new CheckRecord();
         private readonly string _fileName = "Positions.txt";
+        private readonly string _backupFielName = "backup.csv";
         private readonly List<stringDraw> _defaultValues;
         private string _startingSN = string.Empty;
+        private List<CheckRecord> _printedRecords = new List<CheckRecord>();
 
 
         private Point _firstMeasure;
@@ -312,10 +314,13 @@ namespace checks
                             return new CheckRecord
                             {
                                 Number = i + 1,
-                                Name = r.Name.ToString(),
-                                Amount = r.Amount.ToString(),
+                                Name = r.Name?.ToString() ?? string.Empty,
+                                Amount = r.Amount?.ToString() ?? string.Empty,
                                 CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"),
-                                AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount.ToString()),
+                                Area = r.Area?.ToString() ?? string.Empty,
+                                Currency = r.Currency?.ToString() ?? string.Empty,
+                                IDNumber = r.ID?.ToString() ?? string.Empty,
+                                AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount?.ToString()),
                                 SN = (SN + i).ToString(),
                             };
                         }
@@ -342,8 +347,6 @@ namespace checks
                         MessageBoxIcon.Information);
 
                     UpdateGridView(_records);
-                    var backup = new Backup("backup.csv");
-                    backup.Write(_records);
                     pictureBox.Invalidate();
 
                 }
@@ -385,6 +388,7 @@ namespace checks
             var printDocument = new PrintDocument();
             printDocument.PrintPage += printDocument_PrintPage;
             printDocument.BeginPrint += BeginPrint;
+            printDocument.EndPrint += EndPrint;
             //printDocument.PrintPage += new PrintPageEventHandler(printDocument_PrintPage);
             printDialog.Document = printDocument;
             printDialog.AllowSelection = true;
@@ -440,17 +444,26 @@ namespace checks
                         }*/
         }
 
+        private void EndPrint(object sender, PrintEventArgs e)
+        {
+            if (e.PrintAction == PrintAction.PrintToPrinter)
+            {
+                var backup = new Backup(_backupFielName);
+                backup.Write(_printedRecords);
+            }
+        }
 
         private void BeginPrint(object sender, PrintEventArgs e)
         {
             _printAction = e.PrintAction;
+            _printedRecords = new List<CheckRecord>();
         }
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
 
             if (_currentRecord >= _firstRecord && _currentRecord <= _lastRecord)
             {
-                var record = _records[_currentRecord - 1];
+                var record = _records.ToList()[_currentRecord - 1];
                 e.Graphics.RotateTransform(-90);
                 e.Graphics.TranslateTransform(-(_pageHeight), 0);
                 e.Graphics.TranslateTransform(0 + e.PageSettings.HardMarginY + 4, 0 - e.PageSettings.HardMarginX + 4);
@@ -459,6 +472,12 @@ namespace checks
                 {
                     e.Graphics.DrawImage(_image, 0, 0, _pageHeight, toIncheHundredth(7.2));
                 }
+                else if (_printAction == PrintAction.PrintToPrinter)
+                {
+                    record.PrintDate = DateTime.Now.ToString("dd/MM/yyyy");
+                    _printedRecords.Add(record);
+                }
+
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 StringFormat stringFormat = new StringFormat(StringFormatFlags.LineLimit);
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;

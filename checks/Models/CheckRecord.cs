@@ -26,5 +26,6 @@ namespace checks
         public string PrintDate { get; set; }
         public string Currency { get; set; }
         public string Area { get; set; }
+        public string IDNumber { get; set; }
     }
 }

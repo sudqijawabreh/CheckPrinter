@@ -102,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup.cs" />
-    <Compile Include="BackupRecord.cs" />
     <Compile Include="Models\CheckRecord.cs" />
     <Compile Include="ChooseSheet.cs">
       <SubType>Form</SubType>
