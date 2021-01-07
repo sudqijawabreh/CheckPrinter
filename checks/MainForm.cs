@@ -719,6 +719,11 @@ namespace checks
                         if (dateArgs.ChoiceType == PromptChoice.OK)
                         {
                             importedRecords.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
+                            var snChoice = InputSN.ShowPrompt();
+                            if(snChoice.ChoiceType == PromptChoice.OK)
+                            {
+                                importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();
+                            }
                             UpdateGridView(importedRecords);
                         }
                     }
