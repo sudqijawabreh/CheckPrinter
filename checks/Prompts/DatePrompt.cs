@@ -12,9 +12,9 @@ namespace checks
 {
     public partial class DatePrompt : Form
     {
-        public static PromptEventArgs ShowPrompt(List<string> items)
+        public static PromptEventArgs ShowPrompt()
         {
-            var p = new DatePrompt(items);
+            var p = new DatePrompt();
             p.StartPosition = FormStartPosition.CenterParent;
             p.AcceptButton = p.OK;
             var dialogResult = p.ShowDialog();
@@ -24,7 +24,7 @@ namespace checks
                 Item = p.dateTimePicker.Value.ToString() ?? DateTime.Now.ToString(),
             };
         }
-        public DatePrompt(List<string> sheets)
+        public DatePrompt()
         {
             InitializeComponent();
             OK.DialogResult = DialogResult.OK;
