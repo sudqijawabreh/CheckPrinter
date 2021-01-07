@@ -103,19 +103,19 @@
   <ItemGroup>
     <Compile Include="Backup.cs" />
     <Compile Include="Models\CheckRecord.cs" />
-    <Compile Include="ChooseSheet.cs">
+    <Compile Include="Prompts\ChooseSheet.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChooseSheet.Designer.cs">
+    <Compile Include="Prompts\ChooseSheet.Designer.cs">
       <DependentUpon>ChooseSheet.cs</DependentUpon>
     </Compile>
     <Compile Include="DataGridPrinter.cs" />
     <Compile Include="Models\CheckRecordExensions.cs" />
     <Compile Include="Models\GridViewRecord.cs" />
-    <Compile Include="InputSN.cs">
+    <Compile Include="Prompts\InputSN.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputSN.Designer.cs">
+    <Compile Include="Prompts\InputSN.Designer.cs">
       <DependentUpon>InputSN.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -130,10 +130,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PromptEventArgs.cs" />
     <Compile Include="stringDraw.cs" />
-    <EmbeddedResource Include="ChooseSheet.resx">
+    <EmbeddedResource Include="Prompts\ChooseSheet.resx">
       <DependentUpon>ChooseSheet.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputSN.resx">
+    <EmbeddedResource Include="Prompts\InputSN.resx">
       <DependentUpon>InputSN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
