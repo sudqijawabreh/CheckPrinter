@@ -25,6 +25,17 @@ namespace checks
             p.StartPosition = FormStartPosition.CenterParent;
             p.AcceptButton = p.OKButton;
             var dialogResult = p.ShowDialog();
+
+            var isNumber = (long.TryParse(p.SNTextBox.Text, out var number));
+            if (!isNumber)
+            {
+                MessageBox.Show(p,
+                       "SN you entered is not a number numbering will start from 1",
+                       "Warning",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Warning);
+            }
+
             return new PromptEventArgs
             {
                 ChoiceType = dialogResult == DialogResult.OK ? PromptChoice.OK : PromptChoice.Cancel,

@@ -814,21 +814,6 @@ namespace checks
             var choice = InputSN.ShowPrompt();
             if (choice.ChoiceType == PromptChoice.OK)
             {
-                var isNumber = (long.TryParse(choice.Item, out var numer));
-                if (isNumber)
-                {
-                    _startingSN = numer.ToString();
-
-                }
-                else
-                {
-                    _startingSN = string.Empty;
-                    MessageBox.Show(this,
-                           "SN you entered is not a number numbering will start from 1",
-                           "Warning",
-                           MessageBoxButtons.OK,
-                           MessageBoxIcon.Warning);
-                }
                 var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
                 UpdateGridView(updated);
             }
