@@ -183,12 +183,11 @@ namespace checks
             formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
 
         }
-        private void readFile(Stream file)
+        private List<CheckRecord> readFile(Stream file)
         {
             //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             var sheets = new List<DataTable>();
             //using (var stream = File.Open("file.xlsx", FileMode.Open, FileAccess.Read))
-            //{
             // Auto-detect format, supports:
             //  - Binary Excel files (2.0-2003 format; *.xls)
             //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
@@ -278,7 +277,7 @@ namespace checks
                             "Missing Columns",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
-                        return;
+                        return new List<CheckRecord>();
                     }
                     if (optionColumnMissing.Any())
                     {
@@ -291,7 +290,7 @@ namespace checks
 
                     var dateWarning = false;
                     var amountWarning = false;
-                    _records = currentSheet.Rows.Cast<DataRow>().Skip(rowsToSkip).Select(r => new
+                    var importedRecords = currentSheet.Rows.Cast<DataRow>().Skip(rowsToSkip).Select(r => new
                     {
                         Name = r.Field<object>(headerColumns[ColumnNames.Name]),
                         Amount = r.Field<object>(headerColumns[ColumnNames.Amount]),
@@ -341,19 +340,15 @@ namespace checks
                     }
 
                     MessageBox.Show(this,
-                        $"Successfuly imported {_records.Count} records.",
+                        $"Successfuly imported {importedRecords.Count} records.",
                         "Success",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    UpdateGridView(_records);
-                    pictureBox.Invalidate();
-
+                    return importedRecords;
                 }
-                // The result of each spreadsheet is in result.Tables
             }
-            //}
-
+            return new List<CheckRecord>();
         }
 
         private (Dictionary<string,int>,int) FindHeaderColumns(DataTable currentSheet)
@@ -712,9 +707,20 @@ namespace checks
             {
                 try
                 {
+                    var importedRecords = new List<CheckRecord>();
                     using (var file = fileDialog.OpenFile())
                     {
-                        readFile(file);
+                        importedRecords = readFile(file);
+                    }
+
+                    if (importedRecords.Count > 0)
+                    {
+                        var dateArgs = DatePrompt.ShowPrompt();
+                        if (dateArgs.ChoiceType == PromptChoice.OK)
+                        {
+                            importedRecords.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
+                            UpdateGridView(importedRecords);
+                        }
                     }
                 }
                 catch (IOException eio)
@@ -834,7 +840,6 @@ namespace checks
             var bindingList = new BindingList<GridViewRecord>(records.Select(r => r.ToGridViewRecord()).ToList());
             _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
-            var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
             pictureBox.Invalidate();
         }
 
