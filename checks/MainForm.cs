@@ -105,8 +105,8 @@ namespace checks
                 field = $"{nameof(_checkRecord.AmountInWords)}",
                 fontSize = 10,
             }),
-            (new stringDraw { Label = "Amount", Position = new Point(675, 130), Text = "1,339.240", field = "Amount", fontSize = 10 }),
-            (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = "Date", fontSize = 10 }),
+            (new stringDraw { Label = "Amount", Position = new Point(675, 130), Text = "1,339.240", field = $"{nameof(_checkRecord.Amount)}", fontSize = 10 }),
+            (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = $"{nameof(_checkRecord.CheckDate)}", fontSize = 10 }),
             (new stringDraw { Label = "Not Negotiable", Position = new Point(270, 71), Text = "NOT NEGOTIABLE", field = "not", fontSize = 15 ,Angle = -20}),
             };
             _toDrawStrings = _defaultValues;
@@ -775,12 +775,12 @@ namespace checks
         {
             try
             {
-                if (File.Exists(_fileName))
+/*                if (File.Exists(_fileName))
                 {
                     var json = File.ReadAllText(_fileName);
                     var list = JsonConvert.DeserializeObject<List<stringDraw>>(json);
                     _toDrawStrings = list;
-                }
+                }*/
             }
             catch (Exception ex)
             {
