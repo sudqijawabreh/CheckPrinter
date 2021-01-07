@@ -814,7 +814,7 @@ namespace checks
             var choice = InputSN.ShowPrompt();
             if (choice.ChoiceType == PromptChoice.OK)
             {
-                var updated = _records.Select(r => UpdateSNNumber(r)).ToList();
+                var updated = _records.Select(r => UpdateSNNumber(r, _startingSN)).ToList();
                 UpdateGridView(updated);
             }
         }
@@ -828,9 +828,9 @@ namespace checks
             pictureBox.Invalidate();
         }
 
-        private CheckRecord UpdateSNNumber(CheckRecord record)
+        private CheckRecord UpdateSNNumber(CheckRecord record, string snNumber)
         {
-            if (!long.TryParse(_startingSN, out var SN))
+            if (!long.TryParse(snNumber, out var SN))
             {
                 SN = 1;
             }
