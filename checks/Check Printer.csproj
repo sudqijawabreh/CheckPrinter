@@ -193,6 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon64x64.ico" />
+    <None Include="Resources\license-plate-number-pngrepo-com.png" />
+    <None Include="Resources\calendar-pngrepo-com.png" />
+    <None Include="Resources\stamp-pngrepo-com.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

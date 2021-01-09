@@ -46,6 +46,9 @@ namespace checks
         private string _startingSN = string.Empty;
         private List<CheckRecord> _printedRecords = new List<CheckRecord>();
         private ImportedFileResult _lastImportedFileResult = new ImportedFileResult();
+        private bool _showNotNegotiable = true;
+        private bool _secretMode = false;
+        private int _stampCount = 0;
 
 
         private Point _firstMeasure;
@@ -302,7 +305,7 @@ namespace checks
                                         Number = i + 1,
                                         Name = r.Name?.ToString() ?? string.Empty,
                                         Amount = r.Amount?.ToString() ?? string.Empty,
-                                        CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"),
+                                        CheckDate = DateTime.Now.ToString("dd/MM/yyyy"),
                                         Area = r.Area?.ToString() ?? string.Empty,
                                         Currency = r.Currency?.ToString() ?? string.Empty,
                                         IDNumber = r.ID?.ToString() ?? string.Empty,
@@ -490,7 +493,7 @@ namespace checks
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 foreach (var item in _toDrawStrings)
                 {
-                    if (!notNegoCheckBox.Checked && item.Label.ToLower() == "not negotiable")
+                    if (!_showNotNegotiable && item.Label.ToLower() == "not negotiable")
                         continue;
 
                     var font = new Font("Times New Roman", item.fontSize);
@@ -550,7 +553,7 @@ namespace checks
         private void DrawText(Graphics formGraphics, stringDraw el, CheckRecord record)
         {
 
-            if (!notNegoCheckBox.Checked && el.Label.ToLower() == "not negotiable")
+            if (!_showNotNegotiable && el.Label.ToLower() == "not negotiable")
                 return;
 
             var lfont = new Font("Times New Roman", 8);
@@ -570,7 +573,7 @@ namespace checks
             el.Bound = new Rectangle(el.Position, sizeText.ToSize());
             var sizeLabel = formGraphics.MeasureString(el.Label, lfont);
             var pointlabel = new Point(el.Position.X + (int)(sizeText.Width / 2) - (int)(sizeLabel.Width / 2), el.Position.Y - (int)(sizeLabel.Height));
-            if ((_isInDrag && _currentDrawing == el) || (!_isInDrag && _overDrawing == el))
+            if (_secretMode && (_isInDrag && _currentDrawing == el) || (!_isInDrag && _overDrawing == el))
             {
                 var newPointLable = new Point();
                 newPointLable.X = pointlabel.X - el.Position.X;
@@ -659,7 +662,7 @@ namespace checks
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_isInDrag)
+            if (_secretMode && _isInDrag)
             {
                 var deltPoint = new Point(e.X - _previousCursorPosition.X, e.Y - _previousCursorPosition.Y);
                 _currentDrawing.Position = new Point((_currentDrawing.Position.X + deltPoint.X), (_currentDrawing.Position.Y + deltPoint.Y));
@@ -726,19 +729,35 @@ namespace checks
 
                 if (importedRecords.Count > 0)
                 {
-                    var dateArgs = DatePrompt.ShowPrompt();
-                    if (dateArgs.ChoiceType == PromptChoice.OK)
-                    {
-                        importedRecords.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
-                        var snChoice = InputSN.ShowPrompt();
-                        if (snChoice.ChoiceType == PromptChoice.OK)
-                        {
-                            importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();
-                        }
-                        UpdateGridView(importedRecords);
-                    }
+                    importedRecords = ChangeCheckDates(importedRecords);
+                    importedRecords = ChangeCheckSN(importedRecords);
+                    UpdateGridView(importedRecords);
                 }
             }
+        }
+
+        private List<CheckRecord> ChangeCheckSN(List<CheckRecord> importedRecords)
+        {
+            var snChoice = InputSN.ShowPrompt();
+            if (snChoice.ChoiceType == PromptChoice.OK)
+            {
+                importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();
+            }
+
+            return importedRecords;
+        }
+
+        private List<CheckRecord> ChangeCheckDates(List<CheckRecord> importedRecords)
+        {
+            var dateArgs = DatePrompt.ShowPrompt();
+            if (dateArgs.ChoiceType == PromptChoice.OK)
+            {
+                var updated = importedRecords.Select(r => r.Clone()).ToList();
+                updated.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
+                return updated;
+            }
+
+            return importedRecords;
         }
 
         private void nextRecordButton_Click(object sender, EventArgs e)
@@ -810,12 +829,8 @@ namespace checks
 
         private void SNButton_Click(object sender, EventArgs e)
         {
-            var choice = InputSN.ShowPrompt();
-            if (choice.ChoiceType == PromptChoice.OK)
-            {
-                var updated = _records.Select(r => UpdateSNNumber(r, _startingSN)).ToList();
-                UpdateGridView(updated);
-            }
+            var updated = ChangeCheckSN(_records);
+            UpdateGridView(updated);
         }
 
         private void UpdateGridView(List<CheckRecord> records)
@@ -845,18 +860,6 @@ namespace checks
             };
 
         }
-
-        private void dateTimePicker_ValueChanged(object sender, EventArgs e)
-        {
-            _records.ForEach(r => r.CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"));
-            UpdateGridView(_records);
-        }
-
-        private void notNegoCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            pictureBox.Invalidate();
-        }
-
         private void exportButton_Click(object sender, EventArgs e)
         {
 
@@ -902,6 +905,26 @@ namespace checks
                     MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void changeDateButton_Click(object sender, EventArgs e)
+        {
+            var updated = ChangeCheckDates(_records);
+            UpdateGridView(updated);
+        }
+
+        private void negotiableButton_Click(object sender, EventArgs e)
+        {
+            _showNotNegotiable = !_showNotNegotiable;
+            _stampCount++;
+            if ( _stampCount == 10 )
+            {
+                _stampCount = 0;
+                _secretMode = !_secretMode;
+            }
+            SaveButton.Visible = _secretMode;
+            ResetButton.Visible = _secretMode;
+            pictureBox.Invalidate();
         }
     }
     static class ColumnNames

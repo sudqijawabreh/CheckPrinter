@@ -27,5 +27,9 @@ namespace checks
         public string Currency { get; set; }
         public string Area { get; set; }
         public string IDNumber { get; set; }
+        public CheckRecord Clone()
+        {
+            return this.MemberwiseClone() as CheckRecord;
+        }
     }
 }
