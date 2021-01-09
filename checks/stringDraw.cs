@@ -54,6 +54,10 @@ namespace checks
         {
             Bound = new Rectangle(Position, new Size());
         }
+        public stringDraw Clone()
+        {
+            return this.MemberwiseClone() as stringDraw;
+        }
     }
     enum MeasureState
     {

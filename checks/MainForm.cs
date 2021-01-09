@@ -110,7 +110,7 @@ namespace checks
             (new stringDraw { Label = "Date", Position = new Point(503, 181), Text = "09/09/2020", field = $"{nameof(_checkRecord.CheckDate)}", fontSize = 10 }),
             (new stringDraw { Label = "Not Negotiable", Position = new Point(270, 71), Text = "NOT NEGOTIABLE", field = "not", fontSize = 15 ,Angle = -20}),
             };
-            _toDrawStrings = _defaultValues;
+            _toDrawStrings = _defaultValues.Select(r => r.Clone()).ToList();
             //_image =Bitmap.FromFile("empty check.png");
             _image = Bitmap.FromFile("full_check.png");
             //_image = RotateImage(_image, -0.5f);
@@ -803,8 +803,9 @@ namespace checks
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            _toDrawStrings = _defaultValues;
+            _toDrawStrings = _defaultValues.Select(r => r.Clone()).ToList();
             SaveButton_Click(sender, e);
+            pictureBox.Invalidate();
         }
 
         private void SNButton_Click(object sender, EventArgs e)
