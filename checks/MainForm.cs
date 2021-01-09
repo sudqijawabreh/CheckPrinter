@@ -31,7 +31,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", CheckDate = "09/09/2019", Name = "Ahmad" , Number = 1} };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", CheckDate = "09/09/2019", Name = "Ahmad", Number = 1 } };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
@@ -45,6 +45,7 @@ namespace checks
         private readonly List<stringDraw> _defaultValues;
         private string _startingSN = string.Empty;
         private List<CheckRecord> _printedRecords = new List<CheckRecord>();
+        private ImportedFileResult _lastImportedFileResult = new ImportedFileResult();
 
 
         private Point _firstMeasure;
@@ -183,172 +184,183 @@ namespace checks
             formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
 
         }
-        private List<CheckRecord> readFile(Stream file)
+        private ImportedFileResult readFile(string fileName)
         {
-            //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            var sheets = new List<DataTable>();
-            //using (var stream = File.Open("file.xlsx", FileMode.Open, FileAccess.Read))
-            // Auto-detect format, supports:
-            //  - Binary Excel files (2.0-2003 format; *.xls)
-            //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
-            using (var reader = ExcelReaderFactory.CreateReader(file))
+            var defaultReturn = new ImportedFileResult();
+            try
             {
-                // Choose one of either 1 or 2:
 
-                // 1. Use the reader methods
-                /*                    do
-                                    {
-                                        while (reader.Read())
-                                        {
-                                            for (int i = 0; i < reader.FieldCount; i++)
-                                            {
-                                                var value = reader.GetValue(i);
-                                            }
-
-                                            //var value = reader.GetString(0);
-                                        }
-                                    } while (reader.NextResult());*/
-
-                // 2. Use the AsDataSet extension method
-                var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                using (var file = File.OpenRead(fileName))
                 {
-                    // Gets or sets a value indicating whether to set the DataColumn.DataType 
-                    // property in a second pass.
-                    UseColumnDataType = false,
 
-                    // Gets or sets a callback to determine whether to include the current sheet
-                    // in the DataSet. Called once per sheet before ConfigureDataTable.
-                    FilterSheet = (tableReader, sheetIndex) =>
+                    var sheets = new List<DataTable>();
+                    using (var reader = ExcelReaderFactory.CreateReader(file))
                     {
-                        return true;
-                    },
-
-                    // Gets or sets a callback to obtain configuration options for a DataTable. 
-                    ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
-                    {
-                        // Gets or sets a value indicating the prefix of generated column names.
-                        EmptyColumnNamePrefix = "Column",
-
-                        // Gets or sets a value indicating whether to use a row from the 
-                        // data as column names.
-                        UseHeaderRow = false,
-
-                        // Gets or sets a callback to determine which row is the header row. 
-                        // Only called when UseHeaderRow = true.
-                        ReadHeaderRow = (rowReader) =>
+                        var result = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
-                            // F.ex skip the first row and use the 2nd row as column headers:
-                            ///rowReader.Read();
-                            return;
-                        },
+                            // Gets or sets a value indicating whether to set the DataColumn.DataType 
+                            // property in a second pass.
+                            UseColumnDataType = false,
 
-                        // Gets or sets a callback to determine whether to include the 
-                        // current row in the DataTable.
-                        FilterRow = (rowReader) =>
-                        {
-                            return true;
-                        },
-
-                        // Gets or sets a callback to determine whether to include the specific
-                        // column in the DataTable. Called once per column after reading the 
-                        // headers.
-                        FilterColumn = (rowReader, columnIndex) =>
-                        {
-                            return true;
-                        }
-                    }
-                });
-                //result.Tables.Cast<DataTable>().Select(t => new { })
-                var tables = result.Tables.Cast<DataTable>().ToList();
-                sheets = result.Tables.OfType<DataTable>().ToList();
-                var value = ChooseSheet.ShowPrompt(tables.Select(t => t.TableName).ToList());
-                if (value.ChoiceType == PromptChoice.OK)
-                {
-                    var currentSheet = sheets.Where(s => s.TableName == value.Item).First();
-                    var (headerColumns,rowsToSkip) = FindHeaderColumns(currentSheet);
-                    var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName);
-                    var missingColumns = ColumnNames.RequiredColumns.Where(n => !headerColumns.ContainsKey(n));
-                    var optionColumnMissing = ColumnNames.OptionalColumns.Where(n => !headerColumns.ContainsKey(n));
-
-                    if (missingColumns.Any())
-                    {
-                        MessageBox.Show(this,
-                            $"One or more columns are missing : {string.Join(", ", missingColumns)}",
-                            "Missing Columns",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                        return new List<CheckRecord>();
-                    }
-                    if (optionColumnMissing.Any())
-                    {
-                        MessageBox.Show(this,
-                            $"This may affect the values in the backup.{Environment.NewLine}Some Optional columns are missing : {string.Join(", ", optionColumnMissing)}",
-                            "Missing Columns",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
-                    }
-
-                    var dateWarning = false;
-                    var amountWarning = false;
-                    var importedRecords = currentSheet.Rows.Cast<DataRow>().Skip(rowsToSkip).Select(r => new
-                    {
-                        Name = r.Field<object>(headerColumns[ColumnNames.Name]),
-                        Amount = r.Field<object>(headerColumns[ColumnNames.Amount]),
-                        ID = !optionColumnMissing.Contains(ColumnNames.ID) ? r.Field<object>(headerColumns[ColumnNames.ID]) : string.Empty,
-                        Currency = !optionColumnMissing.Contains(ColumnNames.Currency) ? r.Field<object>(headerColumns[ColumnNames.Currency]) : string.Empty,
-                        Area = !optionColumnMissing.Contains(ColumnNames.Area) ? r.Field<object>(headerColumns[ColumnNames.Area]) : string.Empty,
-                    }).Where(r => r.Name != null && r.Amount != null && !r.Name.ToString().Trim().ToLower().Contains("total"))
-                        .Select((r, i) =>
-                        {
-                            ///var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
-                            var isNumber = double.TryParse(r.Amount.ToString(), out var number);
-                            //dateWarning |= !isSuccess;
-                            amountWarning |= !isNumber;
-
-                            if(!long.TryParse(_startingSN, out var SN))
+                            // Gets or sets a callback to determine whether to include the current sheet
+                            // in the DataSet. Called once per sheet before ConfigureDataTable.
+                            FilterSheet = (tableReader, sheetIndex) =>
                             {
-                                SN = 1;
+                                return true;
+                            },
+
+                            // Gets or sets a callback to obtain configuration options for a DataTable. 
+                            ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
+                            {
+                                // Gets or sets a value indicating the prefix of generated column names.
+                                EmptyColumnNamePrefix = "Column",
+
+                                // Gets or sets a value indicating whether to use a row from the 
+                                // data as column names.
+                                UseHeaderRow = false,
+
+                                // Gets or sets a callback to determine which row is the header row. 
+                                // Only called when UseHeaderRow = true.
+                                ReadHeaderRow = (rowReader) =>
+                                {
+                                    // F.ex skip the first row and use the 2nd row as column headers:
+                                    ///rowReader.Read();
+                                    return;
+                                },
+
+                                // Gets or sets a callback to determine whether to include the 
+                                // current row in the DataTable.
+                                FilterRow = (rowReader) =>
+                                {
+                                    return true;
+                                },
+
+                                // Gets or sets a callback to determine whether to include the specific
+                                // column in the DataTable. Called once per column after reading the 
+                                // headers.
+                                FilterColumn = (rowReader, columnIndex) =>
+                                {
+                                    return true;
+                                }
+                            }
+                        });
+
+                        var tables = result.Tables.Cast<DataTable>().ToList();
+                        sheets = result.Tables.OfType<DataTable>().ToList();
+                        var value = ChooseSheet.ShowPrompt(tables.Select(t => t.TableName).ToList());
+                        if (value.ChoiceType == PromptChoice.OK)
+                        {
+                            var sheetName = value.Item;
+                            var currentSheet = sheets.Where(s => s.TableName == value.Item).First();
+                            var (headerColumns, rowsToSkip) = FindHeaderColumns(currentSheet);
+                            var sheetColumnNames = currentSheet.Columns.Cast<DataColumn>().Select(c => c.ColumnName);
+                            var missingColumns = ColumnNames.RequiredColumns.Where(n => !headerColumns.ContainsKey(n));
+                            var optionColumnMissing = ColumnNames.OptionalColumns.Where(n => !headerColumns.ContainsKey(n));
+
+                            if (missingColumns.Any())
+                            {
+                                MessageBox.Show(this,
+                                    $"One or more columns are missing : {string.Join(", ", missingColumns)}",
+                                    "Missing Columns",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                                return defaultReturn;
+                            }
+                            if (optionColumnMissing.Any())
+                            {
+                                MessageBox.Show(this,
+                                    $"This may affect the values in the backup.{Environment.NewLine}Some Optional columns are missing : {string.Join(", ", optionColumnMissing)}",
+                                    "Missing Columns",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
                             }
 
-                            return new CheckRecord
+                            var dateWarning = false;
+                            var amountWarning = false;
+                            var importedRecords = currentSheet.Rows.Cast<DataRow>().Skip(rowsToSkip).Select(r => new
                             {
-                                Number = i + 1,
-                                Name = r.Name?.ToString() ?? string.Empty,
-                                Amount = r.Amount?.ToString() ?? string.Empty,
-                                CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"),
-                                Area = r.Area?.ToString() ?? string.Empty,
-                                Currency = r.Currency?.ToString() ?? string.Empty,
-                                IDNumber = r.ID?.ToString() ?? string.Empty,
-                                AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount?.ToString()),
-                                SN = (SN + i).ToString(),
+                                Name = r.Field<object>(headerColumns[ColumnNames.Name]),
+                                Amount = r.Field<object>(headerColumns[ColumnNames.Amount]),
+                                ID = !optionColumnMissing.Contains(ColumnNames.ID) ? r.Field<object>(headerColumns[ColumnNames.ID]) : string.Empty,
+                                Currency = !optionColumnMissing.Contains(ColumnNames.Currency) ? r.Field<object>(headerColumns[ColumnNames.Currency]) : string.Empty,
+                                Area = !optionColumnMissing.Contains(ColumnNames.Area) ? r.Field<object>(headerColumns[ColumnNames.Area]) : string.Empty,
+                            }).Where(r => r.Name != null && r.Amount != null && !r.Name.ToString().Trim().ToLower().Contains("total"))
+                                .Select((r, i) =>
+                                {
+                                    ///var isSuccess = DateTime.TryParse(r.Date.ToString(), out var dateResult);
+                                    var isNumber = double.TryParse(r.Amount.ToString(), out var number);
+                                    //dateWarning |= !isSuccess;
+                                    amountWarning |= !isNumber;
+
+                                    if (!long.TryParse(_startingSN, out var SN))
+                                    {
+                                        SN = 1;
+                                    }
+
+                                    return new CheckRecord
+                                    {
+                                        Number = i + 1,
+                                        Name = r.Name?.ToString() ?? string.Empty,
+                                        Amount = r.Amount?.ToString() ?? string.Empty,
+                                        CheckDate = dateTimePicker.Value.ToString("dd/MM/yyyy"),
+                                        Area = r.Area?.ToString() ?? string.Empty,
+                                        Currency = r.Currency?.ToString() ?? string.Empty,
+                                        IDNumber = r.ID?.ToString() ?? string.Empty,
+                                        AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount?.ToString()),
+                                        SN = (SN + i).ToString(),
+                                    };
+                                }
+                                ).ToList();
+
+                            var message = string.Empty;
+                            if (dateWarning)
+                                message += $"Some records have invalide Date format.{Environment.NewLine}";
+                            if (amountWarning)
+                                message += $"Some records have invalide Amount values.{Environment.NewLine}";
+                            if (dateWarning || amountWarning)
+                            {
+                                MessageBox.Show(this,
+                                    message,
+                                    "Warning",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                            }
+
+                            MessageBox.Show(this,
+                                $"Successfuly imported {importedRecords.Count} records.",
+                                "Success",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                            return new ImportedFileResult
+                            {
+                                FileName = fileName,
+                                Records = importedRecords,
+                                HeaderRow = rowsToSkip,
+                                SheetName = sheetName,
                             };
                         }
-                        ).ToList();
-
-                    var message = string.Empty;
-                    if (dateWarning)
-                        message += $"Some records have invalide Date format.{Environment.NewLine}";
-                    if (amountWarning)
-                        message += $"Some records have invalide Amount values.{Environment.NewLine}";
-                    if (dateWarning || amountWarning)
-                    {
-                        MessageBox.Show(this,
-                            message,
-                            "Warning",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
                     }
-
-                    MessageBox.Show(this,
-                        $"Successfuly imported {importedRecords.Count} records.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-                    return importedRecords;
                 }
             }
-            return new List<CheckRecord>();
+            catch (IOException eio)
+            {
+
+                MessageBox.Show(this,
+                    $"Make sure the file is not opened by Excel.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(this,
+                    $"Erorr in importing file.{Environment.NewLine}{e.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            return defaultReturn;
         }
 
         private (Dictionary<string,int>,int) FindHeaderColumns(DataTable currentSheet)
@@ -697,7 +709,7 @@ namespace checks
 
         }
 
-        private void button3_Click(object sender, EventArgs eve)
+        private void Import_Click(object sender, EventArgs eve)
         {
 
             var fileDialog = new OpenFileDialog();
@@ -705,45 +717,26 @@ namespace checks
             var result = fileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                try
-                {
-                    var importedRecords = new List<CheckRecord>();
-                    using (var file = fileDialog.OpenFile())
-                    {
-                        importedRecords = readFile(file);
-                    }
+                var importedFileResult = new ImportedFileResult();
+                var importedRecords = new List<CheckRecord>();
+                var fileName = fileDialog.FileName;
+                importedFileResult = readFile(fileName);
+                importedRecords = importedFileResult.Records;
+                _lastImportedFileResult = importedFileResult;
 
-                    if (importedRecords.Count > 0)
+                if (importedRecords.Count > 0)
+                {
+                    var dateArgs = DatePrompt.ShowPrompt();
+                    if (dateArgs.ChoiceType == PromptChoice.OK)
                     {
-                        var dateArgs = DatePrompt.ShowPrompt();
-                        if (dateArgs.ChoiceType == PromptChoice.OK)
+                        importedRecords.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
+                        var snChoice = InputSN.ShowPrompt();
+                        if (snChoice.ChoiceType == PromptChoice.OK)
                         {
-                            importedRecords.ForEach(r => r.CheckDate = DateTime.Parse(dateArgs.Item).ToString("dd/MM/yyyy"));
-                            var snChoice = InputSN.ShowPrompt();
-                            if(snChoice.ChoiceType == PromptChoice.OK)
-                            {
-                                importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();
-                            }
-                            UpdateGridView(importedRecords);
+                            importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();
                         }
+                        UpdateGridView(importedRecords);
                     }
-                }
-                catch (IOException eio)
-                {
-
-                    MessageBox.Show(this,
-                        $"Make sure the file is not opened by Excel.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(this,
-                        $"Erorr in importing file.{Environment.NewLine}{e.Message}",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
                 }
             }
         }
@@ -862,6 +855,53 @@ namespace checks
         {
             pictureBox.Invalidate();
         }
+
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+
+            var serialNumbers = _records.Select(r => r.SN).ToList();
+
+            if(string.IsNullOrEmpty(_lastImportedFileResult.FileName))
+            {
+                MessageBox.Show(this,
+                               $"Import File First.",
+                               "Error",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
+                return;
+            }
+
+            var fileDialog = new SaveFileDialog();
+            fileDialog.FileName = "CheckReport";
+            fileDialog.Filter = "Excel Files|*.xlsx";
+            fileDialog.DefaultExt = "xlsx";
+            var result = fileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    ReportGenerator.Genereate(_lastImportedFileResult.FileName, fileDialog.FileName, _lastImportedFileResult.SheetName, _lastImportedFileResult.HeaderRow, serialNumbers);
+                    System.Diagnostics.Process.Start(fileDialog.FileName);
+                }
+                catch (IOException eio)
+                {
+
+                    MessageBox.Show(this,
+                    $"Can't Export Report. Make sure the imported file is not opened by Excel.{Environment.NewLine}{eio.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(this,
+                    $"Can't Export Report",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
+            }
+        }
     }
     static class ColumnNames
     {
@@ -874,5 +914,14 @@ namespace checks
         public static IReadOnlyCollection<string> RequiredColumns = new List<string> { Name, Amount }.AsReadOnly();
         public static IReadOnlyCollection<string> OptionalColumns = new List<string> { ID, Currency, Area }.AsReadOnly();
         public static IReadOnlyCollection<string> All = new List<string>(RequiredColumns).Concat(OptionalColumns).ToList().AsReadOnly();
+    }
+
+
+    class ImportedFileResult
+    {
+        public string FileName { get; set; } = string.Empty;
+        public string SheetName { get; set; } = string.Empty;
+        public int HeaderRow { get; set; } = 0;
+        public List<CheckRecord> Records { get; set; } = new List<CheckRecord>();
     }
 }

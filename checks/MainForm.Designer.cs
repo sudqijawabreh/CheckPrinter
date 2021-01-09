@@ -45,6 +45,7 @@
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.notNegoCheckBox = new System.Windows.Forms.CheckBox();
+            this.exportButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -98,7 +99,7 @@
             this.button3.TabIndex = 6;
             this.button3.Text = "Import";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Import_Click);
             // 
             // nextRecordButton
             // 
@@ -217,11 +218,22 @@
             this.notNegoCheckBox.UseVisualStyleBackColor = true;
             this.notNegoCheckBox.CheckedChanged += new System.EventHandler(this.notNegoCheckBox_CheckedChanged);
             // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(392, 340);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(75, 23);
+            this.exportButton.TabIndex = 19;
+            this.exportButton.Text = "Export Report";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(908, 623);
+            this.Controls.Add(this.exportButton);
             this.Controls.Add(this.notNegoCheckBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker);
@@ -268,6 +280,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox notNegoCheckBox;
+        private System.Windows.Forms.Button exportButton;
     }
 }
 
