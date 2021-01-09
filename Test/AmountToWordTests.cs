@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test
 {
     [TestClass]
-    public class UnitTest1
+    public class AmountToWordTests
     {
         [TestMethod]
         public void TestNumbersWithDecimals()
