@@ -59,9 +59,26 @@ namespace checks
                 }
             }
         }
+        public List<CheckRecord> Read()
+        {
+            var recordsToReturn = new List<CheckRecord>();
+            if (File.Exists(_fileName))
+            {
+                using (var reader = new StreamReader(_fileName))
+                {
+                    using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        csvReader.Configuration.RegisterClassMap<CheckRecordMap>();
+                        var records = csvReader.GetRecords<CheckRecord>();
+                        return records.ToList();
+                    }
+                }
+            }
+            return recordsToReturn;
+        }
     }
 
-    class CheckRecordMap : ClassMap<CheckRecord>
+        class CheckRecordMap : ClassMap<CheckRecord>
     {
         public CheckRecordMap()
         {

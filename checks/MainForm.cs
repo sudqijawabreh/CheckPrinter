@@ -849,16 +849,9 @@ namespace checks
                 SN = 1;
             }
 
-            return new CheckRecord
-            {
-                Number = record.Number,
-                Name = record.Name,
-                Amount = record.Amount,
-                CheckDate = record.CheckDate,
-                AmountInWords = record.AmountInWords,
-                SN = (SN + record.Number - 1).ToString(),
-            };
-
+            var updated = record.Clone();
+            updated.SN = (SN + record.Number - 1).ToString();
+            return updated;
         }
         private void exportButton_Click(object sender, EventArgs e)
         {
@@ -925,6 +918,26 @@ namespace checks
             SaveButton.Visible = _secretMode;
             ResetButton.Visible = _secretMode;
             pictureBox.Invalidate();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var backup = new Backup(_backupFielName);
+                var oldRecords = backup.Read();
+                var historyForm = new PrintHistoryForm(oldRecords);
+                historyForm.Show();
+            }
+            catch(Exception ex)
+            {
+
+                MessageBox.Show(this,
+                    $"{ex.Message}",
+                    "Error Reading Backup File",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
         }
     }
     static class ColumnNames

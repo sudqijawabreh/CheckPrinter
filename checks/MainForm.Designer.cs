@@ -37,8 +37,11 @@
             this.recordsGrid = new System.Windows.Forms.DataGridView();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
-            this.SNButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.smallPreviousButton = new System.Windows.Forms.Button();
+            this.smallNextButton = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.negotiableButton = new System.Windows.Forms.Button();
             this.changeDateButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -46,10 +49,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.previousRecordButton = new System.Windows.Forms.Button();
             this.nextRecordButton = new System.Windows.Forms.Button();
+            this.SNButton = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.smallNextButton = new System.Windows.Forms.Button();
-            this.smallPreviousButton = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -130,21 +131,10 @@
             this.ResetButton.Visible = false;
             this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
             // 
-            // SNButton
-            // 
-            this.SNButton.BackgroundImage = global::checks.Properties.Resources.license_plate_number_pngrepo_com;
-            this.SNButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SNButton.Location = new System.Drawing.Point(525, 3);
-            this.SNButton.Name = "SNButton";
-            this.SNButton.Size = new System.Drawing.Size(52, 41);
-            this.SNButton.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.SNButton, "Change Starting Serial Number");
-            this.SNButton.UseVisualStyleBackColor = true;
-            this.SNButton.Click += new System.EventHandler(this.SNButton_Click);
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.negotiableButton);
             this.panel1.Controls.Add(this.changeDateButton);
             this.panel1.Controls.Add(this.button1);
@@ -155,8 +145,43 @@
             this.panel1.Controls.Add(this.SNButton);
             this.panel1.Location = new System.Drawing.Point(48, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 49);
+            this.panel1.Size = new System.Drawing.Size(800, 51);
             this.panel1.TabIndex = 20;
+            // 
+            // smallPreviousButton
+            // 
+            this.smallPreviousButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
+            this.smallPreviousButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.smallPreviousButton.Location = new System.Drawing.Point(331, 358);
+            this.smallPreviousButton.Name = "smallPreviousButton";
+            this.smallPreviousButton.Size = new System.Drawing.Size(40, 30);
+            this.smallPreviousButton.TabIndex = 22;
+            this.smallPreviousButton.UseVisualStyleBackColor = true;
+            this.smallPreviousButton.Click += new System.EventHandler(this.previousRecordButton_Click);
+            // 
+            // smallNextButton
+            // 
+            this.smallNextButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
+            this.smallNextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.smallNextButton.Location = new System.Drawing.Point(475, 358);
+            this.smallNextButton.Name = "smallNextButton";
+            this.smallNextButton.Size = new System.Drawing.Size(40, 30);
+            this.smallNextButton.TabIndex = 22;
+            this.smallNextButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.smallNextButton.UseVisualStyleBackColor = true;
+            this.smallNextButton.Click += new System.EventHandler(this.nextRecordButton_Click);
+            // 
+            // button4
+            // 
+            this.button4.BackgroundImage = global::checks.Properties.Resources.history_pngrepo_com;
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button4.Location = new System.Drawing.Point(676, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(52, 41);
+            this.button4.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.button4, "Show Print History");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // negotiableButton
             // 
@@ -243,6 +268,18 @@
             this.nextRecordButton.UseVisualStyleBackColor = true;
             this.nextRecordButton.Click += new System.EventHandler(this.nextRecordButton_Click);
             // 
+            // SNButton
+            // 
+            this.SNButton.BackgroundImage = global::checks.Properties.Resources.license_plate_number_pngrepo_com;
+            this.SNButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SNButton.Location = new System.Drawing.Point(525, 3);
+            this.SNButton.Name = "SNButton";
+            this.SNButton.Size = new System.Drawing.Size(52, 41);
+            this.SNButton.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.SNButton, "Change Starting Serial Number");
+            this.SNButton.UseVisualStyleBackColor = true;
+            this.SNButton.Click += new System.EventHandler(this.SNButton_Click);
+            // 
             // pictureBox
             // 
             this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -256,29 +293,6 @@
             this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
-            // 
-            // smallNextButton
-            // 
-            this.smallNextButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
-            this.smallNextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallNextButton.Location = new System.Drawing.Point(475, 358);
-            this.smallNextButton.Name = "smallNextButton";
-            this.smallNextButton.Size = new System.Drawing.Size(40, 30);
-            this.smallNextButton.TabIndex = 22;
-            this.smallNextButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.smallNextButton.UseVisualStyleBackColor = true;
-            this.smallNextButton.Click += new System.EventHandler(this.nextRecordButton_Click);
-            // 
-            // smallPreviousButton
-            // 
-            this.smallPreviousButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
-            this.smallPreviousButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallPreviousButton.Location = new System.Drawing.Point(331, 358);
-            this.smallPreviousButton.Name = "smallPreviousButton";
-            this.smallPreviousButton.Size = new System.Drawing.Size(40, 30);
-            this.smallPreviousButton.TabIndex = 22;
-            this.smallPreviousButton.UseVisualStyleBackColor = true;
-            this.smallPreviousButton.Click += new System.EventHandler(this.previousRecordButton_Click);
             // 
             // MainForm
             // 
@@ -331,6 +345,7 @@
         private System.Windows.Forms.Button smallNextButton;
         private System.Windows.Forms.Button smallPreviousButton;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button button4;
     }
 }
 
