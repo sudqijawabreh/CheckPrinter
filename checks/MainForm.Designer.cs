@@ -41,6 +41,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.smallPreviousButton = new System.Windows.Forms.Button();
             this.smallNextButton = new System.Windows.Forms.Button();
+            this.changeCurrencyButton = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.negotiableButton = new System.Windows.Forms.Button();
             this.changeDateButton = new System.Windows.Forms.Button();
@@ -134,6 +135,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.changeCurrencyButton);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.negotiableButton);
             this.panel1.Controls.Add(this.changeDateButton);
@@ -171,6 +173,17 @@
             this.smallNextButton.UseVisualStyleBackColor = true;
             this.smallNextButton.Click += new System.EventHandler(this.nextRecordButton_Click);
             // 
+            // changeCurrencyButton
+            // 
+            this.changeCurrencyButton.BackgroundImage = global::checks.Properties.Resources.currency_exchange_pngrepo_com1;
+            this.changeCurrencyButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.changeCurrencyButton.Location = new System.Drawing.Point(525, 3);
+            this.changeCurrencyButton.Name = "changeCurrencyButton";
+            this.changeCurrencyButton.Size = new System.Drawing.Size(52, 41);
+            this.changeCurrencyButton.TabIndex = 23;
+            this.changeCurrencyButton.UseVisualStyleBackColor = true;
+            this.changeCurrencyButton.Click += new System.EventHandler(this.changeCurrencyButton_Click);
+            // 
             // button4
             // 
             this.button4.BackgroundImage = global::checks.Properties.Resources.history_pngrepo_com;
@@ -199,7 +212,7 @@
             // 
             this.changeDateButton.BackgroundImage = global::checks.Properties.Resources.calendar_pngrepo_com;
             this.changeDateButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.changeDateButton.Location = new System.Drawing.Point(450, 3);
+            this.changeDateButton.Location = new System.Drawing.Point(381, 3);
             this.changeDateButton.Name = "changeDateButton";
             this.changeDateButton.Size = new System.Drawing.Size(52, 41);
             this.changeDateButton.TabIndex = 21;
@@ -211,7 +224,7 @@
             // 
             this.button1.BackgroundImage = global::checks.Properties.Resources.print_pngrepo_com;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(246, 3);
+            this.button1.Location = new System.Drawing.Point(177, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(51, 41);
             this.button1.TabIndex = 0;
@@ -223,7 +236,7 @@
             // 
             this.exportButton.BackgroundImage = global::checks.Properties.Resources.excel_file_pngrepo_com;
             this.exportButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.exportButton.Location = new System.Drawing.Point(178, 3);
+            this.exportButton.Location = new System.Drawing.Point(109, 3);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(52, 41);
             this.exportButton.TabIndex = 19;
@@ -235,7 +248,7 @@
             // 
             this.button3.BackgroundImage = global::checks.Properties.Resources.open_folder_with_document_pngrepo_com;
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.Location = new System.Drawing.Point(102, 3);
+            this.button3.Location = new System.Drawing.Point(33, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(52, 41);
             this.button3.TabIndex = 6;
@@ -247,7 +260,7 @@
             // 
             this.previousRecordButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
             this.previousRecordButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.previousRecordButton.Location = new System.Drawing.Point(313, 3);
+            this.previousRecordButton.Location = new System.Drawing.Point(244, 3);
             this.previousRecordButton.Name = "previousRecordButton";
             this.previousRecordButton.Size = new System.Drawing.Size(52, 41);
             this.previousRecordButton.TabIndex = 8;
@@ -259,7 +272,7 @@
             // 
             this.nextRecordButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
             this.nextRecordButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.nextRecordButton.Location = new System.Drawing.Point(381, 3);
+            this.nextRecordButton.Location = new System.Drawing.Point(312, 3);
             this.nextRecordButton.Name = "nextRecordButton";
             this.nextRecordButton.Size = new System.Drawing.Size(52, 41);
             this.nextRecordButton.TabIndex = 7;
@@ -272,7 +285,7 @@
             // 
             this.SNButton.BackgroundImage = global::checks.Properties.Resources.license_plate_number_pngrepo_com;
             this.SNButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SNButton.Location = new System.Drawing.Point(525, 3);
+            this.SNButton.Location = new System.Drawing.Point(456, 3);
             this.SNButton.Name = "SNButton";
             this.SNButton.Size = new System.Drawing.Size(52, 41);
             this.SNButton.TabIndex = 14;
@@ -346,6 +359,7 @@
         private System.Windows.Forms.Button smallPreviousButton;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button changeCurrencyButton;
     }
 }
 

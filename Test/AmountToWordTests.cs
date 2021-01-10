@@ -218,5 +218,21 @@ namespace Test
             Assert.AreEqual("JD Nine Hundred Sixty Seven Fils Only", result);
 
         }
+
+        [TestMethod]
+        public void TestCurrencyNIS()
+        {
+            var result = NumberToWordUtil.AmountInNISToWords("1000.0");
+            Assert.AreEqual("NIS One Thousand And No Agorot Only", result);
+
+            result = NumberToWordUtil.AmountInNISToWords("9675.0");
+            Assert.AreEqual("NIS Nine Thousand Six Hundred Seventy Five And No Agorot Only", result);
+
+            result = NumberToWordUtil.AmountInNISToWords("9675.15");
+            Assert.AreEqual("NIS Nine Thousand Six Hundred Seventy Five And Fifteen Agorot Only", result);
+
+            result = NumberToWordUtil.AmountInNISToWords("0.967");
+            Assert.AreEqual("NIS Ninety Six Agorot Only", result);
+        }
     }
 }

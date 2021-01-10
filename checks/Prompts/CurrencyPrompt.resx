@@ -117,47 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="history-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\history-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="right-arrow-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\right-arrow-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="openfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\openfile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="left-arrow-pngrepo-com1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left-arrow-pngrepo-com1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="left-arrow-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left-arrow-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="arrow-left-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arrow-left-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stamp-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stamp-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="license-plate-number-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\license-plate-number-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="calendar-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\calendar-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="print-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\print-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="open-folder-with-document-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\open-folder-with-document-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="currency-exchange-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\currency-exchange-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="excel-file-pngrepo-com" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\excel-file-pngrepo-com.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="currency-exchange-pngrepo-com1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\currency-exchange-pngrepo-com1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

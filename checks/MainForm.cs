@@ -309,7 +309,7 @@ namespace checks
                                         Area = r.Area?.ToString() ?? string.Empty,
                                         Currency = r.Currency?.ToString() ?? string.Empty,
                                         IDNumber = r.ID?.ToString() ?? string.Empty,
-                                        AmountInWords = NumberToWordUtil.AmountInJDToWords(r.Amount?.ToString()),
+                                        AmountInWords = NumberToWordUtil.GetAmountInWordsByCurrency(r.Amount?.ToString(),Currency.JOD),
                                         SN = (SN + i).ToString(),
                                     };
                                 }
@@ -759,6 +759,32 @@ namespace checks
 
             return importedRecords;
         }
+        private List<CheckRecord> ChangeCheckCurrency(List<CheckRecord> importedRecords)
+        {
+            var dateArgs = CurrencyPrompt.ShowPrompt();
+            if (dateArgs.ChoiceType == PromptChoice.OK)
+            {
+                var updated = importedRecords.Select(r => r.Clone()).ToList();
+                updated.ForEach(r =>
+                {
+                    var currency = Currency.JOD;
+                    if(dateArgs.Item == "JOD")
+                    {
+                        currency = Currency.JOD;
+                    }
+                    else if(dateArgs.Item == "NIS")
+                    {
+                        currency = Currency.NIS;
+                    }
+                    
+                    r.Currency = dateArgs.Item;
+                    r.AmountInWords = NumberToWordUtil.GetAmountInWordsByCurrency(r.Amount, currency);
+                });
+                return updated;
+            }
+
+            return importedRecords;
+        }
 
         private void nextRecordButton_Click(object sender, EventArgs e)
         {
@@ -938,6 +964,12 @@ namespace checks
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
+        }
+
+        private void changeCurrencyButton_Click(object sender, EventArgs e)
+        {
+            var updated = ChangeCheckCurrency(_records);
+            UpdateGridView(updated);
         }
     }
     static class ColumnNames

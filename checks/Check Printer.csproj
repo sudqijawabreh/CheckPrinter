@@ -119,6 +119,12 @@
       <DependentUpon>PrintHistoryForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CheckRecord.cs" />
+    <Compile Include="Prompts\CurrencyPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prompts\CurrencyPrompt.Designer.cs">
+      <DependentUpon>CurrencyPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Prompts\DatePrompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     <Compile Include="stringDraw.cs" />
     <EmbeddedResource Include="PrintHistoryForm.resx">
       <DependentUpon>PrintHistoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prompts\CurrencyPrompt.resx">
+      <DependentUpon>CurrencyPrompt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Prompts\DatePrompt.resx">
       <DependentUpon>DatePrompt.cs</DependentUpon>

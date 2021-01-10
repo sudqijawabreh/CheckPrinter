@@ -83,6 +83,26 @@ namespace checks.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap currency_exchange_pngrepo_com {
+            get {
+                object obj = ResourceManager.GetObject("currency-exchange-pngrepo-com", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap currency_exchange_pngrepo_com1 {
+            get {
+                object obj = ResourceManager.GetObject("currency-exchange-pngrepo-com1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap excel_file_pngrepo_com {
             get {
                 object obj = ResourceManager.GetObject("excel-file-pngrepo-com", resourceCulture);

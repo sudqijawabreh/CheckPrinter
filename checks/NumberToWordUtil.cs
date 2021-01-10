@@ -27,7 +27,7 @@ namespace checks
                 var second = (periodIndex < value.Length - 1) ? value.Substring(periodIndex + 1) : string.Empty;
                 second = string.Join("", second.Take(3));
                 first = PadLeft(first);
-                second = PadRight(second);
+                second = PadRight(second, 3);
                 var words = GetWords(first);
                 var decimals = string.Join(" ",GetHundreds(second.ToArray().ToList()).Where(c => !string.IsNullOrEmpty(c)));
                 if (!string.IsNullOrEmpty(words) && !string.IsNullOrEmpty(decimals))
@@ -53,11 +53,24 @@ namespace checks
 
             return string.Empty;
         }
+        public static string GetAmountInWordsByCurrency(string value, Currency currency)
+        {
+            if (currency == Currency.JOD)
+                return AmountInJDToWords(value);
+            else if (currency == Currency.NIS)
+                return AmountInNISToWords(value);
+            else
+                return string.Empty;
+        }
         public static string AmountInJDToWords(string value)
         {
             return CurrencyToWords(value, "JD", "Fils", "Only");
         }
-        public static string CurrencyToWords(string value, string prefix , string decimalSuffix, string suffix)
+        public static string AmountInNISToWords(string value)
+        {
+            return CurrencyToWords(value, "NIS", "Agorot", "Only", 2);
+        }
+        public static string CurrencyToWords(string value, string prefix , string decimalSuffix, string suffix, int decimalNumberOfDigits = 3)
         {            
            var isNumber = double.TryParse(value, out var number);
             if (!isNumber)
@@ -68,11 +81,20 @@ namespace checks
             {
                 var first = value.Substring(0, periodIndex);
                 var second = (periodIndex < value.Length - 1) ? value.Substring(periodIndex + 1) : string.Empty;
-                second = string.Join("",second.Take(3));
+                second = string.Join("", second.Take(decimalNumberOfDigits));
                 first = PadLeft(first);
-                second = PadRight(second);
+                second = PadRight(second, decimalNumberOfDigits);
                 var words = GetWords(first);
-                var decimals = string.Join(" ",GetHundreds(second.ToArray().ToList()).Where(c => !string.IsNullOrEmpty(c)));
+                var decimals = string.Empty;
+                if (decimalNumberOfDigits == 3)
+                {
+                    decimals = string.Join(" ", GetHundreds(second.ToArray().ToList()).Where(c => !string.IsNullOrEmpty(c)));
+                }
+                else
+                {
+                    decimals = string.Join(" ", Rest(second.ToArray().ToList()).Where(c => !string.IsNullOrEmpty(c)));
+                }
+
                 if (!string.IsNullOrEmpty(words) && !string.IsNullOrEmpty(decimals))
                 {
                     return prefix + " " + words + " And " + decimals + " " + decimalSuffix + " " + suffix;
@@ -136,7 +158,7 @@ namespace checks
             var ten = e[1];
             var digit = e[2];
             var value = GetDigtit(hundred);
-            var value1 = Rest(e);
+            var value1 = Rest(e.Skip(1).ToList());
 
             var result = new List<string> { value };
             if (!string.IsNullOrEmpty(value))
@@ -149,8 +171,8 @@ namespace checks
 
         private static List<string> Rest(List<char> e)
         {
-            var ten = e[1];
-            var digit = e[2];
+            var ten = e[0];
+            var digit = e[1];
             if(ten == '0' && digit == '0')
             {
                 return new List<string>();
@@ -253,11 +275,16 @@ namespace checks
             return string.Join("", Enumerable.Range(0, numberOfPadding).Select(i => "0")) + value;
         }
 
-        private static string PadRight(string value)
+        private static string PadRight(string value, int count)
         {
-            var numberOfPadding = (3 - value.Length);
+            var numberOfPadding = (count - value.Length);
             return value + string.Join("", Enumerable.Range(0, numberOfPadding).Select(i => "0"));
         }
+    }
+    public enum Currency
+    {
+        JOD = 1,
+        NIS = 2,
     }
 
 }
