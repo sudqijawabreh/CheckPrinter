@@ -36,14 +36,14 @@
             // 
             // SNTextBox
             // 
-            this.SNTextBox.Location = new System.Drawing.Point(12, 25);
+            this.SNTextBox.Location = new System.Drawing.Point(29, 32);
             this.SNTextBox.Name = "SNTextBox";
             this.SNTextBox.Size = new System.Drawing.Size(171, 20);
             this.SNTextBox.TabIndex = 0;
             // 
             // OKButton
             // 
-            this.OKButton.Location = new System.Drawing.Point(12, 51);
+            this.OKButton.Location = new System.Drawing.Point(12, 58);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(75, 23);
             this.OKButton.TabIndex = 1;
@@ -53,7 +53,7 @@
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(108, 51);
+            this.CancelButton.Location = new System.Drawing.Point(136, 58);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(75, 23);
             this.CancelButton.TabIndex = 2;
@@ -66,7 +66,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(26, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(179, 13);
             this.label1.TabIndex = 3;
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(193, 88);
+            this.ClientSize = new System.Drawing.Size(223, 93);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.OKButton);
