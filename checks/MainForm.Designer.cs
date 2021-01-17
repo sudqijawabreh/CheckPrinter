@@ -93,7 +93,7 @@
             // 
             // recordNumberTextBox
             // 
-            this.recordNumberTextBox.Location = new System.Drawing.Point(394, 363);
+            this.recordNumberTextBox.Location = new System.Drawing.Point(430, 365);
             this.recordNumberTextBox.Name = "recordNumberTextBox";
             this.recordNumberTextBox.Size = new System.Drawing.Size(63, 20);
             this.recordNumberTextBox.TabIndex = 9;
@@ -105,12 +105,12 @@
             // 
             this.recordsGrid.AllowUserToAddRows = false;
             this.recordsGrid.AllowUserToDeleteRows = false;
-            this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.recordsGrid.Location = new System.Drawing.Point(12, 440);
             this.recordsGrid.Name = "recordsGrid";
             this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
-            this.recordsGrid.Size = new System.Drawing.Size(886, 237);
+            this.recordsGrid.Size = new System.Drawing.Size(921, 237);
             this.recordsGrid.TabIndex = 10;
             // 
             // SaveButton
@@ -126,7 +126,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(584, 360);
+            this.ResetButton.Location = new System.Drawing.Point(594, 367);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -148,7 +148,7 @@
             this.panel1.Controls.Add(this.previousRecordButton);
             this.panel1.Controls.Add(this.nextRecordButton);
             this.panel1.Controls.Add(this.SNButton);
-            this.panel1.Location = new System.Drawing.Point(48, 12);
+            this.panel1.Location = new System.Drawing.Point(64, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 51);
             this.panel1.TabIndex = 20;
@@ -277,7 +277,7 @@
             // 
             this.smallPreviousButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
             this.smallPreviousButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallPreviousButton.Location = new System.Drawing.Point(331, 358);
+            this.smallPreviousButton.Location = new System.Drawing.Point(367, 360);
             this.smallPreviousButton.Name = "smallPreviousButton";
             this.smallPreviousButton.Size = new System.Drawing.Size(40, 30);
             this.smallPreviousButton.TabIndex = 22;
@@ -288,7 +288,7 @@
             // 
             this.smallNextButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
             this.smallNextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallNextButton.Location = new System.Drawing.Point(475, 358);
+            this.smallNextButton.Location = new System.Drawing.Point(511, 360);
             this.smallNextButton.Name = "smallNextButton";
             this.smallNextButton.Size = new System.Drawing.Size(40, 30);
             this.smallNextButton.TabIndex = 22;
@@ -299,7 +299,7 @@
             // pictureBox
             // 
             this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox.Location = new System.Drawing.Point(48, 84);
+            this.pictureBox.Location = new System.Drawing.Point(64, 85);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(794, 260);
             this.pictureBox.TabIndex = 13;
@@ -310,10 +310,10 @@
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
-            // searcTextBox
+            // searchTextBox
             // 
             this.searchTextBox.Location = new System.Drawing.Point(272, 413);
-            this.searchTextBox.Name = "searcTextBox";
+            this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(586, 20);
             this.searchTextBox.TabIndex = 23;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searcTextBox_TextChanged);
@@ -339,7 +339,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(908, 682);
+            this.ClientSize = new System.Drawing.Size(945, 682);
             this.Controls.Add(this.searchComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.searchTextBox);

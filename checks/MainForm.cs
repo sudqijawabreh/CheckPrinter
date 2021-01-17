@@ -122,12 +122,13 @@ namespace checks
             _pageWidth = toInche(16);*/
             UpdateRecords(_records);
             UpdateGridView(_records);
-            recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            recordsGrid.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            recordsGrid.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            recordsGrid.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             recordsGrid.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            recordsGrid.Columns[1].HeaderText = "Check Number";
             recordsGrid.Columns[5].HeaderText = "Amount In Words";
             recordsGrid.Columns[4].HeaderText = "Check Date";
             recordsGrid.RowHeadersVisible = false;
@@ -265,8 +266,9 @@ namespace checks
 
                             if (missingColumns.Any())
                             {
+                                var columnsMessage = missingColumns.Select(c => Char.ToUpper(c[0]) + c.Substring(1));
                                 MessageBox.Show(this,
-                                    $"One or more columns are missing : {string.Join(", ", missingColumns)}",
+                                    $"One or more columns are missing : {string.Join(", ", columnsMessage)}",
                                     "Missing Columns",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
@@ -274,8 +276,9 @@ namespace checks
                             }
                             if (optionColumnMissing.Any())
                             {
+                                var columnsMessage = optionColumnMissing.Select(c => Char.ToUpper(c[0]) + c.Substring(1));
                                 MessageBox.Show(this,
-                                    $"This may affect the values in the backup.{Environment.NewLine}Some Optional columns are missing : {string.Join(", ", optionColumnMissing)}",
+                                    $"This may affect the values in the history.{Environment.NewLine}Some optional columns are missing : {string.Join(", ", columnsMessage)}",
                                     "Missing Columns",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
@@ -288,7 +291,7 @@ namespace checks
                                 Name = r.Field<object>(headerColumns[ColumnNames.Name]),
                                 Amount = r.Field<object>(headerColumns[ColumnNames.Amount]),
                                 ID = !optionColumnMissing.Contains(ColumnNames.ID) ? r.Field<object>(headerColumns[ColumnNames.ID]) : string.Empty,
-                                Currency = !optionColumnMissing.Contains(ColumnNames.Currency) ? r.Field<object>(headerColumns[ColumnNames.Currency]) : string.Empty,
+                                Currency = headerColumns.ContainsKey(ColumnNames.Currency) ? r.Field<object>(headerColumns[ColumnNames.Currency]) : string.Empty,
                                 Area = !optionColumnMissing.Contains(ColumnNames.Area) ? r.Field<object>(headerColumns[ColumnNames.Area]) : string.Empty,
                             }).Where(r => r.Name != null && r.Amount != null && !r.Name.ToString().Trim().ToLower().Contains("total"))
                                 .Select((r, i) =>
@@ -901,7 +904,7 @@ namespace checks
             if(string.IsNullOrEmpty(_lastImportedFileResult.FileName))
             {
                 MessageBox.Show(this,
-                               $"Import File First.",
+                               $"Open a file first.",
                                "Error",
                                MessageBoxButtons.OK,
                                MessageBoxIcon.Error);
@@ -1017,7 +1020,7 @@ namespace checks
         public static string Area => "Area".ToLower();
 
         public static IReadOnlyCollection<string> RequiredColumns = new List<string> { Name, Amount }.AsReadOnly();
-        public static IReadOnlyCollection<string> OptionalColumns = new List<string> { ID, Currency, Area }.AsReadOnly();
+        public static IReadOnlyCollection<string> OptionalColumns = new List<string> { ID, Area }.AsReadOnly();
         public static IReadOnlyCollection<string> All = new List<string>(RequiredColumns).Concat(OptionalColumns).ToList().AsReadOnly();
     }
 
