@@ -27,7 +27,7 @@ namespace checks
             var dialogResult = p.ShowDialog();
 
             var isNumber = (long.TryParse(p.SNTextBox.Text, out var number));
-            if (!isNumber)
+            if (!isNumber && dialogResult == DialogResult.OK)
             {
                 MessageBox.Show(p,
                        "SN you entered is not a number numbering will start from 1",

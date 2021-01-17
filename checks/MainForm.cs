@@ -104,7 +104,7 @@ namespace checks
             {
                 Label = "Amount in Words",
                 Position = new Point(281, 135),
-                Text = "JD One Thousand Three Hundred Thirty Nine And  Two Hundred Forty ils Only",
+                Text = "JD One Thousand Three Hundred Thirty Nine And  Two Hundred Forty Fils Only",
                 MaxWidth = _amountInWordsWidth,
                 field = $"{nameof(_checkRecord.AmountInWords)}",
                 fontSize = 10,
