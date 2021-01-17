@@ -513,8 +513,8 @@ namespace checks
                     if (item.field == nameof(_checkRecord.Amount))
                     {
                         text = $"**{text}**";
-                        if (text.Length > 8)
-                            font = new Font("Times New Roman", 8);
+                        if (text.Length > 14)
+                            font = new Font("Times New Roman", 9);
                     }
                     var sizeText = e.Graphics.MeasureString(text, font, (int)pixelToHundredthIncheX(item.MaxWidth));
                     var bound = new RectangleF(pixelToHundredthIncheX(item.Position.X), pixelToHundredthIncheY(item.Position.Y), sizeText.Width, sizeText.Height);
@@ -576,8 +576,8 @@ namespace checks
             if (el.field == nameof(_checkRecord.Amount))
             {
                 text = $"**{text}**";
-                if (text.Length > 8)
-                    font = new Font("Times New Roman", 8);
+                if (text.Length > 14)
+                    font = new Font("Times New Roman", 9);
             }
 
 
