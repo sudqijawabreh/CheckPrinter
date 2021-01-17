@@ -120,6 +120,7 @@ namespace checks
 
             /*            _pageHeight = toInche(7.2);
             _pageWidth = toInche(16);*/
+            UpdateRecords(_records);
             UpdateGridView(_records);
             recordsGrid.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             recordsGrid.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -130,6 +131,8 @@ namespace checks
             recordsGrid.Columns[5].HeaderText = "Amount In Words";
             recordsGrid.Columns[4].HeaderText = "Check Date";
             recordsGrid.RowHeadersVisible = false;
+            searchComboBox.Items.AddRange(new List<string> { "Name", "Check Number" }.ToArray());
+            searchComboBox.SelectedIndex = 0;
 
             ReadPositions();
 
@@ -373,14 +376,20 @@ namespace checks
                 var row = currentSheet.Rows[i];
                 var isConatinNameCloumn = (row.ItemArray.Any(e => e.ToString().Trim().ToLower().Contains(ColumnNames.Name)));
                 var isConatinAmountCloumn = (row.ItemArray.Any(e => e.ToString().Trim().ToLower().Contains(ColumnNames.Amount)));
+                // find the first row that contains Name and Amount columns
                 if (isConatinAmountCloumn || isConatinNameCloumn)
                 {
                     var columnIndexList = row.ItemArray.Select((c, index) =>
                     {
-                        var columnName = ColumnNames.All.FirstOrDefault(cn => c.ToString().Trim().ToLower().Contains(cn));
-                        return new { columnName, index };
+                        var columnName = ColumnNames.All.FirstOrDefault(
+                            cn => c.ToString().Trim().ToLower().Equals(cn) ||
+                            c.ToString().Trim().ToLower().Contains(cn));
+                        return new { columnName, index, originlText = c };
                     });
-                    return (columnIndexList.Where(ci => ci.columnName != null).ToDictionary(ci => ci.columnName, ci => ci.index), i + 1);
+                    return (columnIndexList.Where(ci => ci.columnName != null)
+                        .GroupBy(ci => ci.columnName)
+                        .Select(cig => cig.OrderBy(o => o.columnName.Length).FirstOrDefault()) // get the best match the shorter
+                        .ToDictionary(ci => ci.columnName, ci => ci.index), i + 1);
                 }
 
 
@@ -731,6 +740,7 @@ namespace checks
                 {
                     importedRecords = ChangeCheckDates(importedRecords);
                     importedRecords = ChangeCheckSN(importedRecords);
+                    UpdateRecords(importedRecords);
                     UpdateGridView(importedRecords);
                 }
             }
@@ -856,12 +866,16 @@ namespace checks
         private void SNButton_Click(object sender, EventArgs e)
         {
             var updated = ChangeCheckSN(_records);
+            UpdateRecords(updated);
             UpdateGridView(updated);
+        }
+        private void UpdateRecords(List<CheckRecord> records)
+        {
+            _records = records;
         }
 
         private void UpdateGridView(List<CheckRecord> records)
         {
-            _records = records;
             var bindingList = new BindingList<GridViewRecord>(records.Select(r => r.ToGridViewRecord()).ToList());
             _bindingSource = new BindingSource(bindingList, null);
             recordsGrid.DataSource = _bindingSource;
@@ -929,6 +943,7 @@ namespace checks
         private void changeDateButton_Click(object sender, EventArgs e)
         {
             var updated = ChangeCheckDates(_records);
+            UpdateRecords(updated);
             UpdateGridView(updated);
         }
 
@@ -969,7 +984,28 @@ namespace checks
         private void changeCurrencyButton_Click(object sender, EventArgs e)
         {
             var updated = ChangeCheckCurrency(_records);
+            UpdateRecords(updated);
             UpdateGridView(updated);
+        }
+
+        private void searcTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var filterd = GetFilteredRecords(_records);
+            UpdateGridView(filterd);
+        }
+
+        private List<CheckRecord> GetFilteredRecords(List<CheckRecord> records)
+        {
+            var searchText = searchTextBox.Text.ToLower();
+            if ((searchComboBox.SelectedItem as string) == "Name")
+            {
+                return records.Where(r => r.Name.ToLower().Contains(searchText)).ToList();
+            }
+            else if ((searchComboBox.SelectedItem as string) == "Check Number")
+            {
+                return records.Where(r => r.SN.ToLower().Contains(searchText)).ToList();
+            }
+            return records.Where(r => true).ToList();
         }
     }
     static class ColumnNames

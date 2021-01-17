@@ -38,9 +38,6 @@
             this.SaveButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.smallPreviousButton = new System.Windows.Forms.Button();
-            this.smallNextButton = new System.Windows.Forms.Button();
             this.changeCurrencyButton = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.negotiableButton = new System.Windows.Forms.Button();
@@ -51,7 +48,13 @@
             this.previousRecordButton = new System.Windows.Forms.Button();
             this.nextRecordButton = new System.Windows.Forms.Button();
             this.SNButton = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.smallPreviousButton = new System.Windows.Forms.Button();
+            this.smallNextButton = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.searchTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.searchComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -59,7 +62,7 @@
             // 
             // textBoxWidth
             // 
-            this.textBoxWidth.Location = new System.Drawing.Point(694, 423);
+            this.textBoxWidth.Location = new System.Drawing.Point(694, 449);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(100, 20);
             this.textBoxWidth.TabIndex = 3;
@@ -79,7 +82,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(800, 423);
+            this.button2.Location = new System.Drawing.Point(800, 447);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -103,7 +106,7 @@
             this.recordsGrid.AllowUserToAddRows = false;
             this.recordsGrid.AllowUserToDeleteRows = false;
             this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.recordsGrid.Location = new System.Drawing.Point(12, 407);
+            this.recordsGrid.Location = new System.Drawing.Point(12, 440);
             this.recordsGrid.Name = "recordsGrid";
             this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
@@ -112,7 +115,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(206, 362);
+            this.SaveButton.Location = new System.Drawing.Point(725, 365);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(107, 23);
             this.SaveButton.TabIndex = 11;
@@ -123,7 +126,7 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(522, 360);
+            this.ResetButton.Location = new System.Drawing.Point(584, 360);
             this.ResetButton.Name = "ResetButton";
             this.ResetButton.Size = new System.Drawing.Size(104, 23);
             this.ResetButton.TabIndex = 12;
@@ -149,29 +152,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 51);
             this.panel1.TabIndex = 20;
-            // 
-            // smallPreviousButton
-            // 
-            this.smallPreviousButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
-            this.smallPreviousButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallPreviousButton.Location = new System.Drawing.Point(331, 358);
-            this.smallPreviousButton.Name = "smallPreviousButton";
-            this.smallPreviousButton.Size = new System.Drawing.Size(40, 30);
-            this.smallPreviousButton.TabIndex = 22;
-            this.smallPreviousButton.UseVisualStyleBackColor = true;
-            this.smallPreviousButton.Click += new System.EventHandler(this.previousRecordButton_Click);
-            // 
-            // smallNextButton
-            // 
-            this.smallNextButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
-            this.smallNextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.smallNextButton.Location = new System.Drawing.Point(475, 358);
-            this.smallNextButton.Name = "smallNextButton";
-            this.smallNextButton.Size = new System.Drawing.Size(40, 30);
-            this.smallNextButton.TabIndex = 22;
-            this.smallNextButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.smallNextButton.UseVisualStyleBackColor = true;
-            this.smallNextButton.Click += new System.EventHandler(this.nextRecordButton_Click);
             // 
             // changeCurrencyButton
             // 
@@ -293,6 +273,29 @@
             this.SNButton.UseVisualStyleBackColor = true;
             this.SNButton.Click += new System.EventHandler(this.SNButton_Click);
             // 
+            // smallPreviousButton
+            // 
+            this.smallPreviousButton.BackgroundImage = global::checks.Properties.Resources.left_arrow_pngrepo_com1;
+            this.smallPreviousButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.smallPreviousButton.Location = new System.Drawing.Point(331, 358);
+            this.smallPreviousButton.Name = "smallPreviousButton";
+            this.smallPreviousButton.Size = new System.Drawing.Size(40, 30);
+            this.smallPreviousButton.TabIndex = 22;
+            this.smallPreviousButton.UseVisualStyleBackColor = true;
+            this.smallPreviousButton.Click += new System.EventHandler(this.previousRecordButton_Click);
+            // 
+            // smallNextButton
+            // 
+            this.smallNextButton.BackgroundImage = global::checks.Properties.Resources.right_arrow_pngrepo_com;
+            this.smallNextButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.smallNextButton.Location = new System.Drawing.Point(475, 358);
+            this.smallNextButton.Name = "smallNextButton";
+            this.smallNextButton.Size = new System.Drawing.Size(40, 30);
+            this.smallNextButton.TabIndex = 22;
+            this.smallNextButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.smallNextButton.UseVisualStyleBackColor = true;
+            this.smallNextButton.Click += new System.EventHandler(this.nextRecordButton_Click);
+            // 
             // pictureBox
             // 
             this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -307,11 +310,39 @@
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseUp);
             // 
+            // searcTextBox
+            // 
+            this.searchTextBox.Location = new System.Drawing.Point(272, 413);
+            this.searchTextBox.Name = "searcTextBox";
+            this.searchTextBox.Size = new System.Drawing.Size(586, 20);
+            this.searchTextBox.TabIndex = 23;
+            this.searchTextBox.TextChanged += new System.EventHandler(this.searcTextBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(59, 416);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Search By";
+            // 
+            // searchComboBox
+            // 
+            this.searchComboBox.FormattingEnabled = true;
+            this.searchComboBox.Location = new System.Drawing.Point(121, 412);
+            this.searchComboBox.Name = "searchComboBox";
+            this.searchComboBox.Size = new System.Drawing.Size(121, 21);
+            this.searchComboBox.TabIndex = 25;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(908, 656);
+            this.ClientSize = new System.Drawing.Size(908, 682);
+            this.Controls.Add(this.searchComboBox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.recordsGrid);
             this.Controls.Add(this.smallPreviousButton);
             this.Controls.Add(this.smallNextButton);
@@ -360,6 +391,9 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button changeCurrencyButton;
+        private System.Windows.Forms.TextBox searchTextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox searchComboBox;
     }
 }
 

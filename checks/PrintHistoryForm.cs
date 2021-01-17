@@ -77,29 +77,30 @@ namespace checks
         private List<CheckRecord> GetFilteredRecords(List<CheckRecord> records)
         {
             var selector = new Func<CheckRecord, bool>(r => true);
+            var searchText = searchTextBox.Text.ToLower();
             if ((fieldDropdown.SelectedItem as string) == "Name")
             {
-                selector = new Func<CheckRecord, bool>(r => r.Name.ToLower().Contains(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.Name.ToLower().Contains(searchText));
             }
             else if ((fieldDropdown.SelectedItem as string) == "ID Number")
             {
-                selector = new Func<CheckRecord, bool>(r => r.IDNumber.StartsWith(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.IDNumber.StartsWith(searchText));
             }
             else if ((fieldDropdown.SelectedItem as string) == "Print Date")
             {
-                selector = new Func<CheckRecord, bool>(r => r.PrintDate.Contains(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.PrintDate.Contains(searchText));
             }
             else if ((fieldDropdown.SelectedItem as string) == "Check Serial Number")
             {
-                selector = new Func<CheckRecord, bool>(r => r.SN.StartsWith(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.SN.Contains(searchText));
             }
             else if ((fieldDropdown.SelectedItem as string) == "Check Date")
             {
-                selector = new Func<CheckRecord, bool>(r => r.CheckDate.Contains(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.CheckDate.Contains(searchText));
             }
             else if ((fieldDropdown.SelectedItem as string) == "Amount")
             {
-                selector = new Func<CheckRecord, bool>(r => r.Amount.StartsWith(searchTextBox.Text.ToLower()));
+                selector = new Func<CheckRecord, bool>(r => r.Amount.StartsWith(searchText));
             }
             return _records.Where(selector).ToList();
         }
