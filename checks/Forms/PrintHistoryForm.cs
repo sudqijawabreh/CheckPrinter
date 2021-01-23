@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastMember;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,9 +15,11 @@ namespace checks
     {
         private List<CheckRecord> _records;
         private List<string> searchIFields = new List<string> { "Name", "Check Number","ID Number", "Print Date", "Check Date" , "Amount"};
+        private BindingSource _bindingSource = new BindingSource();
         public PrintHistoryForm(List<CheckRecord> records)
         {
             InitializeComponent();
+            countLabel.Text = "0";
             _records = records;
             this.historyGridView.ReadOnly = true;
             UpdateGridView(_records);
@@ -41,7 +44,7 @@ namespace checks
         private void UpdateGridView(List<CheckRecord> records)
         {
 
-            var bindingList = new BindingList<HistoryGridRecord>(records.Select(r => new HistoryGridRecord
+            var gridRecords = records.Select(r => new HistoryGridRecord
             {
                 Number = r.Number,
                 SN = r.SN,
@@ -52,8 +55,11 @@ namespace checks
                 Currency = r.Currency,
                 Area = r.Area,
                 IDNumber = r.IDNumber
-            }).ToList());
-            var _bindingSource = new BindingSource(bindingList, null);
+            });
+            var table = ListToTable(gridRecords);
+            //var bindingList = new BindingList<HistoryGridRecord>(gridRecords);
+            _bindingSource = new BindingSource();
+            _bindingSource.DataSource = table;
             historyGridView.DataSource = _bindingSource;
         }
         class HistoryGridRecord
@@ -67,18 +73,58 @@ namespace checks
             public string Currency { get; set; }
             public string Area { get; set; }
             public string IDNumber { get; set; }
+             
         }
 
         private void searchTextBox_TextChanged(object sender, EventArgs e)
         {
-            var filterdRecords = GetFilteredRecords(_records);
-            UpdateGridView(filterdRecords);
+            var searchText = searchTextBox.Text.ToLower();
+            var searchBy = (fieldDropdown.SelectedItem as string);
+            try
+            {
+                _bindingSource.Filter = GetFilterText(searchBy, searchText);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
-        private List<CheckRecord> GetFilteredRecords(List<CheckRecord> records)
+        private string GetFilterText(string searchBy, string searchText)
+        {
+            searchText = searchText.Replace("'", "''").Replace("*", @"[[*]]");
+            var filter = string.Empty;
+            var containsFilter = $" LIKE '%{searchText}%'";
+            var startFilter = $" LIKE '{searchText}%'";
+            if (searchBy == "Name")
+            {
+                filter = $"{nameof(CheckRecord.Name)}{containsFilter}";
+            }
+            else if (searchBy == "ID Number")
+            {
+                filter = $"{nameof(CheckRecord.IDNumber)}{startFilter}";
+            }
+            else if (searchBy == "Print Date")
+            {
+                filter = $"{nameof(CheckRecord.PrintDate)}{containsFilter}";
+            }
+            else if (searchBy == "Check Serial Number")
+            {
+                filter = $"{nameof(CheckRecord.SN)}{containsFilter}";
+            }
+            else if (searchBy == "Check Date")
+            {
+               filter = $"{nameof(CheckRecord.CheckDate)}{containsFilter}";
+            }
+            else if (searchBy == "Amount")
+            {
+               filter = $"{nameof(CheckRecord.Amount)}{startFilter}";
+            }
+            return filter;
+        }
+        private List<CheckRecord> GetFilteredRecords(List<CheckRecord> records, string searchText)
         {
             var selector = new Func<CheckRecord, bool>(r => true);
-            var searchText = searchTextBox.Text.ToLower();
             if ((fieldDropdown.SelectedItem as string) == "Name")
             {
                 selector = new Func<CheckRecord, bool>(r => r.Name.ToLower().Contains(searchText));
@@ -122,7 +168,7 @@ namespace checks
                 var result = fileDialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    ReportGenerator.ExportHistory(fileDialog.FileName, GetFilteredRecords(_records));
+                    ReportGenerator.ExportHistory(fileDialog.FileName, GetFilteredRecords(_records,""));
                     System.Diagnostics.Process.Start(fileDialog.FileName);
                 }
             }
@@ -135,6 +181,21 @@ namespace checks
                     MessageBoxIcon.Warning);
 
             }
+        }
+        private DataTable ListToTable(IEnumerable<HistoryGridRecord> data)
+        {
+            DataTable table = new DataTable();
+            using (var reader = ObjectReader.Create(data, "Number", "SN", "Name", "Amount", "CheckDate", "PrintDate", "Currency", "Area", "IDNumber"))
+            {
+                table.Load(reader);
+                return table;
+            }
+        }
+
+        private void historyGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var count = this.historyGridView.Rows.Count;
+            countLabel.Text = count.ToString();
         }
     }
 }
