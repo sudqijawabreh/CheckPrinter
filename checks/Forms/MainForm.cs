@@ -481,6 +481,12 @@ namespace checks
             if (e.PrintAction == PrintAction.PrintToPrinter)
             {
                 _backup.Write(_printedRecords);
+                MessageBox.Show(this,
+                    $"{_printedRecords.Count} Records were sent to the printer successfully.{Environment.NewLine}",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
             }
         }
 
