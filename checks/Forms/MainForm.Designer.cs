@@ -55,6 +55,8 @@
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.searchComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.countLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.recordsGrid)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -112,6 +114,7 @@
             this.recordsGrid.Size = new System.Drawing.Size(921, 237);
             this.recordsGrid.TabIndex = 10;
             this.recordsGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.recordsGrid_CellEndEdit);
+            this.recordsGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.recordsGrid_DataBindingComplete);
             // 
             // SaveButton
             // 
@@ -335,11 +338,31 @@
             this.searchComboBox.Size = new System.Drawing.Size(121, 21);
             this.searchComboBox.TabIndex = 25;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(868, 680);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Records:";
+            // 
+            // countLabel
+            // 
+            this.countLabel.AutoSize = true;
+            this.countLabel.Location = new System.Drawing.Point(915, 680);
+            this.countLabel.Name = "countLabel";
+            this.countLabel.Size = new System.Drawing.Size(13, 13);
+            this.countLabel.TabIndex = 27;
+            this.countLabel.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(945, 682);
+            this.ClientSize = new System.Drawing.Size(945, 695);
+            this.Controls.Add(this.countLabel);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.searchComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.searchTextBox);
@@ -394,6 +417,8 @@
         private System.Windows.Forms.TextBox searchTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox searchComboBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label countLabel;
     }
 }
 

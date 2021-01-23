@@ -1023,6 +1023,13 @@ namespace checks
             if (record != null)
                 record.SN = row.SN;
         }
+
+        private void recordsGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var count = recordsGrid.Rows.Count;
+            countLabel.Text = count.ToString();
+
+        }
     }
     static class ColumnNames
     {
