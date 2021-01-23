@@ -108,9 +108,9 @@ namespace checks
             {
                 filter = $"{nameof(CheckRecord.PrintDate)}{containsFilter}";
             }
-            else if (searchBy == "Check Serial Number")
+            else if (searchBy == "Check Number")
             {
-                filter = $"{nameof(CheckRecord.SN)}{containsFilter}";
+                filter = $"CheckNumber{containsFilter}";
             }
             else if (searchBy == "Check Date")
             {
@@ -137,7 +137,7 @@ namespace checks
             {
                 selector = new Func<CheckRecord, bool>(r => r.PrintDate.Contains(searchText));
             }
-            else if ((fieldDropdown.SelectedItem as string) == "Check Serial Number")
+            else if ((fieldDropdown.SelectedItem as string) == "Check Number")
             {
                 selector = new Func<CheckRecord, bool>(r => r.SN.Contains(searchText));
             }
@@ -188,6 +188,7 @@ namespace checks
             using (var reader = ObjectReader.Create(data, "Number", "SN", "Name", "Amount", "CheckDate", "PrintDate", "Currency", "Area", "IDNumber"))
             {
                 table.Load(reader);
+                table.Columns[1].ColumnName = "CheckNumber";
                 return table;
             }
         }
