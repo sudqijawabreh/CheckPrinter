@@ -13,7 +13,7 @@ namespace checks
     public partial class PrintHistoryForm : Form
     {
         private List<CheckRecord> _records;
-        private List<string> searchIFields = new List<string> { "Name", "Check Serial Number","ID Number", "Print Date", "Check Date" , "Amount"};
+        private List<string> searchIFields = new List<string> { "Name", "Check Number","ID Number", "Print Date", "Check Date" , "Amount"};
         public PrintHistoryForm(List<CheckRecord> records)
         {
             InitializeComponent();

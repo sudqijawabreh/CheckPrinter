@@ -83,7 +83,7 @@ namespace checks
         public CheckRecordMap()
         {
             Map(r => r.Number);
-            Map(r => r.SN).Name("Serial Number");
+            Map(r => r.SN).Name("Check Number");
             Map(r => r.IDNumber).Name("ID Number");
             Map(r => r.Name);
             Map(r => r.Currency);

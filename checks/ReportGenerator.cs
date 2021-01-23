@@ -19,7 +19,7 @@ namespace checks
             var ws = workbook.Worksheet(sheetName);
             var c = ws.Column(2);
             var insertedColumn = c.InsertColumnsBefore(1);
-            ws.Cell(headerRow, 2).Value = "Serial Number";
+            ws.Cell(headerRow, 2).Value = "Check Number";
             SN.Select((n, i) => new { number = n, index = i }).ToList().ForEach(v =>
               {
                   ws.Cell(v.index + headerRow + 1, 2).Value = v.number;
@@ -36,7 +36,7 @@ namespace checks
             var workbook = new XLWorkbook();
             var ws = workbook.AddWorksheet();
             ws.Cell(1, 1).Value = "Number";
-            ws.Cell(1, 2).Value = "Serial Number";
+            ws.Cell(1, 2).Value = "Check Number";
             ws.Cell(1, 3).Value = "ID Number";
             ws.Cell(1, 4).Value = "Name";
             ws.Cell(1, 5).Value = "Currency";
