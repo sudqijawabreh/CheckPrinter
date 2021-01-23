@@ -37,7 +37,6 @@ namespace checks
         private int _currentPreview = 1;
         private int _firstRecord = 1;
         private int _lastRecord = 1;
-        private BindingSource _bindingSource;
         private PrintAction _printAction;
         private readonly CheckRecord _checkRecord = new CheckRecord();
         private readonly string _fileName = "Positions.txt";
@@ -49,6 +48,7 @@ namespace checks
         private bool _showNotNegotiable = true;
         private bool _secretMode = false;
         private int _stampCount = 0;
+        private List<GridViewRecord> _gridViewRecords = new List<GridViewRecord>();
 
 
         private Point _firstMeasure;
@@ -131,6 +131,12 @@ namespace checks
             recordsGrid.Columns[1].HeaderText = "Check Number";
             recordsGrid.Columns[5].HeaderText = "Amount In Words";
             recordsGrid.Columns[4].HeaderText = "Check Date";
+            recordsGrid.Columns[0].ReadOnly = true;
+            recordsGrid.Columns[1].ReadOnly = false;
+            recordsGrid.Columns[2].ReadOnly = true;
+            recordsGrid.Columns[3].ReadOnly = true;
+            recordsGrid.Columns[4].ReadOnly = true;
+            recordsGrid.Columns[5].ReadOnly = true;
             recordsGrid.RowHeadersVisible = false;
             searchComboBox.Items.AddRange(new List<string> { "Name", "Check Number" }.ToArray());
             searchComboBox.SelectedIndex = 0;
@@ -879,9 +885,8 @@ namespace checks
 
         private void UpdateGridView(List<CheckRecord> records)
         {
-            var bindingList = new BindingList<GridViewRecord>(records.Select(r => r.ToGridViewRecord()).ToList());
-            _bindingSource = new BindingSource(bindingList, null);
-            recordsGrid.DataSource = _bindingSource;
+            _gridViewRecords = records.Select(r => r.ToGridViewRecord()).ToList();
+            recordsGrid.DataSource = _gridViewRecords;
             pictureBox.Invalidate();
         }
 
@@ -1009,6 +1014,14 @@ namespace checks
                 return records.Where(r => r.SN.ToLower().Contains(searchText)).ToList();
             }
             return records.Where(r => true).ToList();
+        }
+        private void recordsGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // assume only check number column is updatable
+            var row = _gridViewRecords[e.RowIndex];
+            var record = _records.FirstOrDefault(r => r.Number == row.Number);
+            if (record != null)
+                record.SN = row.SN;
         }
     }
     static class ColumnNames

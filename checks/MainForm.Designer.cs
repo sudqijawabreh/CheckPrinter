@@ -108,10 +108,10 @@
             this.recordsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.recordsGrid.Location = new System.Drawing.Point(12, 440);
             this.recordsGrid.Name = "recordsGrid";
-            this.recordsGrid.ReadOnly = true;
             this.recordsGrid.RowHeadersWidth = 100;
             this.recordsGrid.Size = new System.Drawing.Size(921, 237);
             this.recordsGrid.TabIndex = 10;
+            this.recordsGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.recordsGrid_CellEndEdit);
             // 
             // SaveButton
             // 
