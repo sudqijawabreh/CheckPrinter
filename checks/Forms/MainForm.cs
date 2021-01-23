@@ -31,7 +31,7 @@ namespace checks
         private Point _previousCursorPosition = new Point(0, 0);
         private readonly int _amountInWordsWidth = 275;
         private Image _image;
-        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", CheckDate = "09/09/2019", Name = "Ahmad", Number = 1, SN = "1" , Currency = "JOD" } };
+        private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "12332.12", CheckDate = DateTime.Now.ToString("dd/MM/yyyy"), Name = "Ahmad", Number = 1, SN = "1" , Currency = "JOD" , AmountInWords = NumberToWordUtil.AmountInJDToWords("12332.12")} };
         //private List<CheckRecord> _records = new List<CheckRecord> { new CheckRecord { Amount = "532.12", Date = "09/09/2019", Name = "Yusra" } };
         private int _currentRecord = 1;
         private int _currentPreview = 1;
