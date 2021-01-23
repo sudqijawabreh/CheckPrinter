@@ -113,6 +113,7 @@
             this.recordsGrid.RowHeadersWidth = 100;
             this.recordsGrid.Size = new System.Drawing.Size(921, 237);
             this.recordsGrid.TabIndex = 10;
+            this.recordsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.recordsGrid_CellDoubleClick);
             this.recordsGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.recordsGrid_CellEndEdit);
             this.recordsGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.recordsGrid_DataBindingComplete);
             // 

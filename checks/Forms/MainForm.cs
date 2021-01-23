@@ -1040,6 +1040,11 @@ namespace checks
             countLabel.Text = count.ToString();
 
         }
+
+        private void recordsGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            this.recordsGrid.BeginEdit(true);
+        }
     }
     static class ColumnNames
     {
