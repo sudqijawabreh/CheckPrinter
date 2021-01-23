@@ -49,6 +49,7 @@ namespace checks
         private bool _secretMode = false;
         private int _stampCount = 0;
         private List<GridViewRecord> _gridViewRecords = new List<GridViewRecord>();
+        private Backup _backup = new Backup("");
 
 
         private Point _firstMeasure;
@@ -61,6 +62,7 @@ namespace checks
         {
             InitializeComponent();
 
+            _backup = new Backup(_backupFielName);
 
             _pageHeight = toIncheHundredth(21);
             _pageWidth = toIncheHundredth(7.2);
@@ -476,8 +478,7 @@ namespace checks
         {
             if (e.PrintAction == PrintAction.PrintToPrinter)
             {
-                var backup = new Backup(_backupFielName);
-                backup.Write(_printedRecords);
+                _backup.Write(_printedRecords);
             }
         }
 
@@ -757,7 +758,8 @@ namespace checks
 
         private List<CheckRecord> ChangeCheckSN(List<CheckRecord> importedRecords)
         {
-            var snChoice = InputSN.ShowPrompt();
+            var lastCheckNumber = _backup.ReadLastCheckNumber();
+            var snChoice = InputSN.ShowPrompt(lastCheckNumber);
             if (snChoice.ChoiceType == PromptChoice.OK)
             {
                 importedRecords = importedRecords.Select(r => UpdateSNNumber(r, snChoice.Item)).ToList();

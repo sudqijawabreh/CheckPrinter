@@ -19,9 +19,18 @@ namespace checks
             CancelButton.DialogResult = DialogResult.Cancel;
         }
 
-        public static PromptEventArgs ShowPrompt()
+        public static PromptEventArgs ShowPrompt(string lastCheckNumber = "1")
         {
             var p = new InputSN();
+            if (long.TryParse(lastCheckNumber, out var checkNumber))
+            {
+                p.SNTextBox.Text = (checkNumber + 1).ToString();
+            }
+            else
+            {
+                p.SNTextBox.Text = lastCheckNumber;
+            }
+
             p.StartPosition = FormStartPosition.CenterParent;
             p.AcceptButton = p.OKButton;
             var dialogResult = p.ShowDialog();
@@ -30,7 +39,7 @@ namespace checks
             if (!isNumber && dialogResult == DialogResult.OK)
             {
                 MessageBox.Show(p,
-                       "SN you entered is not a number numbering will start from 1",
+                       "Check Number you entered is not a number numbering will start from 1",
                        "Warning",
                        MessageBoxButtons.OK,
                        MessageBoxIcon.Warning);

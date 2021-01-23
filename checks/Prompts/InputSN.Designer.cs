@@ -28,18 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SNTextBox = new System.Windows.Forms.TextBox();
             this.OKButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.SNTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // SNTextBox
-            // 
-            this.SNTextBox.Location = new System.Drawing.Point(29, 32);
-            this.SNTextBox.Name = "SNTextBox";
-            this.SNTextBox.Size = new System.Drawing.Size(171, 20);
-            this.SNTextBox.TabIndex = 0;
             // 
             // OKButton
             // 
@@ -72,6 +65,14 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Enter The First Check Serial Number";
             // 
+            // SNTextBox
+            // 
+            this.SNTextBox.Location = new System.Drawing.Point(29, 32);
+            this.SNTextBox.Name = "SNTextBox";
+            this.SNTextBox.Size = new System.Drawing.Size(171, 20);
+            this.SNTextBox.TabIndex = 0;
+            this.SNTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // InputSN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -89,10 +90,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox SNTextBox;
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox SNTextBox;
     }
 }

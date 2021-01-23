@@ -76,6 +76,25 @@ namespace checks
             }
             return recordsToReturn;
         }
+        public string ReadLastCheckNumber()
+        {
+            var defaultCheckNumber = "0";
+            var recordsToReturn = new List<CheckRecord>();
+            if (File.Exists(_fileName))
+            {
+                using (var reader = new StreamReader(_fileName))
+                {
+                    using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        csvReader.Configuration.RegisterClassMap<CheckRecordMap>();
+                        var records = csvReader.GetRecords<CheckRecord>();
+                        var last = records.LastOrDefault();
+                        return last?.SN ?? defaultCheckNumber;
+                    }
+                }
+            }
+            return defaultCheckNumber;
+        }
     }
 
         class CheckRecordMap : ClassMap<CheckRecord>
