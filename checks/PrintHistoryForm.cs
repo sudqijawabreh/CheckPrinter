@@ -18,6 +18,7 @@ namespace checks
         {
             InitializeComponent();
             _records = records;
+            this.historyGridView.ReadOnly = true;
             UpdateGridView(_records);
             historyGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             historyGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
