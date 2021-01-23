@@ -112,10 +112,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup.cs" />
-    <Compile Include="PrintHistoryForm.cs">
+    <Compile Include="Forms\PrintHistoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PrintHistoryForm.Designer.cs">
+    <Compile Include="Forms\PrintHistoryForm.Designer.cs">
       <DependentUpon>PrintHistoryForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CheckRecord.cs" />
@@ -146,20 +146,20 @@
     <Compile Include="Prompts\InputSN.Designer.cs">
       <DependentUpon>InputSN.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NumberToWordUtil.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Prompt.cs" />
+    <Compile Include="Prompts\Prompt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PromptEventArgs.cs" />
     <Compile Include="ReportGenerator.cs" />
     <Compile Include="stringDraw.cs" />
-    <EmbeddedResource Include="PrintHistoryForm.resx">
+    <EmbeddedResource Include="Forms\PrintHistoryForm.resx">
       <DependentUpon>PrintHistoryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Prompts\CurrencyPrompt.resx">
@@ -174,7 +174,7 @@
     <EmbeddedResource Include="Prompts\InputSN.resx">
       <DependentUpon>InputSN.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
