@@ -426,7 +426,7 @@ namespace checks
             printDialog.AllowCurrentPage = true;
             printDialog.PrinterSettings.FromPage = 1;
             printDialog.PrinterSettings.ToPage = _records.Count;
-            DialogResult = printDialog.ShowDialog();
+            DialogResult = printDialog.ShowDialog(this);
             if (DialogResult == DialogResult.Cancel)
             {
                 return;
@@ -438,13 +438,19 @@ namespace checks
             if(sizeA4 == null)
             {
                 printDialog.PrinterSettings.DefaultPageSettings.PaperSize = newSize;
+                MessageBox.Show(this,
+                    $"Couldn't find paper size with name check.{Environment.NewLine}" +
+                    $"This will cause printer to not print correctly.{Environment.NewLine}" +
+                    $"Please check with support.",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
             else
             {
                 printDocument.DefaultPageSettings.PaperSize = sizeA4;
 
             }
-            //PaperSize sizeA4 = paperSizes.First<PaperSize>(size => size.PaperName == "A4"); // setting paper size to A4 size
 
             if (printDialog.PrinterSettings.PrintRange == PrintRange.AllPages)
             {
@@ -465,13 +471,9 @@ namespace checks
 
             printPreview.PrintPreviewControl.AutoZoom = true;
             printPreview.Document = printDocument;
-            var viewResult = printPreview.ShowDialog();
+            ((Form)printPreview).WindowState = FormWindowState.Maximized;
+            var viewResult = printPreview.ShowDialog(this);
             count = 0;
-
-            /*            if (DialogResult == DialogResult.OK)
-                        {
-                            //printDocument.Print();
-                        }*/
         }
 
         private void EndPrint(object sender, PrintEventArgs e)
