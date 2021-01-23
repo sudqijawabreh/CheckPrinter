@@ -313,9 +313,9 @@ namespace checks
                                         Amount = r.Amount?.ToString() ?? string.Empty,
                                         CheckDate = DateTime.Now.ToString("dd/MM/yyyy"),
                                         Area = r.Area?.ToString() ?? string.Empty,
-                                        Currency = r.Currency?.ToString() ?? string.Empty,
+                                        Currency = string.IsNullOrEmpty(r.Currency?.ToString()) ?   "JOD" : r.Currency?.ToString(),
                                         IDNumber = r.ID?.ToString() ?? string.Empty,
-                                        AmountInWords = NumberToWordUtil.GetAmountInWordsByCurrency(r.Amount?.ToString(),Currency.JOD),
+                                        AmountInWords = NumberToWordUtil.GetAmountInWordsByCurrency(r.Amount?.ToString(),r.Currency?.ToString() == "NIS" ? Currency.NIS : Currency.JOD),
                                         SN = (SN + i).ToString(),
                                     };
                                 }
@@ -1021,7 +1021,7 @@ namespace checks
 
         public static IReadOnlyCollection<string> RequiredColumns = new List<string> { Name, Amount }.AsReadOnly();
         public static IReadOnlyCollection<string> OptionalColumns = new List<string> { ID, Area }.AsReadOnly();
-        public static IReadOnlyCollection<string> All = new List<string>(RequiredColumns).Concat(OptionalColumns).ToList().AsReadOnly();
+        public static IReadOnlyCollection<string> All = new List<string>(RequiredColumns).Concat(OptionalColumns).Concat(new List<string> { Currency }).ToList().AsReadOnly();
     }
 
 
