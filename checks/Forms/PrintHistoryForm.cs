@@ -168,8 +168,8 @@ namespace checks
                 var result = fileDialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    ReportGenerator.ExportHistory(fileDialog.FileName, GetFilteredRecords(_records,""));
-                    System.Diagnostics.Process.Start(fileDialog.FileName);
+                    ReportGenerator.ExportHistory(fileDialog.FileName, _records);
+                    Task.Run(() => System.Diagnostics.Process.Start(fileDialog.FileName));
                 }
             }
             catch(Exception ex)
