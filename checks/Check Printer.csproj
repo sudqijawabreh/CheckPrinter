@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup.cs" />
+    <Compile Include="ExcelExetnsions.cs" />
     <Compile Include="Forms\PrintHistoryForm.cs">
       <SubType>Form</SubType>
     </Compile>
