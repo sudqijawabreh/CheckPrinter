@@ -213,7 +213,9 @@
   <ItemGroup>
     <None Include="bin\Debug\full check.png" />
     <Content Include="icon64x64.ico" />
-    <Content Include="Resources\full check.png" />
+    <Content Include="Resources\full check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\history-pngrepo-com.png" />
     <None Include="Resources\license-plate-number-pngrepo-com.png" />
     <None Include="Resources\calendar-pngrepo-com.png" />
