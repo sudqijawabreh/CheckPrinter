@@ -117,7 +117,7 @@ namespace checks
             };
             _toDrawStrings = _defaultValues.Select(r => r.Clone()).ToList();
             //_image =Bitmap.FromFile("empty check.png");
-            _image = Bitmap.FromFile("full_check.png");
+            _image = Properties.Resources.full_check;
             //_image = RotateImage(_image, -0.5f);
 
             /*            _pageHeight = toInche(7.2);
