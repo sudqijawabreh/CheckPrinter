@@ -225,6 +225,9 @@ namespace Test
             var result = NumberToWordUtil.AmountInNISToWords("1000.0");
             Assert.AreEqual("NIS One Thousand And No Agorot Only", result);
 
+            result = NumberToWordUtil.AmountInNISToWords("1000");
+            Assert.AreEqual("NIS One Thousand And No Agorot Only", result);
+
             result = NumberToWordUtil.AmountInNISToWords("9675.0");
             Assert.AreEqual("NIS Nine Thousand Six Hundred Seventy Five And No Agorot Only", result);
 

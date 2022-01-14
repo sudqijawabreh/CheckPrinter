@@ -113,7 +113,7 @@ namespace checks
                 var first = value;
                 first = PadLeft(first);
                 var words = GetWords(first);
-                return words;
+                return prefix + " " + words + " And No " + decimalSuffix + " " + suffix;
             }
 
             return string.Empty;
