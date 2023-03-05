@@ -44,43 +44,49 @@ namespace checks
             // 
             this.historyGridView.AllowUserToAddRows = false;
             this.historyGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.historyGridView.Location = new System.Drawing.Point(8, 55);
+            this.historyGridView.Location = new System.Drawing.Point(11, 68);
+            this.historyGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.historyGridView.Name = "historyGridView";
-            this.historyGridView.Size = new System.Drawing.Size(793, 278);
+            this.historyGridView.RowHeadersWidth = 51;
+            this.historyGridView.Size = new System.Drawing.Size(1057, 342);
             this.historyGridView.TabIndex = 0;
             this.historyGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.historyGridView_DataBindingComplete);
             // 
             // searchTextBox
             // 
-            this.searchTextBox.Location = new System.Drawing.Point(224, 26);
+            this.searchTextBox.Location = new System.Drawing.Point(299, 32);
+            this.searchTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(398, 20);
+            this.searchTextBox.Size = new System.Drawing.Size(529, 22);
             this.searchTextBox.TabIndex = 1;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // fieldDropdown
             // 
             this.fieldDropdown.FormattingEnabled = true;
-            this.fieldDropdown.Location = new System.Drawing.Point(83, 25);
+            this.fieldDropdown.Location = new System.Drawing.Point(111, 31);
+            this.fieldDropdown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.fieldDropdown.Name = "fieldDropdown";
-            this.fieldDropdown.Size = new System.Drawing.Size(121, 21);
+            this.fieldDropdown.Size = new System.Drawing.Size(160, 24);
             this.fieldDropdown.TabIndex = 2;
             this.fieldDropdown.SelectedIndexChanged += new System.EventHandler(this.fieldDropdown_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 28);
+            this.label1.Location = new System.Drawing.Point(28, 34);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(73, 17);
             this.label1.TabIndex = 3;
             this.label1.Text = "Search By";
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(654, 23);
+            this.exportButton.Location = new System.Drawing.Point(872, 28);
+            this.exportButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(96, 23);
+            this.exportButton.Size = new System.Drawing.Size(128, 28);
             this.exportButton.TabIndex = 4;
             this.exportButton.Text = "Export To Excel";
             this.exportButton.UseVisualStyleBackColor = true;
@@ -89,26 +95,28 @@ namespace checks
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(727, 336);
+            this.label2.Location = new System.Drawing.Point(969, 414);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.Size = new System.Drawing.Size(65, 17);
             this.label2.TabIndex = 5;
             this.label2.Text = "Records:";
             // 
             // countLabel
             // 
             this.countLabel.AutoSize = true;
-            this.countLabel.Location = new System.Drawing.Point(773, 336);
+            this.countLabel.Location = new System.Drawing.Point(1031, 414);
+            this.countLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.countLabel.Name = "countLabel";
-            this.countLabel.Size = new System.Drawing.Size(25, 13);
+            this.countLabel.Size = new System.Drawing.Size(32, 17);
             this.countLabel.TabIndex = 6;
             this.countLabel.Text = "000";
             // 
             // PrintHistoryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(813, 352);
+            this.ClientSize = new System.Drawing.Size(1084, 433);
             this.Controls.Add(this.countLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.exportButton);
@@ -117,6 +125,7 @@ namespace checks
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.historyGridView);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "PrintHistoryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Print History";

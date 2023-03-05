@@ -193,9 +193,7 @@ namespace checks
 
         private void Draw(Graphics formGraphics, float inputWidth, float inputHeight)
         {
-            var backImg = File.OpenRead("full_check.png");
-            //var backImg = File.OpenRead("empty check.png");
-            var bitmap = Bitmap.FromStream(backImg);
+            var bitmap = checks.Properties.Resources.full_check;
             formGraphics.DrawImage(bitmap, 0, 0, (int)(inputWidth), (int)(inputHeight));
 
         }
